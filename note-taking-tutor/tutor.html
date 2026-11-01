@@ -1,0 +1,1897 @@
+<title>Notes That Stick</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A goal-based tutor that teaches high school students research-backed methods for taking notes by hand from textbooks and lectures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: a notebook. A mission "spine" on the left (chips on phones), and a ruled page on the right.
+   Ink-blue for actions, the red Cornell margin line for structure, highlighter yellow for key terms. */
+:root {
+  --paper: #F3F6FA;
+  --sheet: #FFFFFF;
+  --ink: #17223B;
+  --ink-2: #4B5873;
+  --rule: #D2DCEA;
+  --margin: #CF4559;
+  --accent: #2A56C6;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E3EAFB;
+  --hl: #FFE45C;
+  --hl-ink: #17223B;
+  --soft: #E8EDF5;
+  --good: #1F7F55;
+  --good-soft: #E1F3EA;
+  --warn: #9A5B00;
+  --warn-soft: #FBEFD9;
+  --bad: #B8324A;
+  --bad-soft: #FBE4E8;
+  --shadow: 0 1px 2px rgba(23,34,59,.06), 0 6px 18px rgba(23,34,59,.06);
+  --line-h: 30px;
+  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-hand: "Kalam", "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
+  --step--1: .875rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.8rem, 1.4rem + 1.6vw, 2.5rem);
+  --step-4: clamp(2.2rem, 1.6rem + 2.8vw, 3.6rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1420; --sheet: #151D2D; --ink: #E3E9F4; --ink-2: #A2AEC6; --rule: #27344D;
+    --margin: #F0707F; --accent: #84A6FF; --accent-ink: #0E1420; --accent-soft: #1E2A46;
+    --hl: #E8D24A; --hl-ink: #151D2D; --soft: #1B2538;
+    --good: #5CC892; --good-soft: #12301F; --warn: #F2B44E; --warn-soft: #33270F;
+    --bad: #FF8496; --bad-soft: #3A1820;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1420; --sheet: #151D2D; --ink: #E3E9F4; --ink-2: #A2AEC6; --rule: #27344D;
+  --margin: #F0707F; --accent: #84A6FF; --accent-ink: #0E1420; --accent-soft: #1E2A46;
+  --hl: #E8D24A; --hl-ink: #151D2D; --soft: #1B2538;
+  --good: #5CC892; --good-soft: #12301F; --warn: #F2B44E; --warn-soft: #33270F;
+  --bad: #FF8496; --bad-soft: #3A1820;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+}
+h1, h2, h3, h4 { font-family: var(--f-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+mark { background: linear-gradient(transparent 12%, var(--hl) 12%, var(--hl) 88%, transparent 88%); color: var(--hl-ink); padding: 0 .15em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Top band ---------- */
+.band {
+  border-bottom: 1px solid var(--rule);
+  background: var(--sheet);
+}
+.band-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.brand b { font-family: var(--f-display); font-weight: 800; font-size: 1.35rem; letter-spacing: -.01em; }
+.brand span { font-family: var(--f-hand); color: var(--margin); font-size: 1.05rem; }
+.coach-status { font-size: var(--step--1); color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-2); display: inline-block; }
+.dot.on { background: var(--good); }
+.dot.wait { background: var(--warn); }
+
+/* ---------- Shell ---------- */
+.shell {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 64px;
+  display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; align-items: start;
+}
+.spine { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: flex; flex-direction: column; gap: 4px; }
+.spine h2 { font-size: var(--step--1); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); font-family: var(--f-body); margin: 0 0 6px 10px; }
+.spine a {
+  display: grid; grid-template-columns: 28px minmax(0,1fr) 18px; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 8px; text-decoration: none; color: var(--ink);
+  font-size: .95rem; line-height: 1.3;
+}
+.spine a:hover { background: var(--soft); }
+.spine a[aria-current="page"] { background: var(--accent-soft); font-weight: 700; }
+.spine .num { font-family: var(--f-display); font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: center; }
+.spine .chk { color: var(--good); font-weight: 700; text-align: center; }
+.spine .sep { height: 1px; background: var(--rule); margin: 8px 10px; }
+.progress { margin: 12px 10px 0; font-size: var(--step--1); color: var(--ink-2); }
+.bar { height: 6px; background: var(--soft); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.bar i { display: block; height: 100%; background: var(--good); width: 0; transition: width .4s; }
+
+main { min-width: 0; }
+.view { display: flex; flex-direction: column; gap: 28px; }
+
+/* ---------- Mission header ---------- */
+.mhead { display: flex; flex-direction: column; gap: 12px; }
+.eyebrow { font-size: var(--step--1); text-transform: uppercase; letter-spacing: .1em; color: var(--margin); font-weight: 700; }
+.mhead h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -.02em; }
+.mhead h2 { font-size: var(--step-3); font-weight: 800; letter-spacing: -.015em; }
+.lede { font-size: var(--step-1); color: var(--ink-2); max-width: 62ch; }
+.goalcard {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);
+}
+.goalcard > div { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.goalcard > div + div { border-left: 2px solid var(--margin); }
+.goalcard h3 { font-size: var(--step--1); text-transform: uppercase; letter-spacing: .08em; font-family: var(--f-body); color: var(--ink-2); }
+.goalcard p { font-size: 1.05rem; }
+.goalcard ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 2px; }
+
+/* ---------- Blocks ---------- */
+.block { display: flex; flex-direction: column; gap: 14px; }
+.block > h3 { font-size: var(--step-2); font-weight: 700; display: flex; align-items: baseline; gap: 10px; }
+.block > h3 .k { font-family: var(--f-hand); font-weight: 400; color: var(--margin); font-size: 1.05rem; }
+.prose { max-width: 68ch; display: flex; flex-direction: column; gap: 10px; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.cite { font-size: var(--step--1); color: var(--ink-2); }
+.cite a { color: inherit; }
+.callout {
+  border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 8px 8px 0; max-width: 68ch;
+}
+.callout.hand-tip { border-color: var(--margin); background: var(--sheet); border: 1px dashed var(--margin); border-radius: 8px; }
+
+/* ---------- Handwritten note cards ---------- */
+.examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.note-card { margin: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); min-width: 0; }
+.note-card figcaption { padding: 10px 14px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--rule); font-size: var(--step--1); color: var(--ink-2); flex-wrap: wrap; }
+.note-card .anno { padding: 10px 14px 14px; font-size: .92rem; color: var(--ink-2); border-top: 1px solid var(--rule); }
+.tag { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.tag.bad { background: var(--bad-soft); color: var(--bad); }
+.tag.warn { background: var(--warn-soft); color: var(--warn); }
+.tag.good { background: var(--good-soft); color: var(--good); }
+.hand {
+  font-family: var(--f-hand); font-size: 1.12rem; line-height: var(--line-h);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--line-h) - 1px), var(--rule) calc(var(--line-h) - 1px), var(--rule) var(--line-h));
+  padding: 0 14px 0 46px; position: relative; flex: 1; color: var(--ink); overflow-wrap: anywhere;
+}
+.hand::before { content: ""; position: absolute; left: 34px; top: 0; bottom: 0; width: 2px; background: var(--margin); opacity: .6; }
+.hand p { min-height: var(--line-h); }
+.hand .in1 { padding-left: 1.4em; }
+.hand .in2 { padding-left: 2.8em; }
+.hand .q { color: var(--accent); }
+.hand .red { color: var(--margin); }
+.hand u { text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+/* Cornell example (display) */
+.cornell-ex { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.cornell-ex .hand { padding-left: 14px; }
+.cornell-ex .hand::before { display: none; }
+.cornell-ex .cues { border-right: 2px solid var(--margin); }
+.cornell-ex .sum { grid-column: 1 / -1; border-top: 2px solid var(--margin); }
+.zone-label { font-family: var(--f-body); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--margin); line-height: var(--line-h); }
+
+/* ---------- Tables ---------- */
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: var(--step--1); text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); background: var(--soft); }
+tr:last-child td { border-bottom: 0; }
+td.sym { font-family: var(--f-hand); font-size: 1.25rem; white-space: nowrap; }
+
+/* ---------- Practice ---------- */
+.practice { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--shadow); }
+.practice > h4, .subhead { font-size: var(--step-1); font-weight: 700; }
+.source {
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; max-width: 72ch;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.source h5 { font-family: var(--f-display); font-size: 1.05rem; margin: 0; }
+.source .chap { font-size: var(--step--1); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); }
+label.lbl { font-weight: 700; font-size: .95rem; display: block; }
+.hint { font-size: var(--step--1); color: var(--ink-2); }
+textarea.ruled, input.ruled {
+  width: 100%; font-family: var(--f-hand); font-size: 1.1rem; line-height: var(--line-h);
+  color: var(--ink); background-color: var(--sheet);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--line-h) - 1px), var(--rule) calc(var(--line-h) - 1px), var(--rule) var(--line-h));
+  background-attachment: local;
+  border: 1px solid var(--rule); border-radius: 8px; padding: 0 12px; resize: vertical;
+}
+input.ruled { height: calc(var(--line-h) + 2px); background-image: none; border-bottom: 2px solid var(--rule); }
+textarea.ruled:focus, input.ruled:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+textarea.red-ink { color: var(--margin); }
+.symbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.symbar span { font-size: var(--step--1); color: var(--ink-2); margin-right: 4px; }
+.symbar button { font-family: var(--f-hand); font-size: 1.05rem; min-width: 36px; height: 34px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.symbar button:hover { border-color: var(--accent); }
+
+.cornell { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.5fr); gap: 0; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.cornell > div { padding: 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cornell .c-cues { border-right: 2px solid var(--margin); }
+.cornell .c-sum { grid-column: 1 / -1; border-top: 2px solid var(--margin); }
+.cornell textarea.ruled { border: 0; border-radius: 0; padding: 0 4px; }
+.cornell textarea.ruled:focus { box-shadow: none; background-color: var(--paper); }
+
+/* Buttons */
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn {
+  font: inherit; font-weight: 700; font-size: .95rem; border-radius: 8px; padding: 9px 16px; cursor: pointer;
+  border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-ink); line-height: 1.2;
+}
+.btn:hover { filter: brightness(1.07); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.quiet { background: var(--soft); border-color: var(--soft); color: var(--ink); }
+.btn:disabled { opacity: .5; cursor: not-allowed; filter: none; }
+.btn.sm { padding: 6px 12px; font-size: .88rem; }
+
+/* Stepper */
+.steps { display: flex; gap: 6px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+.steps li { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 99px; background: var(--soft); color: var(--ink-2); font-size: .9rem; }
+.steps li::before { counter-increment: s; content: counter(s); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--sheet); font-weight: 700; font-size: .8rem; }
+.steps li.on { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.steps li.on::before { color: var(--accent); }
+.steps li.done::before { content: "✓"; color: var(--good); }
+.split { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+
+/* ---------- Feedback ---------- */
+.fb { border-top: 2px dashed var(--rule); padding-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+.fb-head { display: flex; flex-direction: column; gap: 4px; }
+.fb-head h4 { font-size: var(--step-1); }
+.photo-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px; border: 1px dashed var(--rule); border-radius: 10px; }
+.photo-row img { max-height: 120px; border-radius: 6px; border: 1px solid var(--rule); }
+.fb-out { display: flex; flex-direction: column; gap: 14px; }
+.fb-out:empty { display: none; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.checks li { display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--paper); align-items: start; }
+.checks li .ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: .85rem; }
+.checks li.good .ic { background: var(--good-soft); color: var(--good); }
+.checks li.warn .ic { background: var(--warn-soft); color: var(--warn); }
+.checks li.bad .ic { background: var(--bad-soft); color: var(--bad); }
+.checks li.info .ic { background: var(--accent-soft); color: var(--accent); }
+.checks li b { display: block; }
+.checks li q { font-family: var(--f-hand); color: var(--margin); }
+.nextstep { background: var(--hl); color: var(--hl-ink); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.nextstep b { font-family: var(--f-display); font-size: 1.05rem; }
+.fb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.fb-grid > div { background: var(--paper); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.fb-grid h5 { margin: 0; font-size: var(--step--1); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+.fb-grid ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 4px; }
+.scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.score { background: var(--paper); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.score span { font-size: .85rem; font-weight: 700; }
+.pips { display: flex; gap: 4px; }
+.pips i { height: 8px; flex: 1; border-radius: 99px; background: var(--rule); }
+.pips i.f { background: var(--accent); }
+.fix { border-left: 3px solid var(--margin); padding: 6px 12px; display: flex; flex-direction: column; gap: 4px; }
+.fix .try { font-family: var(--f-hand); font-size: 1.1rem; color: var(--accent); }
+.thinking { display: flex; gap: 10px; align-items: center; color: var(--ink-2); }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--rule); border-top-color: var(--accent); animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.err { color: var(--bad); }
+.ai-note { font-size: var(--step--1); color: var(--ink-2); }
+
+/* Rubric */
+.rubric { display: flex; flex-direction: column; gap: 12px; }
+.rubric fieldset { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px 12px; margin: 0; min-width: 0; }
+.rubric legend { font-weight: 700; padding: 0 6px; }
+.levels { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
+.levels label { display: flex; flex-direction: column; gap: 4px; padding: 8px; border: 1px solid var(--rule); border-radius: 8px; font-size: .85rem; cursor: pointer; line-height: 1.35; background: var(--sheet); }
+.levels label b { font-family: var(--f-display); font-size: 1rem; }
+.levels input { position: absolute; opacity: 0; pointer-events: none; }
+.levels label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.levels label:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Quiz */
+.quiz { display: flex; flex-direction: column; gap: 14px; }
+.qcard { background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.qcard .qp { font-weight: 700; }
+.qopts { display: flex; flex-direction: column; gap: 6px; }
+.qopts.inline { flex-direction: row; flex-wrap: wrap; }
+.qopt { text-align: left; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; line-height: 1.4; }
+.qopt:hover:not(:disabled) { border-color: var(--accent); }
+.qopt:disabled { cursor: default; }
+.qopt.right { border-color: var(--good); background: var(--good-soft); }
+.qopt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.qwhy { font-size: .95rem; padding: 10px 12px; border-radius: 8px; background: var(--paper); }
+.qwhy b { margin-right: 4px; }
+.qscore { font-weight: 700; }
+
+/* Lecture stage */
+.stage {
+  background: var(--ink); color: var(--paper); border-radius: 14px; padding: 22px; min-height: 200px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 18px;
+}
+.stage .prev { color: color-mix(in srgb, var(--paper) 45%, transparent); font-size: 1rem; min-height: 1.6em; transition: opacity .4s; }
+.stage .cur { font-size: clamp(1.15rem, 1rem + .8vw, 1.55rem); line-height: 1.45; font-family: var(--f-display); font-weight: 500; min-height: 3em; }
+.stage .meta { display: flex; justify-content: space-between; font-size: var(--step--1); color: color-mix(in srgb, var(--paper) 65%, transparent); gap: 12px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.stage .track { height: 4px; background: color-mix(in srgb, var(--paper) 18%, transparent); border-radius: 99px; overflow: hidden; }
+.stage .track i { display: block; height: 100%; width: 0; background: var(--hl); transition: width .3s; }
+.stage.captions-off .cur, .stage.captions-off .prev { filter: blur(7px); user-select: none; }
+.controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.controls label { display: flex; gap: 6px; align-items: center; font-size: .92rem; }
+select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); }
+.transcript { display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
+.transcript p { font-size: .97rem; }
+
+/* Matrix */
+.matrix { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
+.matrix th, .matrix td { border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); padding: 6px; }
+.matrix th:first-child, .matrix td:first-child { border-left: 0; }
+.matrix tr > *:last-child { border-right: 0; }
+.matrix thead th { background: var(--soft); }
+.matrix tbody th { background: var(--soft); font-family: var(--f-display); text-transform: none; letter-spacing: 0; font-size: 1rem; color: var(--ink); width: 130px; }
+.matrix textarea.ruled { min-height: calc(var(--line-h) * 3); border: 0; padding: 0 4px; }
+.matrix td.ok { box-shadow: inset 0 0 0 2px var(--good); }
+.matrix td.miss { box-shadow: inset 0 0 0 2px var(--warn); }
+.cellnote { font-size: .8rem; color: var(--warn); padding: 0 4px; }
+.cellnote.ok { color: var(--good); }
+
+/* Recall drill + planner */
+.drill { display: flex; flex-direction: column; gap: 12px; }
+.drill .cue { font-family: var(--f-hand); font-size: 1.4rem; color: var(--accent); }
+.tally { display: flex; gap: 14px; font-variant-numeric: tabular-nums; font-size: .95rem; flex-wrap: wrap; }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.plan li { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; font-variant-numeric: tabular-nums; }
+.plan li b { font-family: var(--f-display); font-size: 1.05rem; }
+.plan li span { font-size: .85rem; color: var(--ink-2); }
+.plan li.test { border-color: var(--margin); background: var(--bad-soft); }
+.field { display: flex; flex-direction: column; gap: 4px; }
+input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); }
+
+/* Start page */
+.map { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.map a { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 12px; background: var(--sheet); border: 1px solid var(--rule); text-decoration: none; color: var(--ink); height: 100%; box-shadow: var(--shadow); }
+.map a:hover { border-color: var(--accent); }
+.map .mn { font-family: var(--f-hand); color: var(--margin); font-size: 1.05rem; }
+.map b { font-family: var(--f-display); font-size: 1.15rem; }
+.map p { font-size: .92rem; color: var(--ink-2); }
+.loop { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; list-style: none; padding: 0; margin: 0; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: var(--sheet); }
+.loop li { padding: 14px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--rule); }
+.loop li:last-child { border-right: 0; }
+.loop b { font-family: var(--f-display); }
+.loop span { font-size: .9rem; color: var(--ink-2); }
+
+.refs { display: flex; flex-direction: column; gap: 14px; max-width: 78ch; padding: 0; margin: 0; list-style: none; }
+.refs li { padding-left: 1.4em; text-indent: -1.4em; }
+.refs li span { display: block; text-indent: 0; color: var(--ink-2); font-size: .93rem; margin-top: 2px; }
+
+.nextnav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 18px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 99px; font-size: .92rem; box-shadow: var(--shadow); z-index: 20; max-width: calc(100% - 32px); }
+
+@media (max-width: 880px) {
+  .shell { grid-template-columns: minmax(0,1fr); gap: 18px; padding-top: 12px; }
+  .spine { position: static; flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 6px; scrollbar-width: thin; }
+  .spine h2, .spine .sep, .progress { display: none; }
+  .spine a { grid-template-columns: auto auto auto; white-space: nowrap; border: 1px solid var(--rule); background: var(--sheet); }
+  .goalcard { grid-template-columns: minmax(0,1fr); }
+  .goalcard > div + div { border-left: 0; border-top: 2px solid var(--margin); }
+  .split { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 560px) {
+  .cornell, .cornell-ex { grid-template-columns: minmax(0,1fr); }
+  .cornell .c-cues, .cornell-ex .cues { border-right: 0; border-bottom: 2px solid var(--margin); }
+  .levels { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .practice { padding: 14px; }
+  .loop li { border-right: 0; border-bottom: 1px solid var(--rule); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="band">
+  <div class="band-inner">
+    <div class="brand"><b>Notes That Stick</b><span>a training notebook for taking notes by hand</span></div>
+    <div class="coach-status" id="coach-status" aria-live="polite"><i class="dot wait"></i><span>Checking for the AI coach…</span></div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="spine" aria-label="Missions">
+    <h2>Your missions</h2>
+    <a href="#start" data-nav="start"><span class="num">·</span><span>Start here</span><span class="chk"></span></a>
+    <a href="#generate" data-nav="generate"><span class="num">1</span><span>Think, don't transcribe</span><span class="chk"></span></a>
+    <a href="#textbook" data-nav="textbook"><span class="num">2</span><span>Textbook notes</span><span class="chk"></span></a>
+    <a href="#lecture" data-nav="lecture"><span class="num">3</span><span>Lecture notes, live</span><span class="chk"></span></a>
+    <a href="#structure" data-nav="structure"><span class="num">4</span><span>Show the structure</span><span class="chk"></span></a>
+    <a href="#review" data-nav="review"><span class="num">5</span><span>Revise, quiz, space</span><span class="chk"></span></a>
+    <a href="#capstone" data-nav="capstone"><span class="num">6</span><span>Your real notes</span><span class="chk"></span></a>
+    <div class="sep"></div>
+    <a href="#research" data-nav="research"><span class="num">§</span><span>The research</span><span class="chk"></span></a>
+    <div class="progress"><span id="progress-label">0 of 6 missions complete</span><div class="bar"><i id="progress-bar"></i></div></div>
+  </nav>
+
+  <main id="main">
+
+<!-- ====================================================== START -->
+<section class="view" data-view="start">
+  <div class="mhead">
+    <p class="eyebrow">Start here</p>
+    <h1>Notes are a thinking tool, then a testing tool.</h1>
+    <p class="lede">Most students treat notes as a copy of what the teacher said. Learning research points to something better: notes that make you <em>think</em> while you write them, and that let you <em>quiz yourself</em> afterward. This notebook trains both, one mission at a time, with feedback on your actual notes.</p>
+  </div>
+
+  <div class="goalcard">
+    <div>
+      <h3>Your end goal</h3>
+      <p>Take a page of handwritten notes from any class that captures the big ideas in your own words, shows how they connect, and turns into a self-quiz you can review in 10 minutes.</p>
+    </div>
+    <div>
+      <h3>How each mission works</h3>
+      <ul>
+        <li><b>Goal:</b> one skill, stated up front</li>
+        <li><b>Why:</b> the research, briefly</li>
+        <li><b>See it:</b> weak vs. strong notes, side by side</li>
+        <li><b>Try it:</b> write on real paper, then enter it here</li>
+        <li><b>Feedback:</b> instant checks, an AI coach, and a rubric</li>
+        <li><b>Lock it in:</b> a quick quiz from memory</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout hand-tip">
+    <p><b>Keep a pen and paper next to you.</b> Every practice task asks you to write by hand first. Then you type exactly what you wrote (arrows, abbreviations and all) or, when the AI coach is on, take a photo of the page. The feedback is only useful if it is about what you really wrote.</p>
+  </div>
+
+  <div class="block">
+    <h3>Warm-up: what do you already believe? <span class="k">guess first, then check</span></h3>
+    <p class="prose">Make a call on each statement before you read the explanation. Guessing before you learn something helps you remember the answer, even when your guess is wrong (Richland, Kornell &amp; Kao, 2009).</p>
+    <div data-quiz="start"></div>
+  </div>
+
+  <div class="block">
+    <h3>The missions</h3>
+    <ul class="map">
+      <li><a href="#generate"><span class="mn">Mission 1</span><b>Think, don't transcribe</b><p>Shrink a dense sentence into a short note in your own words.</p></a></li>
+      <li><a href="#textbook"><span class="mn">Mission 2</span><b>Textbook notes</b><p>Preview, read a section, close the book, recall, check, in Cornell format.</p></a></li>
+      <li><a href="#lecture"><span class="mn">Mission 3</span><b>Lecture notes, live</b><p>Keep up with a lecture you can't rewind by listening for the teacher's signals.</p></a></li>
+      <li><a href="#structure"><span class="mn">Mission 4</span><b>Show the structure</b><p>Choose an outline, matrix, flowchart or sketch to fit the content.</p></a></li>
+      <li><a href="#review"><span class="mn">Mission 5</span><b>Revise, quiz, space</b><p>Turn notes into cue questions, test yourself, and plan your reviews.</p></a></li>
+      <li><a href="#capstone"><span class="mn">Mission 6</span><b>Your real notes</b><p>Bring notes from a real class and get coached on them.</p></a></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>The loop you're building</h3>
+    <ol class="loop">
+      <li><b>Before</b><span>Preview and write questions you expect to answer.</span></li>
+      <li><b>During</b><span>Select, compress and connect. Your own words. Leave space.</span></li>
+      <li><b>Within 24 h</b><span>Fill the gaps, add cue questions, write a summary.</span></li>
+      <li><b>Over days</b><span>Cover the notes and test yourself on a spaced schedule.</span></li>
+    </ol>
+  </div>
+
+  <div class="nextnav"><span></span><a class="btn" href="#generate">Begin Mission 1 →</a></div>
+</section>
+
+<!-- ====================================================== M1 -->
+<section class="view" data-view="generate" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 1 of 6</p>
+    <h2>Think, don't transcribe</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Turn a dense, textbook-style sentence into a short note in your own words that you'd still understand a month from now.</p></div>
+    <div><h3>You've got it when</h3><ul><li>Your note is under about 40% of the original's length</li><li>No stretch of 5+ words is copied, except a definition you choose to quote</li><li>It shows a relationship (→, because, ∴) and keeps an example</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>When you copy word for word, your hand does the work and your brain doesn't have to. When you put an idea <mark>in your own words</mark>, you have to understand it first, and understanding is what gets stored in memory. Psychologists call this the <b>generation effect</b>: information you produce yourself is remembered better than information you just read (Slamecka &amp; Graf, 1978). Paraphrased and summarized notes lead to better learning than verbatim notes (Bretzing &amp; Kulhavy, 1979).</p>
+      <p>A famous study found that students who typed lecture notes on laptops copied more verbatim and did worse on conceptual questions than students who wrote by hand (Mueller &amp; Oppenheimer, 2014). Larger follow-up studies found the handwriting advantage is <b>small or uncertain</b> (Morehead, Dunlosky &amp; Rawson, 2019; Urry et al., 2021). What holds up is the underlying point: <b>notes help when they make you process ideas.</b> Handwriting is slower, so it pushes you to select and rephrase. This mission trains that habit on purpose.</p>
+      <p class="cite">Sources are listed in <a href="#research">The research</a>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>See it <span class="k">same sentence, three notes</span></h3>
+    <div class="source">
+      <span class="chap">Biology textbook</span>
+      <p>“Mitochondria generate most of the cell's supply of ATP through cellular respiration, a process that requires oxygen and breaks down glucose; cells with high energy demands, such as muscle cells, contain far more mitochondria than less active cells.”</p>
+    </div>
+    <div class="examples">
+      <figure class="note-card">
+        <figcaption><span class="tag bad">Transcribing</span> 37 words</figcaption>
+        <div class="hand"><p>Mitochondria generate most of the cell's supply of ATP through cellular respiration, a process that requires oxygen and breaks down glucose; cells with high energy demands, such as muscle cells, contain far more mitochondria...</p></div>
+        <p class="anno">Every word copied, and it ran out of time before the end. Rereading it later just repeats the textbook.</p>
+      </figure>
+      <figure class="note-card">
+        <figcaption><span class="tag warn">Too thin</span> 3 words</figcaption>
+        <div class="hand"><p>mitochondria – ATP</p></div>
+        <p class="anno">Fast, but a month from now this won't tell you how, why, or where. You can't quiz yourself on it.</p>
+      </figure>
+      <figure class="note-card">
+        <figcaption><span class="tag good">Generative</span> 14 words + a question</figcaption>
+        <div class="hand">
+          <p><u>Mitochondria</u> = cell's power plant</p>
+          <p class="in1">glucose + O₂ → ATP (cell. resp.)</p>
+          <p class="in1">more energy needed → more mito.</p>
+          <p class="in2">ex: muscle cells</p>
+          <p class="q">Q: why would heart cells have more than skin cells?</p>
+        </div>
+        <p class="anno">Own words, arrows show cause and effect, the example is kept, and there is a question to quiz yourself with later.</p>
+      </figure>
+    </div>
+    <div class="callout"><p><b>Compression moves:</b> cut filler words (“a process that”), swap phrases for symbols (→, =, ↑), keep one concrete example, and turn a fact into a <i>why</i> question.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Try it <span class="k">paper first</span></h3>
+    <div class="practice">
+      <p>For each sentence: read it once, <b>look away</b>, and write a compressed note by hand. Then type exactly what you wrote and press <b>Check</b>. When you've done all three, ask the AI coach to look at the set.</p>
+      <div class="symbar" data-symbar><span>Insert:</span></div>
+      <div id="m1-items" style="display:flex;flex-direction:column;gap:22px"></div>
+      <div data-feedback="generate"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in <span class="k">from memory, no peeking</span></h3>
+    <div data-quiz="generate"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#start">← Start</a><a class="btn" href="#textbook">Mission 2 →</a></div>
+</section>
+
+<!-- ====================================================== M2 -->
+<section class="view" data-view="textbook" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 2 of 6</p>
+    <h2>Textbook notes: read, close the book, recall</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Use the <b>Preview → Read → Recall → Check</b> routine to make Cornell notes from a textbook section, writing most of them with the book closed.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You wrote 2 or more preview questions before reading</li><li>Your from-memory notes caught most key ideas</li><li>You added corrections in a different color after checking</li><li>Your page has cue questions and a 2 to 3 sentence summary</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>Highlighting and rereading <i>feel</i> productive, but a major review of learning techniques rated both as <b>low utility</b> (Dunlosky et al., 2013). The text looks familiar, so you think you know it. Recognizing something isn't the same as being able to recall it.</p>
+      <p>In one experiment, students who read a passage, <mark>closed the book and recited what they remembered</mark>, then reread it, beat students who took notes with the book open and students who just reread it twice (McDaniel, Howard &amp; Einstein, 2009). Writing from memory is retrieval practice, and it shows you exactly what you don't know yet.</p>
+      <p>Skimming headings first and turning them into questions helps too. Trying to answer a question before you've learned the answer makes the answer stick better when you find it (Richland, Kornell &amp; Kao, 2009).</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>See it <span class="k">a Cornell page</span></h3>
+    <div class="prose"><p>The <b>Cornell format</b> (Pauk) splits the page into three parts: notes on the right, <b>cue questions</b> in a narrow left column, and a <b>summary</b> at the bottom. You write the notes while reading. You add the cues and summary afterward, and they turn the page into a self-test. Here's one for a section on photosynthesis:</p></div>
+    <div class="cornell-ex">
+      <div class="hand cues">
+        <p class="zone-label">Cues (add after)</p>
+        <p class="q">What goes in? What comes out?</p>
+        <p class="q">Where does it happen?</p>
+        <p></p>
+        <p class="q">Why must the light rxns come first?</p>
+      </div>
+      <div class="hand">
+        <p class="zone-label">Notes (from memory, then checked)</p>
+        <p><u>Photosynth.</u> = light energy → chem. energy (glucose)</p>
+        <p class="in1">IN: CO₂ + H₂O + light → OUT: glucose + O₂</p>
+        <p class="in1">where: chloroplasts (chlorophyll absorbs light)</p>
+        <p>2 stages:</p>
+        <p class="in1">1. light rxns → make ATP + NADPH</p>
+        <p class="in1">2. Calvin cycle → uses them to build glucose from CO₂</p>
+        <p class="in1 red">+ light rxns in thylakoids, Calvin in stroma</p>
+        <p class="in1">∴ Calvin depends on light rxns</p>
+      </div>
+      <div class="hand sum">
+        <p class="zone-label">Summary (your own words)</p>
+        <p>Plants use light in chloroplasts to turn CO₂ + water into sugar + O₂ in 2 linked steps: light rxns make energy carriers that the Calvin cycle spends to build glucose.</p>
+      </div>
+    </div>
+    <p class="hint">The red line was added after checking the book: something missed during recall, fixed in a different color so you can see what to study.</p>
+  </div>
+
+  <div class="block">
+    <h3>Try it <span class="k">four steps</span></h3>
+    <div class="practice" id="m2">
+      <ol class="steps" id="m2-steps"><li>Preview</li><li>Read</li><li>Recall</li><li>Check</li></ol>
+
+      <div data-step="0">
+        <p class="subhead">Step 1: Preview (about 1 minute)</p>
+        <p>Here are only the title and headings. Write <b>two or three questions</b> you expect this section to answer. Guessing is the point.</p>
+        <div class="source" id="m2-preview"></div>
+        <label class="lbl" for="m2-preq">Your preview questions</label>
+        <textarea class="ruled" id="m2-preq" rows="4" placeholder="e.g. What's the difference between B cells and T cells?"></textarea>
+        <div class="row"><button class="btn" data-go="1">I've written my questions → Read</button></div>
+      </div>
+
+      <div data-step="1" hidden>
+        <p class="subhead">Step 2: Read it, don't write yet</p>
+        <p>Read the whole section carefully, once. Look for answers to your questions. <b>Don't take notes yet.</b> In the next step the text disappears.</p>
+        <div class="source" id="m2-passage"></div>
+        <div class="row"><button class="btn" data-go="2">Close the book → Recall</button></div>
+      </div>
+
+      <div data-step="2" hidden>
+        <p class="subhead">Step 3: Recall, book closed</p>
+        <p>On paper, draw a Cornell page. Write everything you remember in the <b>notes</b> column, in your own words. Leave gaps and mark them with “?”. Then copy it here. You'll add cues and a summary in step 4.</p>
+        <div class="symbar" data-symbar><span>Insert:</span></div>
+        <label class="lbl" for="m2-notes">Notes from memory</label>
+        <textarea class="ruled" id="m2-notes" rows="12" placeholder="Adaptive immunity = slow but specific…"></textarea>
+        <div class="row"><button class="btn" data-go="3">Open the book → Check</button></div>
+      </div>
+
+      <div data-step="3" hidden>
+        <p class="subhead">Step 4: Check, correct, cue, summarize</p>
+        <div id="m2-recall" class="fb-out"></div>
+        <div class="split">
+          <div class="source" id="m2-passage-2" style="max-height:520px;overflow:auto"></div>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <label class="lbl" for="m2-fix">Corrections and additions <span class="hint">(red pen on paper)</span></label>
+            <textarea class="ruled red-ink" id="m2-fix" rows="5" placeholder="+ memory B and T cells can last decades"></textarea>
+          </div>
+        </div>
+        <p class="subhead">Finish the Cornell page</p>
+        <div class="symbar" data-symbar><span>Insert:</span></div>
+        <div class="cornell">
+          <div class="c-cues"><label class="zone-label" for="m2-cues">Cue questions</label><textarea class="ruled" id="m2-cues" rows="8" placeholder="Why is the 2nd response faster?"></textarea></div>
+          <div><label class="zone-label" for="m2-notes-view">Your notes (from step 3, editable)</label><textarea class="ruled" id="m2-notes-view" rows="8"></textarea></div>
+          <div class="c-sum"><label class="zone-label" for="m2-sum">Summary, 2 to 3 sentences in your own words</label><textarea class="ruled" id="m2-sum" rows="3"></textarea></div>
+        </div>
+        <div data-feedback="textbook"></div>
+        <div class="row"><button class="btn ghost sm" data-go="0">Start this practice over</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in</h3>
+    <div data-quiz="textbook"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#generate">← Mission 1</a><a class="btn" href="#lecture">Mission 3 →</a></div>
+</section>
+
+<!-- ====================================================== M3 -->
+<section class="view" data-view="lecture" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 3 of 6</p>
+    <h2>Lecture notes, live</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Keep up with a lecture you can't pause or rewind. Catch the main ideas by listening for the teacher's signals and writing in shorthand.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You caught the definition, both categories, all 3 factors, and the revenue idea</li><li>Your notes show the lecture's structure (numbered factors, indented examples)</li><li>You flagged gaps with “?” instead of stopping</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>Lecture note-taking is one of the hardest things students do. You listen, decide what matters, rephrase it and write, all while the teacher keeps going. Researchers measured it as more mentally demanding than ordinary reading and in the same range as expert chess play (Piolat, Olive &amp; Kellogg, 2005). Because of that load, students often write down <b>fewer than half</b> of a lecture's important ideas (Kiewra, 1985), and you can't be tested well on ideas you never recorded.</p>
+      <p>Two things lower the load. First, <mark>teachers signal what matters</mark> (“there are three factors…”, “the key point is…”). Students who listen for these organizational cues take better notes and learn more (Titsworth &amp; Kiewra, 2004). Second, shorthand and a <b>keep-moving rule</b>: when you miss something, leave a gap, mark it “?”, and fill it in after class. Revising notes afterward improves both the notes and test scores (Luo, Kiewra &amp; Samuelson, 2016).</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>See it <span class="k">signals → moves</span></h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>When you hear…</th><th>It means</th><th>On paper, do this</th></tr></thead>
+        <tbody>
+          <tr><td>“Write this down” · “The definition is…”</td><td>A definition you'll be tested on</td><td>Write it nearly word for word. This is the one place quoting is fine. Underline the term.</td></tr>
+          <tr><td>“There are three…” · “First… Second…”</td><td>A list is coming</td><td>Write “3 factors:” and number 1, 2, 3 with space under each <i>before</i> they're explained.</td></tr>
+          <tr><td>“For example…” · “Compare that to…”</td><td>A supporting example</td><td>Indent it under its idea and mark “ex:”. Examples are what make an idea usable later.</td></tr>
+          <tr><td>“The key point…” · “Students usually miss…” · “On the test”</td><td>High priority</td><td>Star it ★ or box it.</td></tr>
+          <tr><td>“Why do you think…?”</td><td>A question to think about</td><td>Write the question in the margin. It's a ready-made cue question.</td></tr>
+          <tr><td>“Quick recap” · “So, to sum up”</td><td>The teacher's own summary</td><td>Check it against your notes and add anything missing.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subhead">A shorthand kit <span class="hint">(pick 8 or so and use them the same way every time)</span></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Write</th><th>Means</th><th>Write</th><th>Means</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">→</td><td>leads to, causes</td><td class="sym">∴</td><td>therefore</td></tr>
+          <tr><td class="sym">↑ ↓</td><td>increase, decrease</td><td class="sym">b/c · ∵</td><td>because</td></tr>
+          <tr><td class="sym">=  ≠  ≈</td><td>is, is not, about</td><td class="sym">w/  w/o</td><td>with, without</td></tr>
+          <tr><td class="sym">Δ</td><td>change</td><td class="sym">vs.</td><td>compared with</td></tr>
+          <tr><td class="sym">ex:</td><td>example</td><td class="sym">★</td><td>teacher stressed it</td></tr>
+          <tr><td class="sym">?</td><td>missed it, check later</td><td class="sym">govt · econ · info</td><td>drop the ends of long words</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="examples">
+      <figure class="note-card">
+        <figcaption><span class="tag good">Keeps up</span> notes from a history lecture</figcaption>
+        <div class="hand">
+          <p><u>Causes of WWI</u> = “MAIN” ★</p>
+          <p class="in1">1. Militarism – arms race, esp. GB vs. Germ. navies</p>
+          <p class="in1">2. Alliances – Triple Entente vs. Triple Alliance</p>
+          <p class="in2">→ local war becomes Europe-wide</p>
+          <p class="in1">3. Imperialism – compete for colonies ?</p>
+          <p class="in1">4. Nationalism – ex: Serbia, Balkans</p>
+          <p>spark: Franz Ferdinand assass. 1914</p>
+          <p class="q">Q: which cause made it spread fastest?</p>
+        </div>
+        <p class="anno">Numbered as soon as “four causes” was said. Arrows for consequences, a “?” where an example was missed, and the teacher's question saved.</p>
+      </figure>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it <span class="k">a 4-minute economics lecture</span></h3>
+    <div class="practice">
+      <p>Have a blank page ready. The lecture plays one sentence at a time at real speaking speed and <b>can't be rewound</b>. Take notes by hand as it goes. For the hardest version, turn on the voice and turn off captions.</p>
+      <div class="controls">
+        <label for="lec-speed">Speed
+          <select id="lec-speed">
+            <option value="120">Slow (120 words/min)</option>
+            <option value="145" selected>Typical (145 words/min)</option>
+            <option value="170">Fast (170 words/min)</option>
+          </select>
+        </label>
+        <label id="lec-voice-wrap" hidden><input type="checkbox" id="lec-voice"> Read aloud</label>
+        <label id="lec-cap-wrap" hidden><input type="checkbox" id="lec-captions" checked> Show captions</label>
+      </div>
+      <div class="stage" id="lec-stage" aria-live="polite">
+        <div class="meta"><span>AP Microeconomics · Unit 2 · “Elasticity”</span><span id="lec-time">0:00 / ~4:00</span></div>
+        <div>
+          <p class="prev" id="lec-prev"></p>
+          <p class="cur" id="lec-cur">Press Start when your pen is ready.</p>
+        </div>
+        <div class="track"><i id="lec-track"></i></div>
+      </div>
+      <div class="row">
+        <button class="btn" id="lec-start">Start lecture</button>
+        <button class="btn quiet" id="lec-pause" disabled>Pause</button>
+        <span class="hint" id="lec-pausecount"></span>
+      </div>
+
+      <div id="lec-after" hidden style="display:flex;flex-direction:column;gap:14px">
+        <p class="subhead">Lecture's over. Pens down.</p>
+        <p>Type your notes <b>exactly as they are</b>, without improving them. You'll revise them in Mission 5, and the feedback is most useful on the raw version.</p>
+        <div class="symbar" data-symbar><span>Insert:</span></div>
+        <label class="lbl" for="lec-notes">Your lecture notes</label>
+        <textarea class="ruled" id="lec-notes" rows="14" placeholder="Elasticity = %Δ Qd / %Δ P …"></textarea>
+        <div data-feedback="lecture"></div>
+        <details>
+          <summary class="btn ghost sm" style="display:inline-block">Show the transcript with the teacher's signals marked</summary>
+          <div class="transcript" id="lec-transcript" style="margin-top:12px"></div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in</h3>
+    <div data-quiz="lecture"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#textbook">← Mission 2</a><a class="btn" href="#structure">Mission 4 →</a></div>
+</section>
+
+<!-- ====================================================== M4 -->
+<section class="view" data-view="structure" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 4 of 6</p>
+    <h2>Show the structure</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Pick the note format that matches how the ideas are related, and build a comparison matrix from a textbook passage.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You can match content to outline, matrix, flowchart, concept map or sketch</li><li>Your matrix fills all 9 cells with short phrases</li><li>You can read a pattern down a column</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>Plain lists hide relationships. When ideas are compared across the same features, a <mark>matrix</mark> (a grid with topics as rows and features as columns) lets you see every comparison at once. Students who studied from matrix-style organizers learned relationships better than those who studied from outlines of the same material (Kiewra et al., 1991; Robinson &amp; Kiewra, 1995).</p>
+      <p>Pictures help too. Memory stores words and images in partly separate ways, so a quick sketch adds a second route back to the idea (Paivio's dual coding theory). In experiments, drawing a concept beat writing it out for later recall, even for people who couldn't draw well (Wammes, Meade &amp; Fernandes, 2016).</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>If the content is…</th><th>Use</th><th>Looks like</th></tr></thead>
+        <tbody>
+          <tr><td>Main ideas with sub-points (most lectures)</td><td><b>Outline</b></td><td>Indented levels, numbered lists</td></tr>
+          <tr><td>Several things compared on the same features</td><td><b>Matrix</b></td><td>Rows = things, columns = features</td></tr>
+          <tr><td>Steps, stages, a sequence or a cycle</td><td><b>Flowchart</b></td><td>Boxes and arrows in order</td></tr>
+          <tr><td>Causes and effects that interact</td><td><b>Concept map</b></td><td>Ideas in bubbles, labeled links</td></tr>
+          <tr><td>Something physical with parts or places</td><td><b>Sketch</b></td><td>A rough labeled drawing</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part A <span class="k">which format?</span></h3>
+    <div data-quiz="formats"></div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part B <span class="k">build a matrix</span></h3>
+    <div class="practice">
+      <div class="source">
+        <span class="chap">Earth Science · 3.2</span>
+        <h5>The Rock Cycle's Three Families</h5>
+        <p>Geologists sort rocks into three families by how they form. <b>Igneous</b> rocks form when molten rock cools and hardens. If magma cools slowly underground, large crystals have time to grow, producing coarse-grained rocks such as granite; lava that cools quickly at the surface produces fine-grained or glassy rocks such as basalt and obsidian.</p>
+        <p><b>Sedimentary</b> rocks form when fragments of other rocks, shells, or minerals are deposited in layers, then compacted and cemented together over time. They often show visible layers and are the only rocks that commonly contain fossils; sandstone, shale, and limestone are examples.</p>
+        <p><b>Metamorphic</b> rocks form when existing rocks are transformed by heat and pressure deep underground without melting. The pressure often lines minerals up into bands or flat sheets, a texture called foliation; marble (from limestone) and slate (from shale) are examples.</p>
+      </div>
+      <p>Sketch the grid on paper first, then fill it here. Use short phrases, not sentences.</p>
+      <div class="tablewrap"><table class="matrix" id="matrix"></table></div>
+      <div class="row"><button class="btn" id="matrix-check">Check my matrix</button><button class="btn ghost" id="matrix-key">Show an expert's version</button></div>
+      <div id="matrix-out" class="fb-out"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in</h3>
+    <div data-quiz="structure"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#lecture">← Mission 3</a><a class="btn" href="#review">Mission 5 →</a></div>
+</section>
+
+<!-- ====================================================== M5 -->
+<section class="view" data-view="review" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 5 of 6</p>
+    <h2>Revise, quiz, space</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Turn your Mission 3 lecture notes into a self-test: revise them, write cue questions that make you explain, quiz yourself, and schedule spaced reviews.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You have 4 or more cue questions, at least half starting with <i>why, how, what if</i> or <i>compare</i></li><li>You've done one round of cover-and-recall</li><li>You have a review plan with dates</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>Notes do two jobs. Writing them helps you learn (the <i>encoding</i> job), and reviewing them later helps even more (the <i>storage</i> job). Reviewing notes matters at least as much as taking them (Kiewra, 1985). <b>How</b> you review matters most. Testing yourself beats rereading by a wide margin. In one study, students who practiced recalling a passage remembered far more a week later than students who reread it, even though the rereaders felt more confident (Roediger &amp; Karpicke, 2006). Retrieval practice even beat building concept maps (Karpicke &amp; Blunt, 2011).</p>
+      <p><mark>Spacing</mark> is the other half. The same study time spread across several days beats cramming for long-term memory (Cepeda et al., 2006). A good rule of thumb is to space reviews about <b>10 to 20% of the time until you need the material</b>, so for a test in 10 days, review every day or two (Cepeda et al., 2008).</p>
+      <p>Good cue questions ask <b>why</b> and <b>how</b>, not just <i>what</i>. Explaining why a fact is true improves memory for it (Pressley et al., 1987; Dunlosky et al., 2013).</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>See it <span class="k">weak vs. strong cue questions</span></h3>
+    <div class="examples">
+      <figure class="note-card">
+        <figcaption><span class="tag warn">Labels, not questions</span></figcaption>
+        <div class="hand"><p>Elasticity?</p><p>Factors</p><p>Revenue</p><p>Insulin</p></div>
+        <p class="anno">You can “answer” these by recognizing the word. They don't make you produce anything.</p>
+      </figure>
+      <figure class="note-card">
+        <figcaption><span class="tag good">Make you explain</span></figcaption>
+        <div class="hand">
+          <p class="q">What does elasticity measure, and why use % changes?</p>
+          <p class="q">Elastic vs. inelastic: what's the cutoff? 1 ex. each?</p>
+          <p class="q">Why is gas demand more elastic over 5 yrs than 5 days?</p>
+          <p class="q">If demand is inelastic and P↑, what happens to TR? Why?</p>
+        </div>
+        <p class="anno">Each one needs a real answer. Covering the notes column and answering out loud is a complete practice test.</p>
+      </figure>
+    </div>
+    <div class="callout"><p><b>The 24-hour revision checklist.</b> Within a day of class, and with a different color pen: (1) fill every “?” gap from the textbook or a classmate, (2) spell out any abbreviation you might forget, (3) add cue questions in the left margin, (4) write a 2 to 3 sentence summary at the bottom.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part A <span class="k">write cue questions</span></h3>
+    <div class="practice">
+      <div id="m5-notes-wrap"></div>
+      <div class="symbar" data-symbar><span>Insert:</span></div>
+      <div class="cornell">
+        <div class="c-cues"><label class="zone-label" for="m5-cues">Cue questions (one per line)</label><textarea class="ruled" id="m5-cues" rows="9" placeholder="Why do we measure elasticity with % changes?"></textarea></div>
+        <div><label class="zone-label" for="m5-notes">Your revised lecture notes</label><textarea class="ruled" id="m5-notes" rows="9"></textarea></div>
+        <div class="c-sum"><label class="zone-label" for="m5-sum">Summary</label><textarea class="ruled" id="m5-sum" rows="3"></textarea></div>
+      </div>
+      <div data-feedback="review"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part B <span class="k">cover and recall</span></h3>
+    <div class="practice">
+      <p>Cover the right side of your paper. For each cue question, answer <b>out loud or in writing before you reveal</b>. Then check against your notes and rate yourself honestly.</p>
+      <div class="drill" id="drill"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part C <span class="k">plan your spaced reviews</span></h3>
+    <div class="practice">
+      <div class="row" style="align-items:flex-end">
+        <div class="field"><label class="lbl" for="plan-class">Class date</label><input type="date" id="plan-class"></div>
+        <div class="field"><label class="lbl" for="plan-test">Test date (optional)</label><input type="date" id="plan-test"></div>
+        <button class="btn" id="plan-go">Make my plan</button>
+      </div>
+      <div id="plan-out"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in</h3>
+    <div data-quiz="review"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#structure">← Mission 4</a><a class="btn" href="#capstone">Mission 6 →</a></div>
+</section>
+
+<!-- ====================================================== M6 -->
+<section class="view" data-view="capstone" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 6 of 6</p>
+    <h2>Your real notes</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Use the full method on a real class this week, get feedback on that page, and leave with your top fix for next time.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You've had one page from a real class reviewed</li><li>You've written your personal next step</li><li>You've done one spaced review of that page</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Bring a page</h3>
+    <div class="practice">
+      <div class="row">
+        <div class="field" style="flex:1;min-width:180px"><label class="lbl" for="cap-class">Class and topic</label><input type="text" class="plain" id="cap-class" placeholder="AP US History: the Missouri Compromise"></div>
+        <div class="field"><label class="lbl" for="cap-kind">Source</label><select id="cap-kind"><option>Lecture</option><option>Textbook</option><option>Video or other</option></select></div>
+      </div>
+      <div class="field">
+        <label class="lbl" for="cap-source">What was the lecture or reading about? <span class="hint">(optional: the main points or headings help the feedback)</span></label>
+        <textarea class="ruled" id="cap-source" rows="3"></textarea>
+      </div>
+      <div class="symbar" data-symbar><span>Insert:</span></div>
+      <div class="field">
+        <label class="lbl" for="cap-notes">Your notes, typed exactly as written <span class="hint" data-photo-hint hidden>(or attach a photo below)</span></label>
+        <textarea class="ruled" id="cap-notes" rows="12"></textarea>
+      </div>
+      <div data-feedback="capstone"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Your playbook <span class="k">copy it into the front of your notebook</span></h3>
+    <div class="practice">
+      <div class="hand" style="border:1px solid var(--rule);border-radius:10px" id="playbook">
+        <p><b>Before:</b> skim headings → write 2 questions</p>
+        <p><b>During (lecture):</b> listen for signals · number lists · ex: · ? for gaps · keep moving</p>
+        <p><b>During (textbook):</b> read a section → close book → write from memory → check in red</p>
+        <p><b>Format:</b> outline · matrix to compare · flowchart for steps · sketch for things</p>
+        <p><b>Within 24 h:</b> fill gaps · cue questions (why/how) · 2 to 3 sentence summary</p>
+        <p><b>Review:</b> cover notes → answer cues → re-study misses · space it out</p>
+        <p class="red"><b>My next step:</b> <span id="playbook-next">(finish a feedback round above)</span></p>
+      </div>
+      <div class="row"><button class="btn quiet" id="playbook-copy">Copy playbook text</button></div>
+    </div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#review">← Mission 5</a><a class="btn" href="#research">The research →</a></div>
+</section>
+
+<!-- ====================================================== RESEARCH -->
+<section class="view" data-view="research" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Behind the missions</p>
+    <h2>The research</h2>
+    <p class="lede">What each technique is based on, and how strong the evidence is. Where the evidence is mixed, this says so.</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Technique</th><th>Evidence</th><th>Used in</th></tr></thead>
+      <tbody>
+        <tr><td>Practice testing (retrieval)</td><td><b>Strong.</b> Rated “high utility” across ages, subjects and test formats.</td><td>Missions 2, 5</td></tr>
+        <tr><td>Spaced (distributed) practice</td><td><b>Strong.</b> Rated “high utility”. One of the most reliable findings in memory research.</td><td>Mission 5</td></tr>
+        <tr><td>Generative notes (paraphrase, compress)</td><td><b>Good.</b> Generation effect is robust. Note-processing studies favor paraphrase.</td><td>Missions 1, 3</td></tr>
+        <tr><td>Matrices and graphic organizers</td><td><b>Good</b> for learning relationships and comparisons.</td><td>Mission 4</td></tr>
+        <tr><td>Revising notes after class</td><td><b>Good.</b> Improves note quality and achievement.</td><td>Missions 3, 5</td></tr>
+        <tr><td>Elaborative “why” questions</td><td><b>Moderate.</b> Works best when you know some background.</td><td>Mission 5</td></tr>
+        <tr><td>Prequestions and pretesting</td><td><b>Moderate.</b> Helps with the questioned material.</td><td>Mission 2</td></tr>
+        <tr><td>Drawing and dual coding</td><td><b>Moderate.</b> Reliable in lab recall tasks.</td><td>Mission 4</td></tr>
+        <tr><td>Cornell format itself</td><td><b>Limited direct evidence.</b> Its value comes from the cue column (retrieval) and summary (generation) it builds in.</td><td>Missions 2, 5</td></tr>
+        <tr><td>Handwriting vs. typing</td><td><b>Mixed.</b> The original advantage shrank in larger replications. The processing you do matters more than the tool.</td><td>Mission 1</td></tr>
+        <tr><td>Highlighting, rereading</td><td><b>Low utility</b> on their own.</td><td>Warm-up, Mission 2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="block">
+    <h3>Sources</h3>
+    <ul class="refs">
+      <li>Bretzing, B. H., &amp; Kulhavy, R. W. (1979). Notetaking and depth of processing. <i>Contemporary Educational Psychology, 4</i>(2), 145–153.<span>Summary and paraphrase notes produced better learning than verbatim notes.</span></li>
+      <li>Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., &amp; Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. <i>Psychological Bulletin, 132</i>(3), 354–380.<span>Combined data from hundreds of experiments: spacing beats massing.</span></li>
+      <li>Cepeda, N. J., Vul, E., Rohrer, D., Wixted, J. T., &amp; Pashler, H. (2008). Spacing effects in learning: A temporal ridgeline of optimal retention. <i>Psychological Science, 19</i>(11), 1095–1102.<span>The best gap between study sessions grows with how long you need to remember.</span></li>
+      <li>Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., &amp; Willingham, D. T. (2013). Improving students' learning with effective learning techniques. <i>Psychological Science in the Public Interest, 14</i>(1), 4–58.<span>Rated ten techniques. Practice testing and distributed practice: high utility. Highlighting and rereading: low.</span></li>
+      <li>Hattie, J., &amp; Timperley, H. (2007). The power of feedback. <i>Review of Educational Research, 77</i>(1), 81–112.<span>Feedback works when it answers: Where am I going? How am I doing? Where to next? The feedback panels here follow that shape.</span></li>
+      <li>Karpicke, J. D., &amp; Blunt, J. R. (2011). Retrieval practice produces more learning than elaborative studying with concept mapping. <i>Science, 331</i>(6018), 772–775.</li>
+      <li>Kiewra, K. A. (1985). Investigating notetaking and review: A depth of processing alternative. <i>Educational Psychologist, 20</i>(1), 23–32.<span>Notes are often incomplete. Reviewing notes is as important as taking them.</span></li>
+      <li>Kiewra, K. A., DuBois, N. F., Christian, D., McShane, A., Meyerhoffer, M., &amp; Roskelley, D. (1991). Note-taking functions and techniques. <i>Journal of Educational Psychology, 83</i>(2), 240–245.<span>Matrix-style notes supported learning better than linear notes.</span></li>
+      <li>Luo, L., Kiewra, K. A., &amp; Samuelson, L. (2016). Revising lecture notes: How revision, pauses, and partner interaction affect note taking and achievement. <i>Instructional Science, 44</i>(1), 45–67.</li>
+      <li>McDaniel, M. A., Howard, D. C., &amp; Einstein, G. O. (2009). The read-recite-review study strategy: Effective and portable. <i>Psychological Science, 20</i>(4), 516–522.<span>Reading, reciting from memory, then rereading beat note-taking and rereading.</span></li>
+      <li>Morehead, K., Dunlosky, J., &amp; Rawson, K. A. (2019). How much mightier is the pen than the keyboard for note-taking? A replication and extension of Mueller and Oppenheimer (2014). <i>Educational Psychology Review, 31</i>, 753–780.</li>
+      <li>Mueller, P. A., &amp; Oppenheimer, D. M. (2014). The pen is mightier than the keyboard: Advantages of longhand over laptop note taking. <i>Psychological Science, 25</i>(6), 1159–1168.</li>
+      <li>Paivio, A. (1986). <i>Mental representations: A dual coding approach.</i> Oxford University Press.</li>
+      <li>Pauk, W., &amp; Owens, R. J. Q. <i>How to Study in College.</i> Cengage (many editions).<span>The origin of the Cornell note-taking format.</span></li>
+      <li>Piolat, A., Olive, T., &amp; Kellogg, R. T. (2005). Cognitive effort during note taking. <i>Applied Cognitive Psychology, 19</i>(3), 291–312.</li>
+      <li>Pressley, M., McDaniel, M. A., Turnure, J. E., Wood, E., &amp; Ahmad, M. (1987). Generation and precision of elaboration: Effects on intentional and incidental learning. <i>Journal of Experimental Psychology: Learning, Memory, and Cognition, 13</i>(2), 291–300.</li>
+      <li>Richland, L. E., Kornell, N., &amp; Kao, L. S. (2009). The pretesting effect: Do unsuccessful retrieval attempts enhance learning? <i>Journal of Experimental Psychology: Applied, 15</i>(3), 243–257.</li>
+      <li>Robinson, D. H., &amp; Kiewra, K. A. (1995). Visual argument: Graphic organizers are superior to outlines in improving learning from text. <i>Journal of Educational Psychology, 87</i>(3), 455–467.</li>
+      <li>Roediger, H. L., &amp; Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. <i>Psychological Science, 17</i>(3), 249–255.</li>
+      <li>Slamecka, N. J., &amp; Graf, P. (1978). The generation effect: Delineation of a phenomenon. <i>Journal of Experimental Psychology: Human Learning and Memory, 4</i>(6), 592–604.</li>
+      <li>Titsworth, B. S., &amp; Kiewra, K. A. (2004). Spoken organizational lecture cues and student notetaking as facilitators of student learning. <i>Contemporary Educational Psychology, 29</i>(4), 447–461.</li>
+      <li>Urry, H. L., et al. (2021). Don't ditch the laptop just yet: A direct replication of Mueller and Oppenheimer's (2014) Study 1 plus mini meta-analyses across similar studies. <i>Psychological Science, 32</i>(3), 326–339.</li>
+      <li>Wammes, J. D., Meade, M. E., &amp; Fernandes, M. A. (2016). The drawing effect: Evidence for reliable and robust memory benefits in free recall. <i>Quarterly Journal of Experimental Psychology, 69</i>(9), 1752–1776.</li>
+    </ul>
+    <p class="hint">How the tutor is built: every mission starts with a stated goal and success criteria, shows worked examples before practice (worked examples help beginners most), gives feedback on what you actually wrote, and ends with retrieval practice on the technique itself.</p>
+  </div>
+  <div class="row"><button class="btn ghost sm" id="reset-progress">Reset my progress and saved notes</button><span class="hint" id="reset-confirm" hidden>Press again to confirm.</span></div>
+</section>
+
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ===================================================== utilities */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k === "text") el.textContent = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : String(kid));
+  return el;
+}
+let toastTimer;
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600); }
+
+/* ===================================================== storage (per-viewer convenience) */
+const KEY = "notes-that-stick.v1";
+let store = { done: {}, quiz: {}, fields: {} };
+try { const raw = localStorage.getItem(KEY); if (raw) store = Object.assign(store, JSON.parse(raw)); } catch (e) {}
+let saveTimer;
+function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }, 250); }
+function persistField(el) {
+  if (!el.id) return;
+  if (store.fields[el.id] != null && el.value === "") el.value = store.fields[el.id];
+  el.addEventListener("input", () => { store.fields[el.id] = el.value; save(); });
+}
+
+/* ===================================================== AI coach availability */
+let AI = null, AI_IMAGES = null, aiResolved = false;
+const aiListeners = [];
+function onAI(fn) { if (aiResolved) fn(); else aiListeners.push(fn); }
+function setCoachStatus(state, text) {
+  const s = $("#coach-status"); s.innerHTML = "";
+  s.append(h("i", { class: "dot " + (state === "on" ? "on" : state === "wait" ? "wait" : "") }), h("span", { text }));
+}
+(async () => {
+  try {
+    if (window.claude && typeof window.claude.use === "function") {
+      AI = await window.claude.use("sample");
+      if (AI) { const lim = await AI.limits().catch(() => null); AI_IMAGES = lim && lim.images ? lim.images : null; }
+    }
+  } catch (e) { AI = null; }
+  aiResolved = true;
+  if (AI) setCoachStatus("on", AI_IMAGES ? "AI coach on: text and photos" : "AI coach on");
+  else setCoachStatus("off", "Built-in feedback (AI coach works when opened on claude.ai)");
+  aiListeners.splice(0).forEach(fn => fn());
+})();
+function disableAI(reasonText) {
+  AI = null; AI_IMAGES = null;
+  setCoachStatus("off", reasonText || "AI coach unavailable here. Built-in feedback still works.");
+  $$("[data-ai]").forEach(el => el.hidden = true);
+}
+function aiErrorCopy(e) {
+  const c = e && e.code;
+  if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(c)) { disableAI(); return "The AI coach isn't available in this view. Use the built-in check and the rubric."; }
+  if (c === "images_unavailable") { AI_IMAGES = null; $$("[data-photo]").forEach(el => el.hidden = true); return "Photo feedback isn't available here. Type your notes instead."; }
+  if (c === "image_rejected") return "That photo couldn't be read. Try a clear JPEG or PNG under 20 MB.";
+  if (c === "rate_limited") return "The coach is busy or you've reached a usage limit. Wait a few minutes, then try again.";
+  if (c === "session_expired") return "Your Claude sign-in expired. Sign in again, then retry.";
+  if (c === "refused") return "The coach couldn't respond to that. Trim or rephrase your notes and try again.";
+  if (c === "invalid_json" || c === "empty_completion") return "The coach's reply came back incomplete. Press the button again.";
+  if (c === "prompt_too_large") return "That's too much text at once. Send one page of notes at a time.";
+  if (c === "cancelled") return "Stopped.";
+  return "Couldn't reach the coach. Check your connection and try again.";
+}
+
+/* ===================================================== symbol bars */
+let lastField = null;
+document.addEventListener("focusin", e => { if (e.target.matches("textarea, input.plain")) lastField = e.target; });
+const SYMBOLS = ["→", "←", "↑", "↓", "=", "≠", "≈", "∴", "∵", "Δ", "★", "w/", "b/c", "ex:", "vs.", "?", "%", "×"];
+$$("[data-symbar]").forEach(bar => {
+  SYMBOLS.forEach(sym => bar.append(h("button", { type: "button", title: "Insert " + sym, onmousedown: e => e.preventDefault(), onclick: () => {
+    let t = lastField;
+    const scope = bar.closest(".practice");
+    if (!t || (scope && !scope.contains(t))) t = scope ? scope.querySelector("textarea") : null;
+    if (!t) return;
+    const s = t.selectionStart ?? t.value.length, en = t.selectionEnd ?? t.value.length;
+    t.setRangeText(sym, s, en, "end"); t.focus(); t.dispatchEvent(new Event("input", { bubbles: true }));
+  } }, sym)));
+});
+
+/* ===================================================== text analysis (built-in feedback) */
+function words(s) { return (s.toLowerCase().match(/[a-z0-9%]+/g) || []); }
+function verbatimInfo(notes, source) {
+  const nw = words(notes), sw = words(source);
+  if (nw.length < 5 || sw.length < 5) return { ratio: 0, longest: "", longestLen: 0 };
+  const grams = new Set();
+  for (let i = 0; i + 5 <= sw.length; i++) grams.add(sw.slice(i, i + 5).join(" "));
+  const cov = new Array(nw.length).fill(false);
+  for (let i = 0; i + 5 <= nw.length; i++) if (grams.has(nw.slice(i, i + 5).join(" "))) for (let k = i; k < i + 5; k++) cov[k] = true;
+  let best = 0, cur = 0, end = 0;
+  cov.forEach((c, i) => { cur = c ? cur + 1 : 0; if (cur > best) { best = cur; end = i; } });
+  return { ratio: cov.filter(Boolean).length / nw.length, longest: best >= 5 ? nw.slice(end - best + 1, end + 1).join(" ") : "", longestLen: best };
+}
+function termHit(text, term) {
+  if (term instanceof RegExp) return term.test(text);
+  if (Array.isArray(term)) return term.every(t => termHit(text, t));
+  return text.includes(term);
+}
+function coverage(notes, ideas) {
+  const t = notes.toLowerCase();
+  const got = [], missing = [];
+  ideas.forEach(idea => (idea.any.some(term => termHit(t, term)) ? got : missing).push(idea.label));
+  return { got, missing };
+}
+function analyze(notes, task) {
+  const checks = [];
+  const lines = notes.split(/\n/).map(l => l.replace(/\s+$/, "")).filter(l => l.trim());
+  const nWords = words(notes).length;
+  const srcWords = task.source ? words(task.source).length : 0;
+  if (nWords < 3) return { checks: [{ s: "bad", t: "Not enough to check yet", d: "Type what you wrote on paper, then check again." }], next: "Write your notes on paper first, then type them here exactly as written." };
+
+  let cov = null;
+  if (task.ideas) {
+    cov = coverage(notes, task.ideas);
+    const pct = cov.got.length / task.ideas.length;
+    checks.push({ s: pct >= .75 ? "good" : pct >= .5 ? "warn" : "bad", key: "selection",
+      t: `Key ideas spotted: ${cov.got.length} of ${task.ideas.length}`,
+      d: cov.missing.length ? "Possibly missing (a keyword check, so you may have them in other words): " + cov.missing.join("; ") + "." : "Every key idea shows up." });
+  }
+  if (task.source) {
+    const v = verbatimInfo(notes, task.source);
+    const pct = Math.round(v.ratio * 100);
+    const item = { key: "own_words", s: v.ratio < .2 ? "good" : v.ratio < .45 ? "warn" : "bad",
+      t: v.ratio < .2 ? `Own words: ${pct}% copied in 5-word runs` : `${pct}% of your words are in copied 5-word runs`,
+      d: v.ratio < .2 ? "You're rephrasing, not transcribing. That's the generative processing you want." : "Long copied stretches mean you transcribed instead of thinking. Quote only definitions." };
+    if (v.longest) item.q = v.longest;
+    checks.push(item);
+    if (task.targetRatio) {
+      const r = nWords / srcWords;
+      checks.push({ key: "usability", s: r <= task.targetRatio && nWords >= 5 ? "good" : r <= task.targetRatio + .15 && nWords >= 5 ? "warn" : nWords < 5 ? "warn" : "bad",
+        t: `Length: ${nWords} words (${Math.round(r * 100)}% of the original's ${srcWords})`,
+        d: nWords < 5 ? "Very short. Would you still understand it in a month? Keep the how or why." : r <= task.targetRatio ? "Well compressed." : `Aim for about ${Math.round(task.targetRatio * srcWords)} words or fewer. Cut filler and use symbols.` });
+    } else if (srcWords) {
+      const r = nWords / srcWords;
+      checks.push({ key: "usability", s: r < .1 ? "warn" : r > .7 ? "warn" : "good", t: `Length: ${nWords} words, about ${Math.round(r * 100)}% of the source`,
+        d: r < .1 ? "Very lean. Check whether future-you will understand the how and why." : r > .7 ? "Nearly as long as the source, which usually means transcribing. Compress more." : "A healthy compression ratio." });
+    }
+  }
+  if (task.expect && task.expect.structure) {
+    const structured = lines.filter(l => /^\s*([-*•–·]|\d+[.)]|[a-z][.)]|\s{2,}\S)/i.test(l)).length;
+    const s = lines.length >= 4 && structured >= 2 ? "good" : lines.length >= 3 ? "warn" : "bad";
+    checks.push({ key: "structure", s, t: s === "good" ? `Structure: ${lines.length} lines, ${structured} bulleted, numbered or indented` : "Structure is hard to see",
+      d: s === "good" ? "Main ideas and details sit at different levels." : "Use one line per idea, number lists, and indent examples under the idea they support." });
+  }
+  const rel = (notes.match(/→|->|←|↑|↓|∴|∵|=|≠|≈|\bb\/c\b|\bbecause\b|\bso\b|\bleads to\b|\bcauses?\b/gi) || []).length;
+  checks.push({ key: "structure", s: rel >= 2 ? "good" : rel === 1 ? "warn" : "warn", t: rel ? `Relationships: ${rel} cause, effect or equals markers` : "No relationships shown",
+    d: rel >= 2 ? "Arrows and ‘because’ show how ideas connect, not just what they are." : "Add arrows (→), ∴ or ‘b/c’ to show how ideas connect." });
+  const ex = /\b(ex|e\.g|eg|example|such as|like)\b/i.test(notes);
+  if (task.expect && task.expect.example !== false) checks.push({ key: "usability", s: ex ? "good" : "warn", t: ex ? "Example kept" : "No example marked", d: ex ? "Examples make abstract ideas usable on a test." : "Keep at least one concrete example, marked “ex:”." });
+  if (task.expect && task.expect.questions) {
+    const qs = lines.filter(l => l.includes("?") && words(l).length >= 3);
+    const deep = qs.filter(l => /\b(why|how|what if|compare|explain|predict|what would|what happens)\b/i.test(l));
+    checks.push({ key: "retrieval", s: qs.length >= task.expect.questions && deep.length >= Math.ceil(qs.length / 2) ? "good" : qs.length ? "warn" : "bad",
+      t: `Cue questions: ${qs.length} (${deep.length} ask why, how or what if)`,
+      d: qs.length === 0 ? "Add questions in the cue column so you can quiz yourself." : deep.length < Math.ceil(qs.length / 2) ? "Turn some ‘what’ questions into ‘why’ or ‘how’ questions so they make you explain." : "Good questions to test yourself with." });
+  }
+  if (task.expect && task.expect.summary) {
+    const sumWords = task.summaryText != null ? words(task.summaryText).length : 0;
+    checks.push({ key: "retrieval", s: sumWords >= 15 ? "good" : sumWords ? "warn" : "bad", t: sumWords ? `Summary: ${sumWords} words` : "No summary yet",
+      d: sumWords >= 15 ? "Summarizing the whole page in your own words is a final generative step." : "Write 2 to 3 sentences that would let a classmate understand the main idea." });
+  }
+  const gaps = lines.filter(l => /\?\s*$/.test(l) && !/^\s*q[:.]/i.test(l)).length;
+  if (task.expect && task.expect.gaps) checks.push({ key: "usability", s: "info", t: gaps ? `${gaps} line(s) end with “?”` : "No gaps flagged", d: gaps ? "Gaps you flagged are your to-do list for the 24-hour revision." : "If you missed anything, mark it with “?” so you remember to fill it in." });
+
+  const order = ["bad", "warn"];
+  let nextItem = null;
+  for (const s of order) { nextItem = checks.find(c => c.s === s); if (nextItem) break; }
+  const next = nextItem ? nextItem.d : "Strong set of notes. Next, try the AI coach for more specific suggestions, or move on to the quiz.";
+  return { checks, next, cov };
+}
+function renderChecks(result) {
+  const icon = { good: "✓", warn: "!", bad: "✕", info: "i" };
+  const wrap = h("div", { class: "fb-out" });
+  wrap.append(h("ul", { class: "checks" }, result.checks.map(c => h("li", { class: c.s }, h("span", { class: "ic", "aria-hidden": "true" }, icon[c.s]),
+    h("div", null, h("b", { text: c.t }), h("span", { text: c.d }), c.q ? h("div", null, "Longest copied run: ", h("q", { text: c.q })) : null)))));
+  wrap.append(h("div", { class: "nextstep" }, h("b", { text: "Your next step" }), h("span", { text: result.next })));
+  return wrap;
+}
+
+/* ===================================================== rubric */
+const RUBRIC = {
+  selection: { name: "Selection", levels: ["Missed most main ideas, or copied everything", "Some main ideas, mixed with filler", "Most main ideas and key details", "All main ideas, key details, and what the teacher stressed"],
+    tip: "Listen and look for signals (definitions, “there are three…”, “the key point”). Write the main idea before the details." },
+  own_words: { name: "Own words", levels: ["Mostly copied word for word", "Some paraphrase, long copied stretches", "Mostly my words; quotes only for definitions", "Compressed and rephrased, with links shown (→, b/c, ∴)"],
+    tip: "Pause for a beat, ask “what's the point?”, then write that point in 10 words or fewer." },
+  structure: { name: "Structure", levels: ["One block of text", "Some bullets, unclear levels", "Clear main ideas and sub-points", "Format fits the content (outline, matrix, flow) and links are visible"],
+    tip: "Number lists as soon as you hear one is coming, indent examples, and use a matrix for comparisons." },
+  retrieval: { name: "Retrieval hooks", levels: ["Nothing to quiz myself with", "A few headings or labels", "Cue questions or a summary", "Why and how cue questions, plus a summary in my words"],
+    tip: "Within 24 hours, add 4 or more cue questions (why, how, what if) in the margin and a 2 to 3 sentence summary." },
+  usability: { name: "Usable later", levels: ["Future-me couldn't read or use this", "Readable but cramped or unclear shorthand", "Consistent shorthand, some space left", "Consistent shorthand, gaps marked ?, examples marked, room to revise"],
+    tip: "Skip lines between ideas, mark gaps with “?”, and stick to the same 8 or so abbreviations." }
+};
+function rubricWidget(id, keys, onDone) {
+  const wrap = h("div", { class: "rubric" });
+  wrap.append(h("p", { class: "hint", text: "Rate your own page honestly against each row. Checking your work against clear criteria is itself a skill worth practicing." }));
+  const chosen = {};
+  const out = h("div");
+  keys.forEach(k => {
+    const fs = h("fieldset", null, h("legend", { text: RUBRIC[k].name }));
+    const lv = h("div", { class: "levels" });
+    RUBRIC[k].levels.forEach((txt, i) => {
+      const inp = h("input", { type: "radio", name: id + "-" + k, id: id + "-" + k + "-" + (i + 1), value: String(i + 1) });
+      inp.addEventListener("change", () => { chosen[k] = i + 1; update(); });
+      lv.append(h("label", { for: inp.id }, inp, h("b", { text: String(i + 1) }), h("span", { text: txt })));
+    });
+    fs.append(lv); wrap.append(fs);
+  });
+  wrap.append(out);
+  function update() {
+    out.innerHTML = "";
+    if (Object.keys(chosen).length < keys.length) return;
+    const min = Math.min(...keys.map(k => chosen[k]));
+    const weakest = keys.filter(k => chosen[k] === min);
+    const tips = weakest.map(k => RUBRIC[k].name + ": " + RUBRIC[k].tip);
+    out.append(h("div", { class: "nextstep" }, h("b", { text: min >= 4 ? "Top marks across the board. Keep it up." : "Your next step: " + weakest.map(k => RUBRIC[k].name).join(" and ") }),
+      h("span", { text: min >= 4 ? "Check yourself against the AI coach or a classmate to confirm the ratings." : tips.join(" ") })));
+    onDone && onDone(min >= 4 ? "Keep using the full method on every class." : RUBRIC[weakest[0]].tip);
+  }
+  return wrap;
+}
+
+/* ===================================================== AI coach call */
+function buildPrompt(task, notes, hasPhoto) {
+  const keys = task.rubric || ["selection", "own_words", "structure", "retrieval", "usability"];
+  const rubricText = keys.map(k => `- ${k} (${RUBRIC[k].name}): 1 = ${RUBRIC[k].levels[0]}; 2 = ${RUBRIC[k].levels[1]}; 3 = ${RUBRIC[k].levels[2]}; 4 = ${RUBRIC[k].levels[3]}`).join("\n");
+  return [
+    "You are a warm, direct note-taking coach for a bright high school honors student who is learning research-based methods for taking notes BY HAND (generative paraphrasing, signal words, shorthand, Cornell cue questions and summaries, matrices, retrieval practice).",
+    "Give feedback that is specific to what the student actually wrote, quotes their own lines, and focuses on the method rather than grading the person. Be honest: if something is weak, say so kindly and show how to fix it. Do not invent content the student did not write.",
+    "",
+    "TASK THE STUDENT WAS DOING:", task.aiTask,
+    task.source ? "\nSOURCE MATERIAL (what they were taking notes on):\n" + task.source.slice(0, 6000) : "",
+    task.ideas ? "\nKEY IDEAS AN EXPERT NOTE-TAKER WOULD CAPTURE:\n" + task.ideas.map(i => "- " + i.label).join("\n") : "",
+    "\nRUBRIC (score each 1-4):\n" + rubricText,
+    hasPhoto ? "\nThe attached image is a photo of the student's handwritten notes. Read it carefully first. If parts are illegible, say so in a fix." + (notes.trim() ? " The student also typed this:\n" + notes : "") : "\nSTUDENT'S NOTES (typed exactly as they handwrote them):\n" + notes,
+    "",
+    'Reply with only one JSON object, no other text, in exactly this shape:',
+    '{"scores":{' + keys.map(k => `"${k}":<integer 1-4>`).join(",") + '},"captured":["key ideas they got"],"missing":["important ideas missing or wrong"],"strengths":["1-3 specific things done well, quoting their notes"],"fixes":[{"issue":"what to improve, quoting the line","try_this":"a rewritten version of THEIR line in compact handwritten-note style"}],"next_step":"the single most useful thing to practice next time, one sentence","encouragement":"one genuine sentence"}',
+    "Give at most 3 fixes. Keep every string short. Lists may be empty."
+  ].join("\n");
+}
+function renderAI(data, keys) {
+  const wrap = h("div", { class: "fb-out" });
+  if (data.scores && typeof data.scores === "object") {
+    wrap.append(h("div", { class: "scores" }, keys.filter(k => data.scores[k] != null).map(k => {
+      const n = Math.max(1, Math.min(4, Math.round(Number(data.scores[k]) || 1)));
+      return h("div", { class: "score" }, h("span", null, RUBRIC[k].name + " · " + n + "/4"), h("div", { class: "pips", "aria-hidden": "true" }, [1, 2, 3, 4].map(i => h("i", { class: i <= n ? "f" : "" }))));
+    })));
+  }
+  const list = (title, arr) => Array.isArray(arr) && arr.length ? h("div", null, h("h5", { text: title }), h("ul", null, arr.slice(0, 8).map(x => h("li", { text: String(x) })))) : null;
+  const grid = h("div", { class: "fb-grid" }, list("What's working", data.strengths), list("Captured", data.captured), list("Missing or unclear", data.missing));
+  if (grid.childElementCount) wrap.append(grid);
+  if (Array.isArray(data.fixes) && data.fixes.length) {
+    wrap.append(h("div", { class: "fb-grid" }, h("div", null, h("h5", { text: "Fixes, using your own lines" }),
+      data.fixes.slice(0, 3).map(f => h("div", { class: "fix" }, h("span", { text: String(f.issue || "") }), f.try_this ? h("span", { class: "try", text: "Try: " + f.try_this }) : null)))));
+  }
+  if (data.next_step) wrap.append(h("div", { class: "nextstep" }, h("b", { text: "Your next step" }), h("span", { text: String(data.next_step) })));
+  if (data.encouragement) wrap.append(h("p", { class: "ai-note", text: String(data.encouragement) }));
+  return wrap;
+}
+
+/* ===================================================== feedback panel */
+const TASKS = {};
+function feedbackPanel(host) {
+  const id = host.dataset.feedback;
+  const task = TASKS[id];
+  const keys = task.rubric || ["selection", "own_words", "structure", "retrieval", "usability"];
+  const out = h("div", { class: "fb-out", "aria-live": "polite" });
+  let photo = null;
+
+  const fileIn = h("input", { type: "file", id: id + "-photo", accept: "image/jpeg,image/png,image/webp,image/gif", class: "sr" });
+  const prev = h("img", { alt: "Your notes photo", hidden: true });
+  const clearBtn = h("button", { type: "button", class: "btn ghost sm", hidden: true, onclick: () => { photo = null; prev.hidden = true; clearBtn.hidden = true; fileIn.value = ""; } }, "Remove photo");
+  fileIn.addEventListener("change", () => {
+    const f = fileIn.files && fileIn.files[0]; if (!f) return;
+    if (AI_IMAGES && f.size > AI_IMAGES.maxInputBytes) { toast("That photo is too large. Try a smaller one."); fileIn.value = ""; return; }
+    photo = f; prev.src = URL.createObjectURL(f); prev.hidden = false; clearBtn.hidden = false;
+  });
+  const photoRow = h("div", { class: "photo-row", "data-photo": "", "data-ai": "", hidden: true },
+    h("label", { class: "btn quiet sm", for: fileIn.id }, "Attach a photo of your handwritten page"), fileIn, prev, clearBtn,
+    h("span", { class: "hint", text: "The AI coach can read your handwriting directly." }));
+
+  const checkBtn = h("button", { type: "button", class: "btn", onclick: () => {
+    const notes = task.getNotes();
+    out.innerHTML = "";
+    if (!words(notes).length && photo) { out.append(h("p", { class: "hint", text: "The built-in check needs typed notes. Use the AI coach for photos." })); return; }
+    const res = analyze(notes, task.withSummary ? Object.assign({}, task, { summaryText: task.withSummary() }) : task);
+    out.append(h("p", { class: "ai-note", text: "Instant check. These are automatic pattern checks, so treat them as hints and use your judgment." }), renderChecks(res));
+    markDone(id, "fb");
+    task.onFeedback && task.onFeedback(res.next);
+  } }, "Check my notes");
+
+  let ctl = null;
+  const stopBtn = h("button", { type: "button", class: "btn ghost", hidden: true, onclick: () => ctl && ctl.abort() }, "Stop");
+  const aiBtn = h("button", { type: "button", class: "btn ghost", "data-ai": "", hidden: true, onclick: async () => {
+    if (!AI) return;
+    const notes = task.getNotes();
+    if (!photo && words(notes).length < 3) { out.innerHTML = ""; out.append(h("p", { class: "err", text: "Write and enter your notes first" + (AI_IMAGES ? ", or attach a photo." : ".") })); return; }
+    ctl = new AbortController();
+    aiBtn.disabled = true; stopBtn.hidden = false;
+    out.innerHTML = "";
+    out.append(h("div", { class: "thinking" }, h("span", { class: "spinner" }), h("span", { text: "The coach is reading your notes carefully. This usually takes 15 to 60 seconds." })));
+    try {
+      const opts = { signal: ctl.signal, modelTier: "default" };
+      if (photo && AI_IMAGES) opts.images = [photo];
+      const data = await AI.json(buildPrompt(task, notes, !!(photo && AI_IMAGES)), opts);
+      out.innerHTML = "";
+      if (!data || typeof data !== "object") throw { code: "invalid_json" };
+      out.append(h("p", { class: "ai-note", text: "AI coach feedback. It's a second opinion: compare it with the rubric and your own judgment." }), renderAI(data, keys));
+      markDone(id, "fb");
+      if (data.next_step) task.onFeedback && task.onFeedback(String(data.next_step));
+    } catch (e) {
+      out.innerHTML = "";
+      out.append(h("p", { class: e && e.code === "cancelled" ? "hint" : "err", text: aiErrorCopy(e) }));
+    } finally { aiBtn.disabled = false; stopBtn.hidden = true; }
+  } }, "Ask the AI coach");
+
+  const rubricHost = h("div", { hidden: true });
+  rubricHost.append(rubricWidget(id, keys, next => { markDone(id, "fb"); task.onFeedback && task.onFeedback(next); }));
+  const rubBtn = h("button", { type: "button", class: "btn quiet", "aria-expanded": "false", onclick: () => { rubricHost.hidden = !rubricHost.hidden; rubBtn.setAttribute("aria-expanded", String(!rubricHost.hidden)); } }, "Self-check with the rubric");
+
+  host.className = "fb";
+  host.append(
+    h("div", { class: "fb-head" }, h("h4", { text: "Get feedback" }), h("p", { class: "hint", text: "Three kinds: an instant check of patterns in your text, an AI coach that reads your notes like a teacher would, and a rubric to judge yourself. Each one ends with a next step." })),
+    photoRow,
+    h("div", { class: "row" }, checkBtn, aiBtn, stopBtn, rubBtn),
+    out, rubricHost
+  );
+  onAI(() => {
+    if (AI) { aiBtn.hidden = false; if (AI_IMAGES && task.photo) photoRow.hidden = false; }
+    if (AI_IMAGES && task.photo) $$("[data-photo-hint]").forEach(el => el.hidden = false);
+  });
+}
+
+/* ===================================================== quizzes */
+const QUIZZES = {
+  start: { inline: true, items: [
+    { p: "Copying the teacher's slides word for word gives you the best notes.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
+      why: "Verbatim copying means less processing, and processing builds memory (Mueller & Oppenheimer, 2014; Bretzing & Kulhavy, 1979). Capturing all the key ideas matters, but in your own words." },
+    { p: "Highlighting your textbook is an effective way to study.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
+      why: "A major review rated highlighting “low utility” (Dunlosky et al., 2013). It can feel productive while you learn little." },
+    { p: "Testing yourself on your notes beats rereading them.", o: ["Research-backed", "Myth", "It's complicated"], a: 0,
+      why: "Retrieval practice is one of the strongest findings in learning science (Roediger & Karpicke, 2006). Rereaders feel more confident but remember less." },
+    { p: "Handwriting notes is always better than typing them.", o: ["Research-backed", "Myth", "It's complicated"], a: 2,
+      why: "A well-known study found an advantage, but larger replications found it small or uncertain (Morehead et al., 2019; Urry et al., 2021). Handwriting helps when it pushes you to select and rephrase, and that's the skill this tutor trains." },
+    { p: "Several short review sessions spread over days beat one long session the night before.", o: ["Research-backed", "Myth", "It's complicated"], a: 0,
+      why: "The spacing effect is extremely well replicated (Cepeda et al., 2006). Cramming can get you through tomorrow's quiz, but it fades fast." },
+    { p: "Most students write down nearly all of a lecture's important ideas.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
+      why: "Studies find students often record fewer than half of the important ideas (Kiewra, 1985). That's why signal words and revising after class matter." }
+  ]},
+  generate: { items: [
+    { p: "Your teacher says: “Osmosis is the diffusion of water across a selectively permeable membrane from an area of lower solute concentration to an area of higher solute concentration.” Which note is the most generative?",
+      o: ["Osmosis is the diffusion of water across a selectively permeable membrane from lower to higher solute concentration", "osmosis — water", "Osmosis = water diffuses thru membrane → toward MORE solute (water ‘chases’ salt)", "OSMOSIS!!! (important, know this)"], a: 2,
+      why: "It's compressed, in your own words, shows direction with an arrow, and adds a memory hook. The first is near-verbatim (fine for a formal definition, but you skip the thinking). The second is too thin to use later." },
+    { p: "Why does putting ideas in your own words help you remember them?", o: ["Your notes come out shorter, so there's less to reread", "Producing the words forces you to work out the meaning, and that leaves a stronger memory", "Teachers grade paraphrased notes higher", "It uses up less ink"], a: 1,
+      why: "That's the generation effect. Shorter notes are a side benefit, not the cause." },
+    { p: "When IS it smart to write something nearly word for word?", o: ["Never", "A formal definition or formula you'll be tested on", "Whenever the teacher speaks quickly", "Anything that's on a slide"], a: 1,
+      why: "Exact wording matters for definitions, formulas and key quotations. For everything else, compress and rephrase." }
+  ]},
+  textbook: { items: [
+    { p: "In the read-recite-review experiment, which approach beat both note-taking and rereading?", o: ["Highlighting the key sentences", "Reading, closing the book and reciting from memory, then rereading", "Reading the chapter twice, slowly", "Copying the bold terms into a notebook"], a: 1,
+      why: "Reciting with the book closed is retrieval practice. The reread then targets exactly what you missed (McDaniel et al., 2009)." },
+    { p: "Before reading, you skim the headings and write “How do vaccines create memory cells?” Why bother, when you don't know the answer yet?", o: ["It doesn't help; it just wastes time", "Trying to answer before you learn makes the real answer stick better and directs your attention", "It lets you skip reading the parts you guessed", "Teachers check for it"], a: 1,
+      why: "That's the pretesting (prequestion) effect: unsuccessful attempts to answer still improve later learning (Richland et al., 2009)." },
+    { p: "Why write your post-check corrections in a different color?", o: ["It looks nicer", "It shows exactly what you didn't recall, which tells you what to study next", "It's required in Cornell notes", "So the teacher can grade it"], a: 1,
+      why: "Red ink shows where your memory failed. Those are the lines to quiz yourself on first." }
+  ]},
+  lecture: { items: [
+    { p: "The teacher says, “There are three main factors…” What's the best move?", o: ["Wait until all three are explained, then summarize", "Immediately write “3 factors:” and number 1, 2, 3 with space under each", "Draw a star and keep listening", "Start writing everything word for word"], a: 1,
+      why: "Setting up the structure as soon as it's signaled lowers your mental load and makes it obvious if you miss one." },
+    { p: "You fall behind mid-lecture and miss a sentence. Best move?", o: ["Stop and try hard to remember the missed sentence", "Leave a gap marked “?” and keep going. Fill it after class.", "Ask the teacher to repeat everything", "Give up on notes and just listen"], a: 1,
+      why: "Stopping costs you the next idea too. Flagged gaps become your 24-hour revision to-do list (Luo et al., 2016)." },
+    { p: "Why does lecture note-taking feel so hard?", o: ["Most students write too slowly", "You have to listen, choose, rephrase and write at once, and that overloads working memory", "Lectures are poorly organized", "Handwriting is outdated"], a: 1,
+      why: "It's measured as one of the most effortful everyday mental tasks (Piolat et al., 2005). Signals and shorthand free up capacity." }
+  ]},
+  formats: { items: [
+    { p: "The stages of mitosis, in order.", o: ["Outline", "Matrix", "Flowchart", "Concept map", "Sketch"], a: 2, inline: true, why: "A sequence of steps → boxes and arrows in order (adding a quick sketch of each stage is even better)." },
+    { p: "British, French and Spanish colonies compared on economy, religion and relations with Native peoples.", o: ["Outline", "Matrix", "Flowchart", "Concept map", "Sketch"], a: 1, inline: true, why: "Three things × three features = a 3×3 matrix. Reading down a column reveals the comparisons." },
+    { p: "Causes of the Great Depression and how they made each other worse.", o: ["Outline", "Matrix", "Flowchart", "Concept map", "Sketch"], a: 3, inline: true, why: "Interacting causes → a concept map with labeled links (“bank failures → ↓ credit → ↓ spending”)." },
+    { p: "The parts of the human heart and the path of blood.", o: ["Outline", "Matrix", "Flowchart", "Concept map", "Sketch"], a: 4, inline: true, why: "A physical structure → a rough labeled sketch with arrows for the blood flow." },
+    { p: "A lecture: one big idea, three sub-topics, each with examples.", o: ["Outline", "Matrix", "Flowchart", "Concept map", "Sketch"], a: 0, inline: true, why: "A hierarchy → an outline with indented levels." }
+  ]},
+  structure: { items: [
+    { p: "Why did matrix notes beat outlines for learning comparisons in Robinson & Kiewra's research?", o: ["Matrices hold more words", "A matrix puts related facts side by side, so the comparisons are visible at once", "Outlines are older", "Matrices are quicker to write"], a: 1,
+      why: "In an outline, the facts you need to compare sit pages apart. In a matrix they share a column." },
+    { p: "Drawing a quick sketch of a concept tends to…", o: ["Help only students who are good at art", "Improve later recall, even for poor artists", "Waste time you should spend writing", "Help only with math"], a: 1,
+      why: "The drawing effect held up regardless of drawing skill (Wammes et al., 2016)." }
+  ]},
+  review: { items: [
+    { p: "Which cue question will help you most?", o: ["Factors?", "Elasticity", "Why does demand become more elastic over time?", "Insulin"], a: 2,
+      why: "It makes you produce an explanation. The others can be ‘answered’ just by recognizing the word." },
+    { p: "Your test is in 10 days. Best plan?", o: ["Reread notes for 3 hours the night before", "Revise tonight, then self-test with your cue column every 1 to 2 days, re-studying what you miss", "Highlight your notes in 3 colors", "Rewrite your notes neatly once"], a: 1,
+      why: "That combines retrieval practice and spacing, the two highest-utility techniques (Dunlosky et al., 2013)." },
+    { p: "After a self-test, rereading feels easier than testing, but…", o: ["Rereading creates familiarity, which feels like knowing but doesn't predict recall on a test", "Rereading is actually better", "Testing only helps for multiple choice", "There's no difference"], a: 0,
+      why: "In Roediger & Karpicke (2006) the rereaders were more confident but remembered less a week later." }
+  ]}
+};
+function renderQuiz(host) {
+  const id = host.dataset.quiz; const q = QUIZZES[id]; if (!q) return;
+  host.className = "quiz";
+  let answered = 0, right = 0;
+  const score = h("p", { class: "qscore", "aria-live": "polite" });
+  q.items.forEach((it, qi) => {
+    const why = h("div", { class: "qwhy", hidden: true });
+    const opts = h("div", { class: "qopts" + (q.inline || it.inline ? " inline" : "") });
+    it.o.forEach((txt, oi) => opts.append(h("button", { type: "button", class: "qopt", onclick: e => {
+      const btns = $$(".qopt", opts); btns.forEach(b => b.disabled = true);
+      btns[it.a].classList.add("right");
+      const ok = oi === it.a; if (!ok) e.currentTarget.classList.add("wrong");
+      why.innerHTML = ""; why.append(h("b", { text: ok ? "Yes." : "Not quite. Answer: " + it.o[it.a] + "." }), it.why); why.hidden = false;
+      answered++; if (ok) right++;
+      if (answered === q.items.length) {
+        score.textContent = `You got ${right} of ${q.items.length}.` + (right < q.items.length ? " Revisit the ones you missed tomorrow. Spacing works on this too." : " Locked in.");
+        store.quiz[id] = { right, total: q.items.length }; markDone(id === "formats" ? "_formats" : id, "quiz");
+      }
+    } }, txt)));
+    host.append(h("div", { class: "qcard" }, h("p", { class: "qp", text: (q.items.length > 1 ? (qi + 1) + ". " : "") + it.p }), opts, why));
+  });
+  host.append(score);
+}
+
+/* ===================================================== progress */
+const MISSIONS = ["generate", "textbook", "lecture", "structure", "review", "capstone"];
+function isComplete(m) {
+  const d = store.done[m] || {};
+  if (m === "capstone") return !!d.fb;
+  if (m === "structure") return !!(d.matrix && d.quiz);
+  return !!(d.fb && d.quiz);
+}
+function markDone(m, part) {
+  store.done[m] = store.done[m] || {};
+  const was = isComplete(m);
+  store.done[m][part] = true; save(); refreshProgress();
+  if (!was && MISSIONS.includes(m) && isComplete(m)) toast("Mission complete ✓");
+}
+function refreshProgress() {
+  let n = 0;
+  MISSIONS.forEach(m => { const c = isComplete(m); if (c) n++; const a = $(`[data-nav="${m}"] .chk`); if (a) a.textContent = c ? "✓" : ""; });
+  $("#progress-label").textContent = `${n} of 6 missions complete`;
+  $("#progress-bar").style.width = (n / 6 * 100) + "%";
+}
+
+/* ===================================================== routing */
+const VIEWS = $$(".view").map(v => v.dataset.view);
+function route() {
+  let v = (location.hash || "").replace("#", "");
+  if (!VIEWS.includes(v)) v = "start";
+  $$(".view").forEach(el => el.hidden = el.dataset.view !== v);
+  $$("[data-nav]").forEach(a => a.dataset.nav === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  const cur = $(`[data-nav="${v}"]`); if (cur && cur.scrollIntoView && window.matchMedia("(max-width: 880px)").matches) cur.scrollIntoView({ block: "nearest", inline: "center" });
+  if (v === "review") syncM5();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+/* ===================================================== MISSION 1 */
+const M1 = [
+  { subj: "Biology", text: "Enzymes are biological catalysts that speed up chemical reactions by lowering the activation energy required for the reaction to proceed, and because they are not consumed in the reaction, a single enzyme molecule can catalyze thousands of reactions per second, although its activity depends heavily on temperature and pH, which can alter the shape of its active site.",
+    ideas: [{ label: "enzymes are catalysts that speed up reactions", any: ["catalys", "speed", "faster", "↑ rate", "rxn"] }, { label: "they lower activation energy", any: ["activation", "act. e", "ae", "energy"] }, { label: "not used up, so reusable", any: ["not used", "not consumed", "reus", "not destroyed", "again", "thousands", "1000"] }, { label: "temperature and pH affect them", any: ["temp", "ph"] }, { label: "by changing the active-site shape", any: ["shape", "active site", "a.s."] }] },
+  { subj: "World History", text: "The Columbian Exchange, the transfer of plants, animals, people, and diseases between the Eastern and Western Hemispheres following Columbus's 1492 voyage, dramatically reshaped both worlds: crops such as maize and potatoes fueled population growth in Europe, Africa, and Asia, while diseases like smallpox, to which Indigenous Americans had no immunity, killed a large majority of the Native population within a century.",
+    ideas: [{ label: "two-way transfer between hemispheres", any: ["↔", "<->", "both", "exchange", "between", "hemisph", "old", "new world", "e ↔ w"] }, { label: "began after 1492", any: ["1492", "columbus"] }, { label: "American crops → Old World population growth", any: ["maize", "corn", "potato", "pop"] }, { label: "diseases (smallpox) devastated Native Americans", any: ["smallpox", "disease", "died", "killed", "death"] }, { label: "because they lacked immunity", any: ["immun"] }] },
+  { subj: "Economics", text: "Opportunity cost is the value of the next-best alternative you give up when you make a choice, which means that the true cost of any decision includes not only the money spent but also the time and other opportunities sacrificed; for example, the opportunity cost of attending college includes the wages a student could have earned by working full-time instead.",
+    ideas: [{ label: "the value of the next-best alternative", any: ["next best", "next-best", "2nd best", "alternative", "alt", "give up", "gave up", "lose", "lost"] }, { label: "more than money: time and opportunities too", any: ["time", "not just $", "not just money", "money", "$"] }, { label: "example: college means giving up wages", any: ["college", "wage", "job", "work", "pay"] }] }
+];
+(() => {
+  const wrap = $("#m1-items");
+  M1.forEach((s, i) => {
+    const id = "m1-n" + (i + 1);
+    const ta = h("textarea", { class: "ruled", id, rows: "4", placeholder: "Your compressed note…" });
+    const out = h("div", { "aria-live": "polite" });
+    const task = { source: s.text, ideas: s.ideas, targetRatio: .4, expect: { example: i !== 0 } };
+    wrap.append(h("div", { style: "display:flex;flex-direction:column;gap:10px" },
+      h("div", { class: "source" }, h("span", { class: "chap", text: `Sentence ${i + 1} · ${s.subj} · ${words(s.text).length} words` }), h("p", { text: "“" + s.text + "”" })),
+      h("label", { class: "lbl", for: id, text: "Your handwritten note, typed exactly" }), ta,
+      h("div", { class: "row" }, h("button", { type: "button", class: "btn quiet sm", onclick: () => { out.innerHTML = ""; out.append(renderChecks(analyze(ta.value, task))); markDone("generate", "fb"); } }, "Check")), out));
+  });
+  TASKS.generate = {
+    rubric: ["selection", "own_words", "usability"],
+    aiTask: "Mission 1: the student read each of three dense textbook sentences once, looked away, and wrote a compressed note by hand in their own words (target: under about 40% of the original length, show relationships with symbols like →, keep an example). Give feedback across all three notes; in 'fixes', say which sentence number each fix refers to.",
+    source: M1.map((s, i) => `Sentence ${i + 1}: ${s.text}`).join("\n"),
+    ideas: M1.flatMap((s, i) => s.ideas.map(x => ({ label: `(S${i + 1}) ${x.label}`, any: x.any }))),
+    getNotes: () => M1.map((s, i) => `Note ${i + 1}:\n${$("#m1-n" + (i + 1)).value}`).join("\n\n"),
+    targetRatio: .4, photo: true, expect: {}
+  };
+})();
+
+/* ===================================================== MISSION 2 */
+const VACCINE = {
+  title: "How Vaccines Create Immunity", chap: "Biology · Chapter 35.3",
+  sections: [
+    { h: "The adaptive immune system", p: "When a pathogen enters the body, the innate immune system responds within hours with general defenses such as inflammation. The adaptive immune system responds more slowly, typically over one to two weeks for a first exposure, but its response is specific to that particular pathogen. Its key cells are lymphocytes. B cells produce antibodies, proteins that bind to specific molecules called antigens on the pathogen's surface. T cells come in several types: helper T cells coordinate the immune response, while cytotoxic T cells destroy the body's own cells that have become infected." },
+    { h: "Memory cells", p: "After an infection is cleared, most of the lymphocytes that fought it die off, but a small population of memory B cells and memory T cells remains, sometimes for decades. If the same pathogen appears again, these memory cells recognize it and launch a secondary response that is faster and stronger than the first, often eliminating the pathogen before symptoms appear. This is why people rarely catch measles twice." },
+    { h: "How vaccines exploit memory", p: "A vaccine exposes the immune system to antigens from a pathogen without causing the disease. Vaccines deliver antigens in different ways. Inactivated vaccines use killed pathogens; live-attenuated vaccines use weakened forms; subunit vaccines contain only selected proteins; and mRNA vaccines deliver genetic instructions that cause the body's own cells to briefly produce a pathogen protein. In each case, the immune system mounts a primary response and forms memory cells, so a later real infection triggers a rapid secondary response." },
+    { h: "Herd immunity", p: "When a large enough share of a population is immune, a pathogen cannot spread efficiently. This protects people who cannot be vaccinated, such as newborns or people with weakened immune systems. The threshold depends on how contagious the disease is: for measles, which is extremely contagious, roughly 95 percent of a population must be immune." }
+  ]
+};
+const VACCINE_TEXT = VACCINE.sections.map(s => s.h + ". " + s.p).join("\n");
+const VACCINE_IDEAS = [
+  { label: "Innate = fast and general; adaptive = slower but specific", any: ["innate", "specific"] },
+  { label: "B cells make antibodies", any: ["antibod", "ab"] },
+  { label: "Antibodies bind antigens on the pathogen", any: ["antigen", "ag"] },
+  { label: "Helper T cells coordinate; cytotoxic T cells kill infected cells", any: ["helper", "cytotox", "killer", "t cell", "t-cell"] },
+  { label: "Memory B and T cells persist after infection", any: ["memory", "mem."] },
+  { label: "Secondary response is faster and stronger", any: ["secondary", "2nd", "second", "faster", "stronger"] },
+  { label: "Vaccine = antigen exposure without the disease", any: [["vacc", "antigen"], ["vacc", "without"], ["vacc", "w/o"], ["vacc", "no disease"], ["vax", "antigen"], ["vax", "w/o"]] },
+  { label: "Vaccine types: inactivated, live-attenuated, subunit, mRNA", any: ["inactiv", "attenu", "subunit", "mrna", "weaken", "killed"] },
+  { label: "Herd immunity protects those who can't be vaccinated", any: ["herd"] },
+  { label: "Threshold depends on contagiousness (measles ≈ 95%)", any: ["95", "threshold", "contag"] }
+];
+(() => {
+  $("#m2-preview").append(h("span", { class: "chap", text: VACCINE.chap }), h("h5", { text: VACCINE.title }), h("ul", { style: "margin:0;padding-left:1.2em" }, VACCINE.sections.map(s => h("li", { text: s.h }))),
+    h("p", { class: "hint", text: "Bold terms in this section: lymphocytes, antibodies, antigens, memory cells, secondary response, herd immunity." }));
+  const passage = host => { host.append(h("span", { class: "chap", text: VACCINE.chap }), h("h5", { text: VACCINE.title })); VACCINE.sections.forEach(s => host.append(h("h5", { text: s.h, style: "font-size:.95rem" }), h("p", { text: s.p }))); };
+  passage($("#m2-passage")); passage($("#m2-passage-2"));
+  const stepsEl = $$("#m2-steps li");
+  const panels = $$("#m2 [data-step]");
+  function go(n) {
+    panels.forEach(p => p.hidden = Number(p.dataset.step) !== n);
+    stepsEl.forEach((li, i) => { li.classList.toggle("on", i === n); li.classList.toggle("done", i < n); });
+    store.fields["m2-step"] = n; save();
+    if (n === 3) {
+      const nv = $("#m2-notes-view");
+      if (!nv.value.trim()) { nv.value = $("#m2-notes").value; store.fields[nv.id] = nv.value; save(); }
+      const r = $("#m2-recall"); r.innerHTML = "";
+      const cov = coverage($("#m2-notes").value, VACCINE_IDEAS);
+      r.append(h("ul", { class: "checks" }, h("li", { class: cov.got.length >= 7 ? "good" : cov.got.length >= 4 ? "warn" : "bad" }, h("span", { class: "ic", text: "↺" }),
+        h("div", null, h("b", { text: `From memory you recalled about ${cov.got.length} of ${VACCINE_IDEAS.length} key ideas` }),
+          h("span", { text: cov.missing.length ? "Look for these while you check the text (keyword-based, so you may have some in other words): " + cov.missing.join("; ") + ". Write what you missed in the corrections box." : "Excellent recall. Check the details for accuracy." })))));
+    }
+    $("#m2").scrollIntoView({ block: "start" });
+  }
+  $$("#m2 [data-go]").forEach(b => b.addEventListener("click", () => {
+    const n = Number(b.dataset.go);
+    if (n === 2 && !$("#m2-preq").value.trim()) { /* allowed, but nudge */ toast("Tip: preview questions help, even rough ones."); }
+    if (n === 3 && words($("#m2-notes").value).length < 5) { toast("Write what you remember first, even if it feels like very little."); return; }
+    if (n === 0) { ["m2-preq", "m2-notes", "m2-fix", "m2-cues", "m2-notes-view", "m2-sum"].forEach(id => { $("#" + id).value = ""; delete store.fields[id]; }); save(); }
+    go(n);
+  }));
+  const saved = Number(store.fields["m2-step"]);
+  if (saved > 0 && saved <= 3) { panels.forEach(p => p.hidden = Number(p.dataset.step) !== saved); stepsEl.forEach((li, i) => { li.classList.toggle("on", i === saved); li.classList.toggle("done", i < saved); }); }
+  else stepsEl[0].classList.add("on");
+  TASKS.textbook = {
+    aiTask: "Mission 2 (textbook notes, Cornell format): the student previewed headings and wrote prequestions, read the section once, CLOSED the book and wrote notes from memory, then reopened it and added corrections, cue questions and a summary. Judge the final Cornell page. Also comment on how much they recalled from memory versus added in corrections, since that shows what to study.",
+    source: VACCINE_TEXT, ideas: VACCINE_IDEAS, photo: true,
+    expect: { structure: true, questions: 3, summary: true, gaps: false },
+    withSummary: () => $("#m2-sum").value,
+    getNotes: () => `PREVIEW QUESTIONS:\n${$("#m2-preq").value}\n\nNOTES FROM MEMORY (book closed):\n${$("#m2-notes-view").value || $("#m2-notes").value}\n\nCORRECTIONS ADDED AFTER CHECKING:\n${$("#m2-fix").value}\n\nCUE QUESTIONS:\n${$("#m2-cues").value}\n\nSUMMARY:\n${$("#m2-sum").value}`
+  };
+})();
+
+/* ===================================================== MISSION 3: lecture simulator */
+const LECTURE = [
+  "Okay, let's get started.",
+  "Last time we talked about the law of demand: when price goes up, quantity demanded goes down.",
+  "Today's question is: by how much?",
+  "That's what elasticity measures.",
+  "So [[write this down]]: price elasticity of demand is the percentage change in quantity demanded divided by the percentage change in price.",
+  "[[The key word there is]] percentage.",
+  "We use percentages so we can compare things measured in totally different units, like gallons of gas and slices of pizza.",
+  "Now, [[there are two big categories you need to know]].",
+  "If a small change in price causes a big change in quantity demanded, we call demand elastic.",
+  "The number, if you ignore the negative sign, is greater than one.",
+  "If quantity barely changes when price changes, demand is inelastic, and the number is less than one.",
+  "[[Here's an example.]] Insulin.",
+  "If the price of insulin doubles, people who need it still buy it, so demand is very inelastic.",
+  "[[Compare that to]] one particular brand of cereal.",
+  "If that brand raises its price, a lot of people just switch to another brand. Very elastic.",
+  "So what makes demand elastic or inelastic?",
+  "[[There are three main factors, and this will definitely be on the test.]]",
+  "[[First]], the availability of substitutes. More substitutes means more elastic. That's the cereal example.",
+  "[[Second]], whether the good is a necessity or a luxury. Necessities tend to be inelastic; luxuries tend to be elastic.",
+  "[[Third]], time.",
+  "Over a longer period, demand becomes more elastic, because people find ways to adjust.",
+  "When gas prices spike, people still have to drive to work next week. But over a few years, they might buy a more fuel-efficient car or move closer to work.",
+  "Okay, [[here's the part students usually miss]].",
+  "Elasticity tells a business what happens to its total revenue when it changes its price.",
+  "Total revenue is just price times quantity.",
+  "If demand is inelastic, raising the price increases total revenue, because you lose only a few customers.",
+  "If demand is elastic, raising the price decreases total revenue, because you lose so many customers that it outweighs the higher price.",
+  "So, [[I want you to really think about this]]: why do movie theaters charge so much for popcorn, but sell discount tickets on Tuesday afternoons?",
+  "Hold that thought. We'll come back to it on Thursday.",
+  "[[Quick recap.]] Elasticity is the percent change in quantity over the percent change in price.",
+  "Elastic means greater than one; inelastic means less than one.",
+  "Three factors: substitutes, necessity versus luxury, and time.",
+  "And the connection to total revenue.",
+  "For Thursday, read section 6.2."
+];
+const LECTURE_PLAIN = LECTURE.map(s => s.replace(/\[\[|\]\]/g, ""));
+const LECTURE_IDEAS = [
+  { label: "Definition: % change in quantity demanded ÷ % change in price", any: ["%", "percent"] },
+  { label: "Percentages let you compare different units", any: ["unit"] },
+  { label: "Elastic: number > 1 (quantity responds a lot)", any: [">1", "> 1", "greater than 1", "greater than one", "more than 1", "more than one", "big change"] },
+  { label: "Inelastic: number < 1 (quantity barely changes)", any: ["<1", "< 1", "less than 1", "less than one", "barely"] },
+  { label: "Examples: insulin (inelastic) vs. a cereal brand (elastic)", any: ["insulin", "cereal"] },
+  { label: "Factor 1: availability of substitutes", any: ["substitut", "subs"] },
+  { label: "Factor 2: necessity vs. luxury", any: ["necess", "luxur"] },
+  { label: "Factor 3: time (more elastic in the long run), e.g. gas", any: ["time", "long run", "long-run", "years", "yrs", "gas"] },
+  { label: "Total revenue = price × quantity", any: ["revenue", /\btr\b/] },
+  { label: "Inelastic: price ↑ → revenue ↑; elastic: price ↑ → revenue ↓", any: [["revenue", "inelastic"], [/\btr\b/, "inelastic"], [/\btr\b/, "↑"], ["revenue", "↑"], ["revenue", "increase"]] },
+  { label: "Teacher's question: popcorn prices vs. Tuesday discounts", any: ["popcorn", "tuesday", "movie", "theater"] }
+];
+(() => {
+  const stage = $("#lec-stage"), cur = $("#lec-cur"), prev = $("#lec-prev"), track = $("#lec-track"), timeEl = $("#lec-time");
+  const startBtn = $("#lec-start"), pauseBtn = $("#lec-pause");
+  const voiceBox = $("#lec-voice"), capBox = $("#lec-captions");
+  const synth = window.speechSynthesis && typeof window.SpeechSynthesisUtterance === "function" ? window.speechSynthesis : null;
+  if (synth) { $("#lec-voice-wrap").hidden = false; }
+  voiceBox.addEventListener("change", () => { $("#lec-cap-wrap").hidden = !voiceBox.checked; if (!voiceBox.checked) { capBox.checked = true; stage.classList.remove("captions-off"); } });
+  capBox.addEventListener("change", () => stage.classList.toggle("captions-off", !capBox.checked));
+  const totalWords = LECTURE_PLAIN.reduce((n, s) => n + words(s).length, 0);
+  let idx = -1, playing = false, timer = null, pauses = 0, elapsed = 0, tick = null, runId = 0;
+  const wpm = () => Number($("#lec-speed").value);
+  const fmt = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+  const est = () => "~" + fmt(totalWords / wpm() * 60);
+  timeEl.textContent = "0:00 / " + est();
+  $("#lec-speed").addEventListener("change", () => timeEl.textContent = fmt(elapsed) + " / " + est());
+  function show(i) {
+    prev.textContent = i > 0 ? LECTURE_PLAIN[i - 1] : "";
+    cur.textContent = LECTURE_PLAIN[i];
+    track.style.width = ((i + 1) / LECTURE.length * 100) + "%";
+  }
+  let sentToken = 0;
+  function speakOrWait(i, myRun) {
+    const text = LECTURE_PLAIN[i];
+    const dur = words(text).length / wpm() * 60000;
+    const tok = ++sentToken;
+    const next = () => { if (playing && myRun === runId && tok === sentToken) advance(); };
+    clearTimeout(timer);
+    if (voiceBox.checked && synth) {
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = Math.max(.7, Math.min(1.5, wpm() / 155));
+      u.onend = next;
+      u.onerror = () => { clearTimeout(timer); timer = setTimeout(next, dur); };
+      synth.speak(u);
+      timer = setTimeout(next, dur * 1.8 + 1500); /* safety net if the voice never reports "end" */
+    } else {
+      timer = setTimeout(next, dur + 250);
+    }
+  }
+  function advance() {
+    idx++;
+    if (idx >= LECTURE.length) return finish();
+    show(idx); speakOrWait(idx, runId);
+  }
+  function play() {
+    playing = true; runId++;
+    startBtn.disabled = true; pauseBtn.disabled = false; pauseBtn.textContent = "Pause";
+    $("#lec-speed").disabled = true;
+    tick = setInterval(() => { elapsed++; timeEl.textContent = fmt(elapsed) + " / " + est(); }, 1000);
+    if (idx < 0) advance(); else { show(idx); speakOrWait(idx, runId); }
+  }
+  function stopTimers() { playing = false; clearTimeout(timer); clearInterval(tick); if (synth) synth.cancel(); }
+  function finish() {
+    stopTimers();
+    cur.textContent = "End of lecture. Pens down.";
+    prev.textContent = LECTURE_PLAIN[LECTURE.length - 1];
+    track.style.width = "100%";
+    startBtn.disabled = false; startBtn.textContent = "Restart lecture"; pauseBtn.disabled = true; $("#lec-speed").disabled = false;
+    idx = -1; elapsed = 0;
+    $("#lec-after").hidden = false;
+    store.fields["lec-finished"] = true; save();
+  }
+  startBtn.addEventListener("click", () => { if (idx < 0) { elapsed = 0; } play(); });
+  pauseBtn.addEventListener("click", () => {
+    if (playing) { stopTimers(); pauses++; pauseBtn.textContent = "Resume"; startBtn.disabled = true; $("#lec-pausecount").textContent = `Paused ${pauses}×. Real lectures don't pause, so try a run without pausing.`; }
+    else play();
+  });
+  if (store.fields["lec-finished"]) $("#lec-after").hidden = false;
+  const tr = $("#lec-transcript");
+  LECTURE.forEach(s => {
+    const p = h("p");
+    s.split(/(\[\[.*?\]\])/).forEach(part => { if (part.startsWith("[[")) p.append(h("mark", { text: part.slice(2, -2) })); else if (part) p.append(part); });
+    tr.append(p);
+  });
+  tr.prepend(h("p", { class: "hint", text: "Highlighted = the teacher's signals. Did your notes change shape at each one?" }));
+  TASKS.lecture = {
+    aiTask: "Mission 3 (live lecture notes): the student handwrote notes while an economics lecture played sentence by sentence at real speaking speed, with no rewinding, then typed their raw, unrevised notes. Judge how well they caught the signaled structure (definition, two categories, three numbered factors, examples, the revenue connection, the teacher's question), used shorthand, and flagged gaps with '?'. Raw lecture notes are expected to be rough; don't penalize messiness, only lost meaning.",
+    source: LECTURE_PLAIN.join(" "), ideas: LECTURE_IDEAS, photo: true,
+    rubric: ["selection", "own_words", "structure", "usability"],
+    expect: { structure: true, gaps: true },
+    getNotes: () => $("#lec-notes").value,
+    onFeedback: () => { store.fields["lec-notes-done"] = true; save(); }
+  };
+})();
+
+/* ===================================================== MISSION 4: matrix */
+const MATRIX = {
+  rows: ["Igneous", "Sedimentary", "Metamorphic"],
+  cols: ["How it forms", "Texture and clues", "Examples"],
+  key: [
+    [["cool", "magma", "lava", "molten", "melt", "harden"], ["crystal", "grain", "glass"], ["granite", "basalt", "obsidian"]],
+    [["layer", "deposit", "compact", "cement", "sediment", "fragment", "press"], ["layer", "fossil"], ["sandstone", "shale", "limestone"]],
+    [["heat", "pressure"], ["band", "foliat", "sheet", "align", "line"], ["marble", "slate"]]
+  ],
+  expert: [
+    ["molten rock cools + hardens", "slow (underground) → big crystals; fast (surface) → fine/glassy", "granite (slow), basalt + obsidian (fast)"],
+    ["pieces deposited in layers → compacted + cemented", "visible layers; FOSSILS (only family w/ them commonly)", "sandstone, shale, limestone"],
+    ["existing rock + heat & pressure, NO melting", "minerals in bands/sheets = foliation", "marble (← limestone), slate (← shale)"]
+  ]
+};
+(() => {
+  const t = $("#matrix");
+  t.append(h("thead", null, h("tr", null, h("th", { scope: "col", text: "" }), MATRIX.cols.map(c => h("th", { scope: "col", text: c })))));
+  const tb = h("tbody");
+  MATRIX.rows.forEach((r, ri) => tb.append(h("tr", null, h("th", { scope: "row", text: r }),
+    MATRIX.cols.map((c, ci) => h("td", null, h("textarea", { class: "ruled", id: `mx-${ri}-${ci}`, "aria-label": `${r}: ${c}`, rows: "3" }), h("div", { class: "cellnote", id: `mxn-${ri}-${ci}` }))))));
+  t.append(tb);
+  $("#matrix-check").addEventListener("click", () => {
+    let filled = 0, ok = 0, longCells = 0;
+    MATRIX.rows.forEach((r, ri) => MATRIX.cols.forEach((c, ci) => {
+      const ta = $(`#mx-${ri}-${ci}`), td = ta.parentElement, note = $(`#mxn-${ri}-${ci}`);
+      const v = ta.value.toLowerCase().trim();
+      td.classList.remove("ok", "miss"); note.className = "cellnote"; note.textContent = "";
+      if (!v) { note.textContent = "empty"; td.classList.add("miss"); return; }
+      filled++;
+      if (words(v).length > 18) longCells++;
+      if (MATRIX.key[ri][ci].some(k => v.includes(k))) { ok++; td.classList.add("ok"); note.classList.add("ok"); note.textContent = "✓ matches"; }
+      else { td.classList.add("miss"); note.textContent = "check the passage"; }
+    }));
+    const out = $("#matrix-out"); out.innerHTML = "";
+    const checks = [
+      { s: filled === 9 ? "good" : "warn", t: `${filled} of 9 cells filled`, d: filled === 9 ? "Complete grid. Gaps in a matrix are easy to spot, and that's part of its power." : "Empty cells are exactly what a matrix is good at revealing. Fill them from the passage." },
+      { s: ok >= 8 ? "good" : ok >= 5 ? "warn" : "bad", t: `${ok} of 9 cells contain an expected key term`, d: "A keyword check. Cells marked “check the passage” may still be right in your own words." },
+      { s: longCells ? "warn" : "good", t: longCells ? `${longCells} cell(s) over 18 words` : "Cells are short phrases", d: longCells ? "Matrix cells work best as short phrases you can scan across." : "Scannable at a glance." },
+      { s: "info", t: "Read down the “How it forms” column", d: "What single variable separates the three families? (Hint: is there melting? Is there heat and pressure? Is it deposited at the surface?) Patterns like this are what matrices reveal and outlines hide." }
+    ];
+    out.append(renderChecks({ checks, next: ok >= 8 && filled === 9 ? "Now cover one column and try to recite it from the row labels. That's retrieval practice on your matrix." : "Complete the cells marked orange, using short phrases with arrows (→)." }));
+    if (filled >= 7) markDone("structure", "matrix");
+  });
+  $("#matrix-key").addEventListener("click", () => {
+    const out = $("#matrix-out"); out.innerHTML = "";
+    out.append(h("p", { class: "subhead", text: "An expert's matrix" }),
+      h("div", { class: "tablewrap" }, h("table", null, h("thead", null, h("tr", null, h("th", { text: "" }), MATRIX.cols.map(c => h("th", { text: c })))),
+        h("tbody", null, MATRIX.rows.map((r, ri) => h("tr", null, h("th", { scope: "row", text: r }), MATRIX.expert[ri].map(x => h("td", { class: "sym", style: "white-space:normal;font-size:1.05rem", text: x }))))))),
+      h("p", { class: "hint", text: "Notice the arrows, the capitals for what to remember (FOSSILS, NO melting), and the parent-rock links in the last column." }));
+  });
+})();
+
+/* ===================================================== MISSION 5 */
+function syncM5() {
+  const src = $("#lec-notes").value.trim();
+  const wrap = $("#m5-notes-wrap"); wrap.innerHTML = "";
+  const nv = $("#m5-notes");
+  if (src && !nv.value.trim()) { nv.value = src; store.fields[nv.id] = src; save(); }
+  wrap.append(h("p", null, src ? "Your Mission 3 lecture notes are loaded on the right. Revise them first using the 24-hour checklist above (fill “?” gaps from the transcript, spell out unclear shorthand), then write cue questions on the left and a summary below."
+    : "You haven't done the Mission 3 lecture yet. Do that first for the full experience, or paste any set of notes on the right and write cue questions for them."));
+  buildDrill();
+}
+function buildDrill() {
+  const d = $("#drill"); d.innerHTML = "";
+  const cues = $("#m5-cues").value.split("\n").map(s => s.trim()).filter(s => s.length > 2);
+  if (!cues.length) { d.append(h("p", { class: "hint", text: "Write cue questions in part A first. They'll appear here one at a time." }), h("button", { type: "button", class: "btn quiet sm", onclick: buildDrill }, "Load my cue questions")); return; }
+  let i = 0; const tally = { got: 0, part: 0, miss: 0 }; const missed = [];
+  const cueEl = h("p", { class: "cue" });
+  const counter = h("p", { class: "hint" });
+  const ans = h("textarea", { class: "ruled", rows: "3", id: "drill-answer", placeholder: "Answer from memory (or say it out loud)…" });
+  const reveal = h("div", { class: "source", hidden: true });
+  const rate = h("div", { class: "row", hidden: true });
+  const revealBtn = h("button", { type: "button", class: "btn", onclick: () => { reveal.hidden = false; rate.hidden = false; revealBtn.hidden = true; } }, "Reveal my notes");
+  const tallyEl = h("div", { class: "tally" });
+  const done = h("div");
+  [["got", "Got it"], ["part", "Partly"], ["miss", "Missed it"]].forEach(([k, label]) => rate.append(h("button", { type: "button", class: k === "got" ? "btn" : "btn quiet", onclick: () => { tally[k]++; if (k !== "got") missed.push(cues[i]); i++; step(); } }, label)));
+  function step() {
+    tallyEl.textContent = `Got it: ${tally.got} · Partly: ${tally.part} · Missed: ${tally.miss}`;
+    if (i >= cues.length) {
+      cueEl.textContent = "Round complete."; counter.textContent = ""; ans.hidden = true; reveal.hidden = true; rate.hidden = true; revealBtn.hidden = true;
+      done.innerHTML = "";
+      done.append(h("div", { class: "nextstep" }, h("b", { text: missed.length ? `Study these ${missed.length} first next time:` : "Perfect round." }),
+        missed.length ? h("ul", { style: "margin:0;padding-left:1.2em" }, missed.map(m => h("li", { text: m }))) : h("span", { text: "Next session, wait longer before reviewing. Harder retrieval builds stronger memory." })),
+        h("button", { type: "button", class: "btn ghost sm", onclick: buildDrill }, "Run it again"));
+      markDone("review", "drill");
+      return;
+    }
+    cueEl.textContent = cues[i]; counter.textContent = `Question ${i + 1} of ${cues.length}`;
+    ans.value = ""; ans.hidden = false; reveal.hidden = true; rate.hidden = true; revealBtn.hidden = false;
+    reveal.innerHTML = ""; reveal.append(h("span", { class: "chap", text: "Your notes" }), h("div", { style: "white-space:pre-wrap;font-family:var(--f-hand);font-size:1.05rem", text: $("#m5-notes").value || "(no notes entered)" }));
+  }
+  d.append(counter, cueEl, ans, revealBtn, reveal, rate, tallyEl, done);
+  step();
+}
+(() => {
+  $("#m5-cues").addEventListener("change", () => { if (!$("#drill .cue") || $("#drill .cue").textContent === "Round complete.") buildDrill(); });
+  const today = new Date(); const iso = d => d.toISOString().slice(0, 10);
+  const local = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+  $("#plan-class").value = store.fields["plan-class"] || iso(local(today));
+  const fmtD = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" });
+  $("#plan-go").addEventListener("click", () => {
+    const cls = $("#plan-class").value ? new Date($("#plan-class").value + "T12:00:00") : null;
+    const tst = $("#plan-test").value ? new Date($("#plan-test").value + "T12:00:00") : null;
+    const out = $("#plan-out"); out.innerHTML = "";
+    if (!cls) { out.append(h("p", { class: "err", text: "Pick the class date first." })); return; }
+    const addDays = n => new Date(cls.getTime() + n * 86400000);
+    let days, note;
+    if (tst) {
+      const R = Math.round((tst - cls) / 86400000);
+      if (R < 1) { out.append(h("p", { class: "err", text: "The test date needs to be after the class date." })); return; }
+      const gap = Math.max(1, Math.round(R * .15));
+      days = [0];
+      for (let d = 1; d < R; d += gap) if (!days.includes(d)) days.push(d);
+      if (R > 1 && !days.includes(R - 1)) days.push(R - 1);
+      days = days.filter(d => d < R).sort((a, b) => a - b);
+      note = `Your test is ${R} day${R === 1 ? "" : "s"} away, so a gap of about ${gap} day${gap === 1 ? "" : "s"} (≈15% of the time until the test) between sessions fits the research.`;
+    } else {
+      days = [0, 1, 3, 7, 14, 30];
+      note = "No test date, so this uses expanding gaps for long-term memory: each review comes a bit later than the last.";
+    }
+    const label = d => d === 0 ? "Revise + add cues" : "Self-test with cues";
+    out.append(h("p", { class: "hint", text: note }), h("ul", { class: "plan" },
+      days.map(d => h("li", null, h("b", { text: fmtD.format(addDays(d)) }), h("span", { text: (d === 0 ? "Class day · " : `Day ${d} · `) + label(d) }), h("span", { text: d === 0 ? "≈15 min" : "≈10 min" }))),
+      tst ? h("li", { class: "test" }, h("b", { text: fmtD.format(tst) }), h("span", { text: "Test day" })) : null),
+      h("p", { class: "hint", text: "Each session: cover your notes, answer the cue questions out loud, check, and re-study only what you missed. Put these in your planner now. Plans you write down are far more likely to happen." }));
+    store.fields["plan-class"] = $("#plan-class").value; save();
+    markDone("review", "plan");
+  });
+  TASKS.review = {
+    aiTask: "Mission 5 (revise and add retrieval hooks): the student took raw notes during an economics lecture on price elasticity, then revised them within 24 hours, wrote Cornell cue questions in the left column, and wrote a summary. Focus mostly on the quality of the cue questions (do they force explanation and application? do they cover all the key ideas?) and the summary, and briefly on whether revision fixed gaps.",
+    source: LECTURE_PLAIN.join(" "), ideas: LECTURE_IDEAS, photo: true,
+    rubric: ["selection", "structure", "retrieval", "usability"],
+    expect: { structure: true, questions: 4, summary: true },
+    withSummary: () => $("#m5-sum").value,
+    getNotes: () => `CUE QUESTIONS:\n${$("#m5-cues").value}\n\nREVISED NOTES:\n${$("#m5-notes").value}\n\nSUMMARY:\n${$("#m5-sum").value}`
+  };
+})();
+
+/* ===================================================== MISSION 6 */
+(() => {
+  const setNext = txt => { $("#playbook-next").textContent = txt; store.fields["playbook-next"] = txt; save(); };
+  if (store.fields["playbook-next"]) $("#playbook-next").textContent = store.fields["playbook-next"];
+  TASKS.capstone = {
+    get aiTask() { return `Mission 6 (capstone): the student brought handwritten notes from a real class. Class and topic: ${$("#cap-class").value || "not given"}. Source type: ${$("#cap-kind").value}. ${$("#cap-source").value.trim() ? "What the source covered, in the student's words: " + $("#cap-source").value.trim() : "The student did not describe the source, so judge the notes on their own merits and do not guess what was missed."} Judge the notes against every part of the method: generative own-words notes, structure that fits the content, signal-driven selection, shorthand, gaps flagged, cue questions and summary.`; },
+    get source() { return $("#cap-source").value.trim() || null; },
+    ideas: null, photo: true,
+    expect: { structure: true, questions: 3, summary: false, gaps: true },
+    getNotes: () => $("#cap-notes").value,
+    onFeedback: setNext
+  };
+  $("#playbook-copy").addEventListener("click", async () => {
+    const text = $$("#playbook p").map(p => p.textContent).join("\n");
+    try { await navigator.clipboard.writeText(text); toast("Playbook copied"); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($("#playbook")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl/⌘ + C to copy."); }
+  });
+})();
+
+/* ===================================================== reset */
+(() => {
+  const btn = $("#reset-progress"), conf = $("#reset-confirm"); let armed = false, t;
+  btn.addEventListener("click", () => {
+    if (!armed) { armed = true; conf.hidden = false; btn.textContent = "Yes, erase everything"; t = setTimeout(() => { armed = false; conf.hidden = true; btn.textContent = "Reset my progress and saved notes"; }, 5000); return; }
+    clearTimeout(t);
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    store = { done: {}, quiz: {}, fields: {} };
+    $$("textarea, input[type=text]").forEach(el => el.value = "");
+    armed = false; conf.hidden = true; btn.textContent = "Reset my progress and saved notes";
+    refreshProgress(); toast("Progress reset. Reload to clear the quizzes.");
+  });
+})();
+
+/* ===================================================== boot */
+$$("[data-quiz]").forEach(renderQuiz);
+$$("[data-feedback]").forEach(feedbackPanel);
+$$("textarea, input.plain").forEach(persistField);
+refreshProgress();
+route();
+})();
+</script>
