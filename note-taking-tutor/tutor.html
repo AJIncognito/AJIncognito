@@ -366,9 +366,49 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
 .refs li span { display: block; text-indent: 0; color: var(--ink-2); font-size: .93rem; margin-top: 2px; }
 
 .nextnav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 18px; }
+/* Lecture vs textbook comparison */
+table.compare tbody th { background: var(--soft); text-transform: none; letter-spacing: 0; font-size: .92rem; color: var(--ink); width: 150px; }
+table.compare td { width: 42%; }
+
+/* Textbook anatomy */
+.anatomy { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.tbpage { max-width: none; background: var(--sheet); box-shadow: var(--shadow); }
+.tbpage .objective { border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; font-size: .93rem; background: var(--paper); }
+.tbpage .topic { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.tbpage .sig { font-style: italic; background: var(--accent-soft); border-radius: 3px; padding: 0 3px; }
+.tbpage .figstub { border: 1px dashed var(--rule); border-radius: 6px; padding: 10px; font-size: .9rem; color: var(--ink-2); }
+.tbpage .review-q { font-size: .93rem; border-top: 1px solid var(--rule); padding-top: 8px; }
+.pin { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--margin); color: var(--sheet); font: 700 .75rem/1 var(--f-body); vertical-align: 2px; margin: 0 2px; }
+.pins { margin: 0; padding: 0; list-style: none; counter-reset: pin; display: flex; flex-direction: column; gap: 10px; }
+.pins li { counter-increment: pin; position: relative; padding-left: 34px; font-size: .95rem; }
+.pins li::before { content: counter(pin); position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--margin); color: var(--sheet); display: grid; place-items: center; font-weight: 700; font-size: .75rem; }
+
+/* Textbook figure */
+.textfig { margin: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; max-width: 560px; }
+.textfig svg { width: 100%; height: auto; max-width: 420px; display: block; margin: 0 auto; }
+.textfig figcaption { font-size: .92rem; color: var(--ink-2); }
+.cc-seg { fill: none; stroke-width: 36; }
+.cc-inter { stroke: var(--accent-soft); }
+.cc-m { stroke: var(--hl); }
+.cc-label { fill: var(--ink); font: 700 17px var(--f-display); text-anchor: middle; dominant-baseline: central; }
+.cc-label.m { fill: var(--hl-ink); }
+.cc-note { fill: var(--ink-2); font: 12.5px var(--f-body); text-anchor: middle; dominant-baseline: central; }
+.cc-center { fill: var(--ink); font: 700 13px var(--f-body); text-anchor: middle; }
+.cc-arrow { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
+.cc-head { fill: var(--ink-2); }
+.cc-check { stroke: var(--margin); stroke-width: 5; stroke-linecap: round; }
+.cc-g0 { fill: var(--soft); stroke: var(--ink-2); stroke-width: 1.4; }
+.cc-sep { stroke: var(--sheet); stroke-width: 3; }
+.figchecks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+.figchecks label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; background: var(--paper); border-radius: 8px; font-size: .93rem; cursor: pointer; }
+.figchecks input { margin-top: 4px; accent-color: var(--good); }
+.reader-sec { display: flex; flex-direction: column; gap: 8px; }
+.closed-book { border: 2px dashed var(--rule); border-radius: 10px; padding: 18px; text-align: center; color: var(--ink-2); display: flex; flex-direction: column; gap: 10px; align-items: center; }
+
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 99px; font-size: .92rem; box-shadow: var(--shadow); z-index: 20; max-width: calc(100% - 32px); }
 
 @media (max-width: 880px) {
+  .anatomy { grid-template-columns: minmax(0,1fr); }
   .shell { grid-template-columns: minmax(0,1fr); gap: 18px; padding-top: 12px; }
   .spine { position: static; flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 6px; scrollbar-width: thin; }
   .spine h2, .spine .sep, .progress { display: none; }
@@ -401,14 +441,15 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h2>Your missions</h2>
     <a href="#start" data-nav="start"><span class="num">·</span><span>Start here</span><span class="chk"></span></a>
     <a href="#generate" data-nav="generate"><span class="num">1</span><span>Think, don't transcribe</span><span class="chk"></span></a>
-    <a href="#textbook" data-nav="textbook"><span class="num">2</span><span>Textbook notes</span><span class="chk"></span></a>
-    <a href="#lecture" data-nav="lecture"><span class="num">3</span><span>Lecture notes, live</span><span class="chk"></span></a>
-    <a href="#structure" data-nav="structure"><span class="num">4</span><span>Show the structure</span><span class="chk"></span></a>
-    <a href="#review" data-nav="review"><span class="num">5</span><span>Revise, quiz, space</span><span class="chk"></span></a>
-    <a href="#capstone" data-nav="capstone"><span class="num">6</span><span>Your real notes</span><span class="chk"></span></a>
+    <a href="#textbook" data-nav="textbook"><span class="num">2</span><span>Textbook: read, close, recall</span><span class="chk"></span></a>
+    <a href="#blueprint" data-nav="blueprint"><span class="num">3</span><span>Textbook: read the blueprint</span><span class="chk"></span></a>
+    <a href="#lecture" data-nav="lecture"><span class="num">4</span><span>Lecture notes, live</span><span class="chk"></span></a>
+    <a href="#structure" data-nav="structure"><span class="num">5</span><span>Show the structure</span><span class="chk"></span></a>
+    <a href="#review" data-nav="review"><span class="num">6</span><span>Revise, connect, quiz</span><span class="chk"></span></a>
+    <a href="#capstone" data-nav="capstone"><span class="num">7</span><span>Your real notes</span><span class="chk"></span></a>
     <div class="sep"></div>
     <a href="#research" data-nav="research"><span class="num">§</span><span>The research</span><span class="chk"></span></a>
-    <div class="progress"><span id="progress-label">0 of 6 missions complete</span><div class="bar"><i id="progress-bar"></i></div></div>
+    <div class="progress"><span id="progress-label">0 missions complete</span><div class="bar"><i id="progress-bar"></i></div></div>
   </nav>
 
   <main id="main">
@@ -418,13 +459,13 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
   <div class="mhead">
     <p class="eyebrow">Start here</p>
     <h1>Notes are a thinking tool, then a testing tool.</h1>
-    <p class="lede">Most students treat notes as a copy of what the teacher said. Learning research points to something better: notes that make you <em>think</em> while you write them, and that let you <em>quiz yourself</em> afterward. This notebook trains both, one mission at a time, with feedback on your actual notes.</p>
+    <p class="lede">Most students treat notes as a copy of what the teacher said or what the book says. Learning research points to something better: notes that make you <em>think</em> while you write them, and that let you <em>quiz yourself</em> afterward. This notebook trains both, one mission at a time, with feedback on your actual notes.</p>
   </div>
 
   <div class="goalcard">
     <div>
       <h3>Your end goal</h3>
-      <p>Take a page of handwritten notes from any class that captures the big ideas in your own words, shows how they connect, and turns into a self-quiz you can review in 10 minutes.</p>
+      <p>Take a page of handwritten notes from any class lecture <b>or</b> textbook chapter that captures the big ideas in your own words, shows how they connect, and turns into a self-quiz you can review in 10 minutes.</p>
     </div>
     <div>
       <h3>How each mission works</h3>
@@ -444,6 +485,24 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
   </div>
 
   <div class="block">
+    <h3>Two sources, two different problems</h3>
+    <div class="prose"><p>The core skill is the same: select, rephrase, connect, then test yourself. But lectures and textbooks fail you in opposite ways, so each needs its own routine. A lecture moves too fast. A textbook sits still and invites you to copy it or reread it until it <i>feels</i> familiar.</p></div>
+    <div class="tablewrap">
+      <table class="compare">
+        <thead><tr><th></th><th>Class lecture</th><th>Textbook</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Who sets the pace</th><td>The teacher. No rewind.</td><td>You. You can reread any time.</td></tr>
+          <tr><th scope="row">Biggest risk</th><td>Missing ideas while you write</td><td>Copying too much, highlighting, and mistaking “looks familiar” for “I know it”</td></tr>
+          <tr><th scope="row">Built-in help</th><td>The teacher's spoken signals, examples, recap</td><td>Headings, bold terms, topic sentences, figures, summaries, review questions</td></tr>
+          <tr><th scope="row">Key move</th><td>Listen for signals, use shorthand, flag gaps and keep moving</td><td>Read one section, close the book, write what you remember, then check</td></tr>
+          <tr><th scope="row">Missions</th><td>4 · Lecture notes, live</td><td>2 · Read, close, recall<br>3 · Read the blueprint</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">Missions 1, 5, 6 and 7 apply to both. Mission 6 also shows how to combine textbook and lecture notes on the same topic.</p>
+  </div>
+
+  <div class="block">
     <h3>Warm-up: what do you already believe? <span class="k">guess first, then check</span></h3>
     <p class="prose">Make a call on each statement before you read the explanation. Guessing before you learn something helps you remember the answer, even when your guess is wrong (Richland, Kornell &amp; Kao, 2009).</p>
     <div data-quiz="start"></div>
@@ -452,21 +511,22 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
   <div class="block">
     <h3>The missions</h3>
     <ul class="map">
-      <li><a href="#generate"><span class="mn">Mission 1</span><b>Think, don't transcribe</b><p>Shrink a dense sentence into a short note in your own words.</p></a></li>
-      <li><a href="#textbook"><span class="mn">Mission 2</span><b>Textbook notes</b><p>Preview, read a section, close the book, recall, check, in Cornell format.</p></a></li>
-      <li><a href="#lecture"><span class="mn">Mission 3</span><b>Lecture notes, live</b><p>Keep up with a lecture you can't rewind by listening for the teacher's signals.</p></a></li>
-      <li><a href="#structure"><span class="mn">Mission 4</span><b>Show the structure</b><p>Choose an outline, matrix, flowchart or sketch to fit the content.</p></a></li>
-      <li><a href="#review"><span class="mn">Mission 5</span><b>Revise, quiz, space</b><p>Turn notes into cue questions, test yourself, and plan your reviews.</p></a></li>
-      <li><a href="#capstone"><span class="mn">Mission 6</span><b>Your real notes</b><p>Bring notes from a real class and get coached on them.</p></a></li>
+      <li><a href="#generate"><span class="mn">Mission 1 · Both</span><b>Think, don't transcribe</b><p>Shrink a dense sentence into a short note in your own words.</p></a></li>
+      <li><a href="#textbook"><span class="mn">Mission 2 · Textbook</span><b>Read, close, recall</b><p>Preview, read a section, close the book, recall, check, in Cornell format.</p></a></li>
+      <li><a href="#blueprint"><span class="mn">Mission 3 · Textbook</span><b>Read the blueprint</b><p>Use headings, signal words, text structure and figures to decide what goes in your notes.</p></a></li>
+      <li><a href="#lecture"><span class="mn">Mission 4 · Lecture</span><b>Lecture notes, live</b><p>Keep up with a lecture you can't rewind by listening for the teacher's signals.</p></a></li>
+      <li><a href="#structure"><span class="mn">Mission 5 · Both</span><b>Show the structure</b><p>Choose an outline, matrix, flowchart or sketch to fit the content.</p></a></li>
+      <li><a href="#review"><span class="mn">Mission 6 · Both</span><b>Revise, connect, quiz, space</b><p>Fill lecture gaps from the textbook, write cue questions, test yourself, plan reviews.</p></a></li>
+      <li><a href="#capstone"><span class="mn">Mission 7 · Both</span><b>Your real notes</b><p>Bring notes from a real class or chapter and get coached on them.</p></a></li>
     </ul>
   </div>
 
   <div class="block">
     <h3>The loop you're building</h3>
     <ol class="loop">
-      <li><b>Before</b><span>Preview and write questions you expect to answer.</span></li>
-      <li><b>During</b><span>Select, compress and connect. Your own words. Leave space.</span></li>
-      <li><b>Within 24 h</b><span>Fill the gaps, add cue questions, write a summary.</span></li>
+      <li><b>Before</b><span>Preview headings, figures and review questions. Write questions you expect to answer.</span></li>
+      <li><b>During</b><span>Lecture: select, compress, connect, keep moving. Textbook: read a section, close the book, write from memory.</span></li>
+      <li><b>Within 24 h</b><span>Fill gaps (the textbook fills lecture gaps), add cue questions, write a summary.</span></li>
       <li><b>Over days</b><span>Cover the notes and test yourself on a spaced schedule.</span></li>
     </ol>
   </div>
@@ -477,7 +537,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
 <!-- ====================================================== M1 -->
 <section class="view" data-view="generate" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 1 of 6</p>
+    <p class="eyebrow">Mission 1 of 7 · Lectures and textbooks</p>
     <h2>Think, don't transcribe</h2>
   </div>
   <div class="goalcard">
@@ -490,6 +550,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <div class="prose">
       <p>When you copy word for word, your hand does the work and your brain doesn't have to. When you put an idea <mark>in your own words</mark>, you have to understand it first, and understanding is what gets stored in memory. Psychologists call this the <b>generation effect</b>: information you produce yourself is remembered better than information you just read (Slamecka &amp; Graf, 1978). Paraphrased and summarized notes lead to better learning than verbatim notes (Bretzing &amp; Kulhavy, 1979).</p>
       <p>A famous study found that students who typed lecture notes on laptops copied more verbatim and did worse on conceptual questions than students who wrote by hand (Mueller &amp; Oppenheimer, 2014). Larger follow-up studies found the handwriting advantage is <b>small or uncertain</b> (Morehead, Dunlosky &amp; Rawson, 2019; Urry et al., 2021). What holds up is the underlying point: <b>notes help when they make you process ideas.</b> Handwriting is slower, so it pushes you to select and rephrase. This mission trains that habit on purpose.</p>
+      <p><b>This matters even more with a textbook.</b> In a lecture, speed forces you to compress. With a book, the exact words sit right in front of you and there's no time pressure, so copying is easy and feels productive. The practice sentences below are textbook sentences for that reason.</p>
       <p class="cite">Sources are listed in <a href="#research">The research</a>.</p>
     </div>
   </div>
@@ -546,7 +607,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
 <!-- ====================================================== M2 -->
 <section class="view" data-view="textbook" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 2 of 6</p>
+    <p class="eyebrow">Mission 2 of 7 · Textbook</p>
     <h2>Textbook notes: read, close the book, recall</h2>
   </div>
   <div class="goalcard">
@@ -560,7 +621,25 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
       <p>Highlighting and rereading <i>feel</i> productive, but a major review of learning techniques rated both as <b>low utility</b> (Dunlosky et al., 2013). The text looks familiar, so you think you know it. Recognizing something isn't the same as being able to recall it.</p>
       <p>In one experiment, students who read a passage, <mark>closed the book and recited what they remembered</mark>, then reread it, beat students who took notes with the book open and students who just reread it twice (McDaniel, Howard &amp; Einstein, 2009). Writing from memory is retrieval practice, and it shows you exactly what you don't know yet.</p>
       <p>Skimming headings first and turning them into questions helps too. Trying to answer a question before you've learned the answer makes the answer stick better when you find it (Richland, Kornell &amp; Kao, 2009).</p>
+      <p>While you read, <b>explain it to yourself</b>: why does this follow from the last paragraph, and how does it connect to what you already know? Students who were prompted to self-explain as they read a biology text understood it better than students who read it twice (Chi et al., 1994).</p>
+      <p class="cite">You may have heard of SQ3R (Survey, Question, Read, Recite, Review). The full routine has little direct testing, but its strongest parts, previewing with questions and reciting from memory, are exactly what this mission practices.</p>
     </div>
+  </div>
+
+  <div class="block">
+    <h3>The textbook routine <span class="k">before, during, after</span></h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>When</th><th>Do this</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><b>Before</b><br><span class="hint">2 to 3 min</span></td><td>Read the chapter objectives, headings, bold terms, figure captions and the end-of-section questions. Turn 2 or 3 headings into questions.</td><td>Gives you a map and a reason to read. Prequestions improve learning.</td></tr>
+          <tr><td><b>During</b><br><span class="hint">one heading at a time</span></td><td>Read a single section (usually one heading) without writing. Ask yourself why each point is true. Then <b>close the book</b> and write what you remember in your own words. Copy only definitions word for word. Put the page number in the margin.</td><td>Small chunks fit in working memory. Writing from memory is retrieval practice and forces you to rephrase.</td></tr>
+          <tr><td><b>Check</b></td><td>Reopen the book. Fix mistakes and add what you missed in a different color.</td><td>Your other-color lines show exactly what you didn't know.</td></tr>
+          <tr><td><b>After</b></td><td>Answer the end-of-section questions <i>from your notes</i>, not the book. Add cue questions and a 2 to 3 sentence summary.</td><td>If your notes can't answer the book's own questions, they're missing something.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><p><b>What about highlighting?</b> If you mark your book at all, do it <i>after</i> you've recalled and checked, and only for what you missed. Highlighting while you read feels like work but mostly postpones the thinking (Dunlosky et al., 2013).</p></div>
   </div>
 
   <div class="block">
@@ -650,13 +729,146 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h3>Lock it in</h3>
     <div data-quiz="textbook"></div>
   </div>
-  <div class="nextnav"><a class="btn ghost" href="#generate">← Mission 1</a><a class="btn" href="#lecture">Mission 3 →</a></div>
+  <div class="nextnav"><a class="btn ghost" href="#generate">← Mission 1</a><a class="btn" href="#blueprint">Mission 3 →</a></div>
 </section>
 
-<!-- ====================================================== M3 -->
+<!-- ====================================================== M3 BLUEPRINT -->
+<section class="view" data-view="blueprint" hidden>
+  <div class="mhead">
+    <p class="eyebrow">Mission 3 of 7 · Textbook</p>
+    <h2>Read the blueprint</h2>
+  </div>
+  <div class="goalcard">
+    <div><h3>Goal</h3><p>Use a textbook's built-in signals (headings, topic sentences, bold terms, signal words, figures and review questions) to decide what goes in your notes, choose a format that matches the text's structure, and redraw a figure from memory.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You can name a passage's structure from its signal words</li><li>Every heading became a question, and your notes answer them</li><li>Your notes' format matches the structure (arrows for cause and effect)</li><li>You redrew a textbook figure from memory with most labels</li></ul></div>
+  </div>
+
+  <div class="block">
+    <h3>Why this works</h3>
+    <div class="prose">
+      <p>A lecture gives you the teacher's voice to follow. A textbook gives you something just as useful if you know how to read it: <mark>a blueprint</mark>. Authors and editors build in headings, previews, bold terms, summaries and review questions to show what matters. Readers who notice and use these signals remember more of the important content (Lorch, 1989).</p>
+      <p>Most textbook passages are also organized around one main <b>structure</b>: description, sequence, compare and contrast, cause and effect, or problem and solution. Signal words give the structure away. Readers trained to spot it and organize their recall around it remembered more (Meyer &amp; Poon, 2001). For your notes this has a direct payoff: the structure tells you which format to use.</p>
+      <p>Figures are often the most important part of a page and the most skipped. “See fig. 10.2” in your notes is useless. Redrawing a diagram from memory turns it into retrieval practice and gives you a second, visual route back to the idea (Fiorella &amp; Mayer, 2016; Wammes, Meade &amp; Fernandes, 2016).</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>See it <span class="k">anatomy of a textbook page</span></h3>
+    <div class="anatomy">
+      <div class="source tbpage">
+        <span class="chap">Biology · 9.2 <span class="pin">1</span></span>
+        <p class="objective"><b>Learning objective:</b> Explain how natural selection leads to adaptation.</p>
+        <h5>Variation and Inheritance <span class="pin">2</span></h5>
+        <p><span class="topic">Individuals in a population differ in their traits.</span> <span class="pin">3</span> <b>Variation</b> <span class="pin">4</span> arises mainly from mutations and from the shuffling of genes during sexual reproduction. Some of this variation is heritable, meaning it can be passed from parents to offspring.</p>
+        <h5>Selection Pressures</h5>
+        <p><span class="sig">Because</span> resources are limited, more offspring are produced than can survive. <span class="sig">As a result</span> <span class="pin">5</span>, individuals whose heritable traits help them survive and reproduce leave more offspring. Over many generations, those traits become more common in the population. This process is called <b>natural selection</b>.</p>
+        <div class="figstub"><span class="pin">6</span><b>Figure 9.4</b> Peppered moths in industrial England. As soot darkened tree bark in the 1800s, dark moths were better hidden from birds and became more common.</div>
+        <p class="review-q"><b>Check your understanding</b> <span class="pin">7</span><br>1. Why must variation be heritable for natural selection to act on it?</p>
+      </div>
+      <ol class="pins">
+        <li><b>Section number and objective.</b> Turn the objective into your first question: “How does natural selection lead to adaptation?” Put “9.2, p. 241” at the top of your notes.</li>
+        <li><b>Heading.</b> Make it a question before you read: “Where does variation come from, and why does it matter?”</li>
+        <li><b>Topic sentence.</b> In textbooks the main idea is usually the first sentence of the paragraph. The rest supports it.</li>
+        <li><b>Bold term.</b> A definition you'll be tested on. This is the one place to write it almost word for word.</li>
+        <li><b>Signal words</b> (“because”, “as a result”). Cause and effect, so use arrows.</li>
+        <li><b>Figure and caption.</b> Study it, close the book, and redraw it small with labels.</li>
+        <li><b>Review questions.</b> Ready-made cue questions. Later, answer them from your notes, not the book.</li>
+      </ol>
+    </div>
+    <div class="examples">
+      <figure class="note-card">
+        <figcaption><span class="tag good">Notes built from the blueprint</span> written with the book closed</figcaption>
+        <div class="hand">
+          <p><u>9.2 Natural selection</u> (p. 241)</p>
+          <p class="q">Q: how does NS → adaptation?</p>
+          <p><b>Variation</b> = differences in traits</p>
+          <p class="in1">← mutations + gene shuffling (sex. repro.)</p>
+          <p class="in1">must be heritable to matter</p>
+          <p>limited resources → more offspring than survive</p>
+          <p class="in1">→ better-suited traits survive + reproduce more</p>
+          <p class="in2">→ trait ↑ in pop. over gens = NAT. SELECTION</p>
+          <p>ex: peppered moths (fig 9.4) [sketch]</p>
+          <p class="in1">soot → dark bark → dark moths hidden → dark ↑</p>
+        </div>
+        <p class="anno">Headings became questions, the bold term is defined, the cause-and-effect chain is a column of arrows, and the figure became a one-line chain plus a sketch.</p>
+      </figure>
+    </div>
+    <p class="subhead">The five text structures</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Structure</th><th>Signal words</th><th>Make your notes look like</th></tr></thead>
+        <tbody>
+          <tr><td><b>Description</b></td><td>for example, characteristics, such as, includes, is made of</td><td>Outline: the topic, with indented features</td></tr>
+          <tr><td><b>Sequence</b></td><td>first, next, then, finally, stages, steps, before, after, in 1820</td><td>Numbered list, flowchart or timeline</td></tr>
+          <tr><td><b>Compare and contrast</b></td><td>however, whereas, unlike, similarly, both, in contrast</td><td>Matrix or T-chart</td></tr>
+          <tr><td><b>Cause and effect</b></td><td>because, therefore, as a result, leads to, consequently, so</td><td>Arrow chains (A → B → C) or a concept map</td></tr>
+          <tr><td><b>Problem and solution</b></td><td>the problem, a challenge, to solve this, one response, addressed by</td><td>Two columns: problem | solutions (with results)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part A <span class="k">name that structure</span></h3>
+    <div data-quiz="structures"></div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part B <span class="k">a textbook section, one heading at a time</span></h3>
+    <div class="practice" id="bp">
+      <p class="subhead">1. Preview: turn each heading into a question</p>
+      <div class="source" style="gap:6px"><span class="chap">Economics · 14.3 · p. 412</span><h5>How the Federal Reserve Fights Inflation</h5><p class="hint">Bold terms: federal funds rate, aggregate demand. Review question at the end: “Why can raising interest rates increase unemployment?”</p></div>
+      <div id="bp-heads" style="display:flex;flex-direction:column;gap:8px"></div>
+      <p class="subhead">2. Read, close, write, one section at a time</p>
+      <p>Read one section, then close it and write what you remember <b>on paper</b> before opening the next. Watch for signal words.</p>
+      <div id="bp-reader" style="display:flex;flex-direction:column;gap:10px"></div>
+      <p class="subhead">3. Name the main structure</p>
+      <div class="row">
+        <label class="sr" for="bp-struct">Main structure of section 14.3</label>
+        <select id="bp-struct"><option value="">Choose…</option><option>Description</option><option>Sequence</option><option>Compare and contrast</option><option>Cause and effect</option><option>Problem and solution</option></select>
+        <span id="bp-struct-out" aria-live="polite"></span>
+      </div>
+      <p class="subhead">4. Type up your page</p>
+      <p>Type exactly what you wrote from memory, in a format that fits the structure. Then add any corrections from rereading on lines starting with “+”.</p>
+      <div class="symbar" data-symbar><span>Insert:</span></div>
+      <label class="lbl" for="bp-notes">Your notes on 14.3</label>
+      <textarea class="ruled" id="bp-notes" rows="12" placeholder="14.3 Fed vs. inflation (p. 412)&#10;Q: what's the Fed's main tool?&#10;…"></textarea>
+      <div data-feedback="blueprint"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part C <span class="k">from figure to notes</span></h3>
+    <div class="practice" id="fig">
+      <p>You get <b>60 seconds</b> to study a textbook figure and its caption. Then it disappears and you <b>redraw it from memory on paper</b>, with labels and arrows. Then you compare.</p>
+      <div class="row"><button type="button" class="btn" id="fig-start">Show the figure (60 s)</button><button type="button" class="btn quiet" id="fig-hide" hidden>I'm ready, hide it</button><span class="hint" id="fig-timer" aria-live="polite"></span></div>
+      <figure class="textfig" id="fig-box" hidden>
+        <div id="fig-svg"></div>
+        <figcaption><b>Figure 10.2 The cell cycle.</b> Interphase (G1, S and G2) takes up most of the cycle. DNA is copied during the S phase. The mitotic (M) phase includes mitosis and cytokinesis. Checkpoints (red bars) at the end of G1, at the end of G2 and during mitosis make sure the cell is ready to go on. Cells that stop dividing leave the cycle for G0.</figcaption>
+      </figure>
+      <div id="fig-recall" hidden style="display:flex;flex-direction:column;gap:12px">
+        <p class="subhead">Redraw it now, on paper</p>
+        <div class="symbar" data-symbar><span>Insert:</span></div>
+        <label class="lbl" for="fig-notes">List every label and arrow you drew, then write a one-sentence caption in your own words</label>
+        <textarea class="ruled" id="fig-notes" rows="7" placeholder="circle: G1 → S (DNA copied) → G2 → M …"></textarea>
+        <div class="row"><button type="button" class="btn" id="fig-check">Open the book and compare</button></div>
+        <div id="fig-out" class="fb-out"></div>
+        <div data-feedback="figure"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Lock it in</h3>
+    <div data-quiz="blueprint"></div>
+  </div>
+  <div class="nextnav"><a class="btn ghost" href="#textbook">← Mission 2</a><a class="btn" href="#lecture">Mission 4 →</a></div>
+</section>
+
+<!-- ====================================================== M4 LECTURE -->
 <section class="view" data-view="lecture" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 3 of 6</p>
+    <p class="eyebrow">Mission 4 of 7 · Lecture</p>
     <h2>Lecture notes, live</h2>
   </div>
   <div class="goalcard">
@@ -669,6 +881,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <div class="prose">
       <p>Lecture note-taking is one of the hardest things students do. You listen, decide what matters, rephrase it and write, all while the teacher keeps going. Researchers measured it as more mentally demanding than ordinary reading and in the same range as expert chess play (Piolat, Olive &amp; Kellogg, 2005). Because of that load, students often write down <b>fewer than half</b> of a lecture's important ideas (Kiewra, 1985), and you can't be tested well on ideas you never recorded.</p>
       <p>Two things lower the load. First, <mark>teachers signal what matters</mark> (“there are three factors…”, “the key point is…”). Students who listen for these organizational cues take better notes and learn more (Titsworth &amp; Kiewra, 2004). Second, shorthand and a <b>keep-moving rule</b>: when you miss something, leave a gap, mark it “?”, and fill it in after class. Revising notes afterward improves both the notes and test scores (Luo, Kiewra &amp; Samuelson, 2016).</p>
+      <p><b>Read the assigned textbook section before class when you can,</b> even just the headings and figures. If you already know the outline, more of your attention is free for the new material, and you'll know which gaps the book can fill later (Mission 6).</p>
     </div>
   </div>
 
@@ -750,7 +963,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
 
       <div id="lec-after" hidden style="display:flex;flex-direction:column;gap:14px">
         <p class="subhead">Lecture's over. Pens down.</p>
-        <p>Type your notes <b>exactly as they are</b>, without improving them. You'll revise them in Mission 5, and the feedback is most useful on the raw version.</p>
+        <p>Type your notes <b>exactly as they are</b>, without improving them. You'll revise them in Mission 6, where the textbook fills in your gaps. The feedback is most useful on the raw version.</p>
         <div class="symbar" data-symbar><span>Insert:</span></div>
         <label class="lbl" for="lec-notes">Your lecture notes</label>
         <textarea class="ruled" id="lec-notes" rows="14" placeholder="Elasticity = %Δ Qd / %Δ P …"></textarea>
@@ -767,13 +980,13 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h3>Lock it in</h3>
     <div data-quiz="lecture"></div>
   </div>
-  <div class="nextnav"><a class="btn ghost" href="#textbook">← Mission 2</a><a class="btn" href="#structure">Mission 4 →</a></div>
+  <div class="nextnav"><a class="btn ghost" href="#blueprint">← Mission 3</a><a class="btn" href="#structure">Mission 5 →</a></div>
 </section>
 
-<!-- ====================================================== M4 -->
+<!-- ====================================================== M5 STRUCTURE -->
 <section class="view" data-view="structure" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 4 of 6</p>
+    <p class="eyebrow">Mission 5 of 7 · Lectures and textbooks</p>
     <h2>Show the structure</h2>
   </div>
   <div class="goalcard">
@@ -799,6 +1012,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
         </tbody>
       </table>
     </div>
+    <p class="hint">In a lecture, the teacher's words tell you the shape (“there are three…”, “compare that to…”). In a textbook, headings and signal words do the same job. Mission 3 shows how to spot them.</p>
   </div>
 
   <div class="block">
@@ -827,39 +1041,54 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h3>Lock it in</h3>
     <div data-quiz="structure"></div>
   </div>
-  <div class="nextnav"><a class="btn ghost" href="#lecture">← Mission 3</a><a class="btn" href="#review">Mission 5 →</a></div>
+  <div class="nextnav"><a class="btn ghost" href="#lecture">← Mission 4</a><a class="btn" href="#review">Mission 6 →</a></div>
 </section>
 
-<!-- ====================================================== M5 -->
+<!-- ====================================================== M6 REVIEW -->
 <section class="view" data-view="review" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 5 of 6</p>
-    <h2>Revise, quiz, space</h2>
+    <p class="eyebrow">Mission 6 of 7 · Lectures and textbooks</p>
+    <h2>Revise, connect, quiz, space</h2>
   </div>
   <div class="goalcard">
-    <div><h3>Goal</h3><p>Turn your Mission 3 lecture notes into a self-test: revise them, write cue questions that make you explain, quiz yourself, and schedule spaced reviews.</p></div>
-    <div><h3>You've got it when</h3><ul><li>You have 4 or more cue questions, at least half starting with <i>why, how, what if</i> or <i>compare</i></li><li>You've done one round of cover-and-recall</li><li>You have a review plan with dates</li></ul></div>
+    <div><h3>Goal</h3><p>Repair your lecture notes with the assigned textbook reading, turn them into a self-test with cue questions, quiz yourself on both your lecture and textbook notes, and schedule spaced reviews.</p></div>
+    <div><h3>You've got it when</h3><ul><li>You added 3 or more ideas from the textbook, in your own words, each with a section or page number</li><li>You have 4 or more cue questions, at least half starting with <i>why, how, what if</i> or <i>compare</i></li><li>You've done one round of cover-and-recall</li><li>You have a review plan with dates</li></ul></div>
   </div>
 
   <div class="block">
     <h3>Why this works</h3>
     <div class="prose">
       <p>Notes do two jobs. Writing them helps you learn (the <i>encoding</i> job), and reviewing them later helps even more (the <i>storage</i> job). Reviewing notes matters at least as much as taking them (Kiewra, 1985). <b>How</b> you review matters most. Testing yourself beats rereading by a wide margin. In one study, students who practiced recalling a passage remembered far more a week later than students who reread it, even though the rereaders felt more confident (Roediger &amp; Karpicke, 2006). Retrieval practice even beat building concept maps (Karpicke &amp; Blunt, 2011).</p>
+      <p><b>Connect your two sources.</b> Lecture notes are almost always incomplete (Kiewra, 1985), and revising them improves both the notes and test scores (Luo, Kiewra &amp; Samuelson, 2016). The assigned reading is the best repair kit, because it fills the gaps you flagged with “?”. The lecture works the other way, too: it tells you which parts of the chapter your teacher thinks matter most. Keep <mark>one set of notes per topic</mark> with textbook additions in a second color, not two separate piles.</p>
       <p><mark>Spacing</mark> is the other half. The same study time spread across several days beats cramming for long-term memory (Cepeda et al., 2006). A good rule of thumb is to space reviews about <b>10 to 20% of the time until you need the material</b>, so for a test in 10 days, review every day or two (Cepeda et al., 2008).</p>
       <p>Good cue questions ask <b>why</b> and <b>how</b>, not just <i>what</i>. Explaining why a fact is true improves memory for it (Pressley et al., 1987; Dunlosky et al., 2013).</p>
     </div>
   </div>
 
   <div class="block">
-    <h3>See it <span class="k">weak vs. strong cue questions</span></h3>
+    <h3>See it <span class="k">a lecture page repaired from the textbook</span></h3>
     <div class="examples">
+      <figure class="note-card">
+        <figcaption><span class="tag good">Merged</span> biology lecture + reading, next day</figcaption>
+        <div class="hand">
+          <p><u>Cell membrane</u> = phospholipid bilayer</p>
+          <p class="in1">heads like water, tails don't ?</p>
+          <p class="in1 red">+ hydrophilic heads, hydrophobic tails (p. 88)</p>
+          <p>small nonpolar → pass easily (O₂, CO₂)</p>
+          <p>ions + big molecules need proteins</p>
+          <p class="in1 red">+ channel vs. carrier proteins, fig 4.6 (p. 90)</p>
+          <p>★ “fluid mosaic model” ?</p>
+          <p class="in1 red">+ proteins float in a moving lipid layer (p. 89)</p>
+        </div>
+        <p class="anno">Every “?” is answered in red with a page number, so you can find the source in seconds. The textbook filled gaps; it didn't replace the lecture notes.</p>
+      </figure>
       <figure class="note-card">
         <figcaption><span class="tag warn">Labels, not questions</span></figcaption>
         <div class="hand"><p>Elasticity?</p><p>Factors</p><p>Revenue</p><p>Insulin</p></div>
-        <p class="anno">You can “answer” these by recognizing the word. They don't make you produce anything.</p>
+        <p class="anno">You can “answer” these cue questions by recognizing the word. They don't make you produce anything.</p>
       </figure>
       <figure class="note-card">
-        <figcaption><span class="tag good">Make you explain</span></figcaption>
+        <figcaption><span class="tag good">Cue questions that make you explain</span></figcaption>
         <div class="hand">
           <p class="q">What does elasticity measure, and why use % changes?</p>
           <p class="q">Elastic vs. inelastic: what's the cutoff? 1 ex. each?</p>
@@ -869,17 +1098,31 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
         <p class="anno">Each one needs a real answer. Covering the notes column and answering out loud is a complete practice test.</p>
       </figure>
     </div>
-    <div class="callout"><p><b>The 24-hour revision checklist.</b> Within a day of class, and with a different color pen: (1) fill every “?” gap from the textbook or a classmate, (2) spell out any abbreviation you might forget, (3) add cue questions in the left margin, (4) write a 2 to 3 sentence summary at the bottom.</p></div>
+    <div class="callout"><p><b>The 24-hour revision checklist.</b> Within a day of class, with a different color pen: (1) fill every “?” gap from the assigned textbook pages and write the page number, (2) spell out any abbreviation you might forget, (3) add cue questions in the left margin, (4) write a 2 to 3 sentence summary at the bottom.</p></div>
   </div>
 
   <div class="block">
-    <h3>Try it, part A <span class="k">write cue questions</span></h3>
+    <h3>Try it, part A <span class="k">fill lecture gaps from the textbook</span></h3>
+    <div class="practice">
+      <p>At the end of the Mission 4 lecture, the teacher said: <i>“For Thursday, read section 6.2.”</i> Here it is. It answers the popcorn question and adds ideas the lecture skipped. Use the Mission 2 routine: read one heading at a time, close the book, and write additions <b>in your own words</b> under your lecture notes on paper, in a second color.</p>
+      <div id="m6-lecnotes"></div>
+      <div class="source" id="m6-reading"></div>
+      <div class="symbar" data-symbar><span>Insert:</span></div>
+      <label class="lbl" for="m6-adds">Your additions from the textbook <span class="hint">(one per line, start with +, end with the section or page, e.g. “(§6.2)”)</span></label>
+      <textarea class="ruled red-ink" id="m6-adds" rows="7" placeholder="+ unit elastic = 1 → TR stays the same (§6.2)"></textarea>
+      <div class="row"><button type="button" class="btn quiet sm" id="m6-merge">Add these to my revised notes in part B</button></div>
+      <div data-feedback="integrate"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Try it, part B <span class="k">write cue questions</span></h3>
     <div class="practice">
       <div id="m5-notes-wrap"></div>
       <div class="symbar" data-symbar><span>Insert:</span></div>
       <div class="cornell">
         <div class="c-cues"><label class="zone-label" for="m5-cues">Cue questions (one per line)</label><textarea class="ruled" id="m5-cues" rows="9" placeholder="Why do we measure elasticity with % changes?"></textarea></div>
-        <div><label class="zone-label" for="m5-notes">Your revised lecture notes</label><textarea class="ruled" id="m5-notes" rows="9"></textarea></div>
+        <div><label class="zone-label" for="m5-notes">Your revised lecture notes + textbook additions</label><textarea class="ruled" id="m5-notes" rows="9"></textarea></div>
         <div class="c-sum"><label class="zone-label" for="m5-sum">Summary</label><textarea class="ruled" id="m5-sum" rows="3"></textarea></div>
       </div>
       <div data-feedback="review"></div>
@@ -887,18 +1130,21 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
   </div>
 
   <div class="block">
-    <h3>Try it, part B <span class="k">cover and recall</span></h3>
+    <h3>Try it, part C <span class="k">cover and recall</span></h3>
     <div class="practice">
-      <p>Cover the right side of your paper. For each cue question, answer <b>out loud or in writing before you reveal</b>. Then check against your notes and rate yourself honestly.</p>
+      <p>Cover the right side of your paper. For each cue question, answer <b>out loud or in writing before you reveal</b>. Then check against your notes and rate yourself honestly. Quiz yourself on both sets of notes: textbook notes need retrieval practice just as much as lecture notes.</p>
+      <div class="field" style="max-width:420px"><label class="lbl" for="drill-src">Quiz me on</label>
+        <select id="drill-src"><option value="lecture">My lecture notes (Mission 4 + textbook additions)</option><option value="textbook">My textbook notes (Mission 2, vaccines)</option><option value="blueprint">My textbook notes (Mission 3, the Fed)</option></select>
+      </div>
       <div class="drill" id="drill"></div>
     </div>
   </div>
 
   <div class="block">
-    <h3>Try it, part C <span class="k">plan your spaced reviews</span></h3>
+    <h3>Try it, part D <span class="k">plan your spaced reviews</span></h3>
     <div class="practice">
       <div class="row" style="align-items:flex-end">
-        <div class="field"><label class="lbl" for="plan-class">Class date</label><input type="date" id="plan-class"></div>
+        <div class="field"><label class="lbl" for="plan-class">Class or reading date</label><input type="date" id="plan-class"></div>
         <div class="field"><label class="lbl" for="plan-test">Test date (optional)</label><input type="date" id="plan-test"></div>
         <button class="btn" id="plan-go">Make my plan</button>
       </div>
@@ -910,17 +1156,17 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h3>Lock it in</h3>
     <div data-quiz="review"></div>
   </div>
-  <div class="nextnav"><a class="btn ghost" href="#structure">← Mission 4</a><a class="btn" href="#capstone">Mission 6 →</a></div>
+  <div class="nextnav"><a class="btn ghost" href="#structure">← Mission 5</a><a class="btn" href="#capstone">Mission 7 →</a></div>
 </section>
 
-<!-- ====================================================== M6 -->
+<!-- ====================================================== M7 CAPSTONE -->
 <section class="view" data-view="capstone" hidden>
   <div class="mhead">
-    <p class="eyebrow">Mission 6 of 6</p>
+    <p class="eyebrow">Mission 7 of 7 · Lectures and textbooks</p>
     <h2>Your real notes</h2>
   </div>
   <div class="goalcard">
-    <div><h3>Goal</h3><p>Use the full method on a real class this week, get feedback on that page, and leave with your top fix for next time.</p></div>
+    <div><h3>Goal</h3><p>Use the full method on a real lecture or textbook chapter this week, get feedback on that page, and leave with your top fix for next time. Ideally do one of each.</p></div>
     <div><h3>You've got it when</h3><ul><li>You've had one page from a real class reviewed</li><li>You've written your personal next step</li><li>You've done one spaced review of that page</li></ul></div>
   </div>
 
@@ -932,7 +1178,7 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
         <div class="field"><label class="lbl" for="cap-kind">Source</label><select id="cap-kind"><option>Lecture</option><option>Textbook</option><option>Video or other</option></select></div>
       </div>
       <div class="field">
-        <label class="lbl" for="cap-source">What was the lecture or reading about? <span class="hint">(optional: the main points or headings help the feedback)</span></label>
+        <label class="lbl" for="cap-source">What was the lecture or reading about? <span class="hint" id="cap-source-hint">(optional: the main points help the feedback)</span></label>
         <textarea class="ruled" id="cap-source" rows="3"></textarea>
       </div>
       <div class="symbar" data-symbar><span>Insert:</span></div>
@@ -948,18 +1194,19 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <h3>Your playbook <span class="k">copy it into the front of your notebook</span></h3>
     <div class="practice">
       <div class="hand" style="border:1px solid var(--rule);border-radius:10px" id="playbook">
-        <p><b>Before:</b> skim headings → write 2 questions</p>
+        <p><b>Before:</b> skim headings, figures, review Qs → write 2 questions</p>
         <p><b>During (lecture):</b> listen for signals · number lists · ex: · ? for gaps · keep moving</p>
-        <p><b>During (textbook):</b> read a section → close book → write from memory → check in red</p>
+        <p><b>During (textbook):</b> 1 heading at a time → close book → write from memory → check in red · p. # in margin</p>
+        <p><b>Textbook signals:</b> heading = question · bold = definition · 1st sentence = main idea · figure = redraw from memory</p>
         <p><b>Format:</b> outline · matrix to compare · flowchart for steps · sketch for things</p>
-        <p><b>Within 24 h:</b> fill gaps · cue questions (why/how) · 2 to 3 sentence summary</p>
+        <p><b>Within 24 h:</b> fill lecture gaps from the textbook · cue questions (why/how) · 2 to 3 sentence summary</p>
         <p><b>Review:</b> cover notes → answer cues → re-study misses · space it out</p>
         <p class="red"><b>My next step:</b> <span id="playbook-next">(finish a feedback round above)</span></p>
       </div>
       <div class="row"><button class="btn quiet" id="playbook-copy">Copy playbook text</button></div>
     </div>
   </div>
-  <div class="nextnav"><a class="btn ghost" href="#review">← Mission 5</a><a class="btn" href="#research">The research →</a></div>
+  <div class="nextnav"><a class="btn ghost" href="#review">← Mission 6</a><a class="btn" href="#research">The research →</a></div>
 </section>
 
 <!-- ====================================================== RESEARCH -->
@@ -973,15 +1220,19 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
     <table>
       <thead><tr><th>Technique</th><th>Evidence</th><th>Used in</th></tr></thead>
       <tbody>
-        <tr><td>Practice testing (retrieval)</td><td><b>Strong.</b> Rated “high utility” across ages, subjects and test formats.</td><td>Missions 2, 5</td></tr>
-        <tr><td>Spaced (distributed) practice</td><td><b>Strong.</b> Rated “high utility”. One of the most reliable findings in memory research.</td><td>Mission 5</td></tr>
-        <tr><td>Generative notes (paraphrase, compress)</td><td><b>Good.</b> Generation effect is robust. Note-processing studies favor paraphrase.</td><td>Missions 1, 3</td></tr>
-        <tr><td>Matrices and graphic organizers</td><td><b>Good</b> for learning relationships and comparisons.</td><td>Mission 4</td></tr>
-        <tr><td>Revising notes after class</td><td><b>Good.</b> Improves note quality and achievement.</td><td>Missions 3, 5</td></tr>
-        <tr><td>Elaborative “why” questions</td><td><b>Moderate.</b> Works best when you know some background.</td><td>Mission 5</td></tr>
-        <tr><td>Prequestions and pretesting</td><td><b>Moderate.</b> Helps with the questioned material.</td><td>Mission 2</td></tr>
-        <tr><td>Drawing and dual coding</td><td><b>Moderate.</b> Reliable in lab recall tasks.</td><td>Mission 4</td></tr>
-        <tr><td>Cornell format itself</td><td><b>Limited direct evidence.</b> Its value comes from the cue column (retrieval) and summary (generation) it builds in.</td><td>Missions 2, 5</td></tr>
+        <tr><td>Practice testing (retrieval)</td><td><b>Strong.</b> Rated “high utility” across ages, subjects and test formats.</td><td>Missions 2, 3, 6</td></tr>
+        <tr><td>Spaced (distributed) practice</td><td><b>Strong.</b> Rated “high utility”. One of the most reliable findings in memory research.</td><td>Mission 6</td></tr>
+        <tr><td>Generative notes (paraphrase, compress)</td><td><b>Good.</b> Generation effect is robust. Note-processing studies favor paraphrase.</td><td>Missions 1, 2, 4</td></tr>
+        <tr><td>Using text structure and signals</td><td><b>Good.</b> Readers who notice and organize around a text's structure recall more.</td><td>Mission 3</td></tr>
+        <tr><td>Matrices and graphic organizers</td><td><b>Good</b> for learning relationships and comparisons.</td><td>Mission 5</td></tr>
+        <tr><td>Revising notes after class</td><td><b>Good.</b> Improves note quality and achievement.</td><td>Missions 4, 6</td></tr>
+        <tr><td>Self-explanation while reading</td><td><b>Moderate.</b> Rated “moderate utility”. Helps most with explanatory text.</td><td>Missions 2, 3</td></tr>
+        <tr><td>Elaborative “why” questions</td><td><b>Moderate.</b> Works best when you know some background.</td><td>Mission 6</td></tr>
+        <tr><td>Prequestions and pretesting</td><td><b>Moderate.</b> Helps with the questioned material.</td><td>Missions 2, 3</td></tr>
+        <tr><td>Drawing, redrawing figures, dual coding</td><td><b>Moderate.</b> Reliable in lab recall tasks. Generative drawing helps learning from science text.</td><td>Missions 3, 5</td></tr>
+        <tr><td>Summarization</td><td><b>Low to moderate.</b> Rated low utility mainly because untrained students summarize poorly. Practice improves it.</td><td>Missions 2, 6</td></tr>
+        <tr><td>Cornell format itself</td><td><b>Limited direct evidence.</b> Its value comes from the cue column (retrieval) and summary (generation) it builds in.</td><td>Missions 2, 6</td></tr>
+        <tr><td>SQ3R (full routine)</td><td><b>Limited direct evidence.</b> Its preview-question and recite steps are well supported, and the tutor uses those.</td><td>Mission 2</td></tr>
         <tr><td>Handwriting vs. typing</td><td><b>Mixed.</b> The original advantage shrank in larger replications. The processing you do matters more than the tool.</td><td>Mission 1</td></tr>
         <tr><td>Highlighting, rereading</td><td><b>Low utility</b> on their own.</td><td>Warm-up, Mission 2</td></tr>
       </tbody>
@@ -993,13 +1244,17 @@ input[type="date"], input[type="text"].plain { font: inherit; padding: 7px 10px;
       <li>Bretzing, B. H., &amp; Kulhavy, R. W. (1979). Notetaking and depth of processing. <i>Contemporary Educational Psychology, 4</i>(2), 145–153.<span>Summary and paraphrase notes produced better learning than verbatim notes.</span></li>
       <li>Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., &amp; Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. <i>Psychological Bulletin, 132</i>(3), 354–380.<span>Combined data from hundreds of experiments: spacing beats massing.</span></li>
       <li>Cepeda, N. J., Vul, E., Rohrer, D., Wixted, J. T., &amp; Pashler, H. (2008). Spacing effects in learning: A temporal ridgeline of optimal retention. <i>Psychological Science, 19</i>(11), 1095–1102.<span>The best gap between study sessions grows with how long you need to remember.</span></li>
+      <li>Chi, M. T. H., de Leeuw, N., Chiu, M.-H., &amp; LaVancher, C. (1994). Eliciting self-explanations improves understanding. <i>Cognitive Science, 18</i>(3), 439–477.<span>Students prompted to explain each line of a biology text to themselves understood it better.</span></li>
       <li>Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., &amp; Willingham, D. T. (2013). Improving students' learning with effective learning techniques. <i>Psychological Science in the Public Interest, 14</i>(1), 4–58.<span>Rated ten techniques. Practice testing and distributed practice: high utility. Highlighting and rereading: low.</span></li>
+      <li>Fiorella, L., &amp; Mayer, R. E. (2016). Eight ways to promote generative learning. <i>Educational Psychology Review, 28</i>(4), 717–741.<span>Reviews summarizing, mapping, drawing, self-testing and self-explaining as ways to learn from text.</span></li>
       <li>Hattie, J., &amp; Timperley, H. (2007). The power of feedback. <i>Review of Educational Research, 77</i>(1), 81–112.<span>Feedback works when it answers: Where am I going? How am I doing? Where to next? The feedback panels here follow that shape.</span></li>
       <li>Karpicke, J. D., &amp; Blunt, J. R. (2011). Retrieval practice produces more learning than elaborative studying with concept mapping. <i>Science, 331</i>(6018), 772–775.</li>
       <li>Kiewra, K. A. (1985). Investigating notetaking and review: A depth of processing alternative. <i>Educational Psychologist, 20</i>(1), 23–32.<span>Notes are often incomplete. Reviewing notes is as important as taking them.</span></li>
       <li>Kiewra, K. A., DuBois, N. F., Christian, D., McShane, A., Meyerhoffer, M., &amp; Roskelley, D. (1991). Note-taking functions and techniques. <i>Journal of Educational Psychology, 83</i>(2), 240–245.<span>Matrix-style notes supported learning better than linear notes.</span></li>
+      <li>Lorch, R. F., Jr. (1989). Text-signaling devices and their effects on reading and memory processes. <i>Educational Psychology Review, 1</i>(3), 209–234.<span>Headings, previews, summaries and typographic cues help readers find and remember the main content.</span></li>
       <li>Luo, L., Kiewra, K. A., &amp; Samuelson, L. (2016). Revising lecture notes: How revision, pauses, and partner interaction affect note taking and achievement. <i>Instructional Science, 44</i>(1), 45–67.</li>
       <li>McDaniel, M. A., Howard, D. C., &amp; Einstein, G. O. (2009). The read-recite-review study strategy: Effective and portable. <i>Psychological Science, 20</i>(4), 516–522.<span>Reading, reciting from memory, then rereading beat note-taking and rereading.</span></li>
+      <li>Meyer, B. J. F., &amp; Poon, L. W. (2001). Effects of structure strategy training and signaling on recall of text. <i>Journal of Educational Psychology, 93</i>(1), 141–159.<span>Training readers to spot a text's top-level structure (compare, cause-effect, problem-solution…) and organize recall around it improved recall.</span></li>
       <li>Morehead, K., Dunlosky, J., &amp; Rawson, K. A. (2019). How much mightier is the pen than the keyboard for note-taking? A replication and extension of Mueller and Oppenheimer (2014). <i>Educational Psychology Review, 31</i>, 753–780.</li>
       <li>Mueller, P. A., &amp; Oppenheimer, D. M. (2014). The pen is mightier than the keyboard: Advantages of longhand over laptop note taking. <i>Psychological Science, 25</i>(6), 1159–1168.</li>
       <li>Paivio, A. (1986). <i>Mental representations: A dual coding approach.</i> Oxford University Press.</li>
@@ -1151,7 +1406,7 @@ function analyze(notes, task) {
       d: cov.missing.length ? "Possibly missing (a keyword check, so you may have them in other words): " + cov.missing.join("; ") + "." : "Every key idea shows up." });
   }
   if (task.source) {
-    const v = verbatimInfo(notes, task.source);
+    const v = verbatimInfo(notes, task.verbatimSource || task.source);
     const pct = Math.round(v.ratio * 100);
     const item = { key: "own_words", s: v.ratio < .2 ? "good" : v.ratio < .45 ? "warn" : "bad",
       t: v.ratio < .2 ? `Own words: ${pct}% copied in 5-word runs` : `${pct}% of your words are in copied 5-word runs`,
@@ -1191,6 +1446,16 @@ function analyze(notes, task) {
     const sumWords = task.summaryText != null ? words(task.summaryText).length : 0;
     checks.push({ key: "retrieval", s: sumWords >= 15 ? "good" : sumWords ? "warn" : "bad", t: sumWords ? `Summary: ${sumWords} words` : "No summary yet",
       d: sumWords >= 15 ? "Summarizing the whole page in your own words is a final generative step." : "Write 2 to 3 sentences that would let a classmate understand the main idea." });
+  }
+  if (task.expect && task.expect.arrows) {
+    const arrows = (notes.match(/→|->|←|⇒/g) || []).length;
+    checks.push({ key: "structure", s: arrows >= task.expect.arrows ? "good" : arrows ? "warn" : "bad", t: `Cause-and-effect chain: ${arrows} arrow${arrows === 1 ? "" : "s"}`,
+      d: arrows >= task.expect.arrows ? "Your format matches a cause-and-effect text. The chain is visible at a glance." : "This text is a chain of causes and effects. Write it as A → B → C so you can see the chain." });
+  }
+  if (task.expect && task.expect.pageRefs) {
+    const refs = lines.filter(l => /(\bpp?\.\s?\d|\bpg\.?\s?\d|\bpage\s?\d|§\s?\d|\b\d+\.\d+\b|\bfig)/i.test(l)).length;
+    checks.push({ key: "usability", s: refs >= task.expect.pageRefs ? "good" : "warn", t: refs ? `Source references: ${refs} line(s) point to a page, section or figure` : "No page or section references",
+      d: refs >= task.expect.pageRefs ? "You'll be able to find the source in seconds when you review." : "Add the page or section number (p. 412, §6.2, fig 10.2) so you can check the book quickly later." });
   }
   const gaps = lines.filter(l => /\?\s*$/.test(l) && !/^\s*q[:.]/i.test(l)).length;
   if (task.expect && task.expect.gaps) checks.push({ key: "usability", s: "info", t: gaps ? `${gaps} line(s) end with “?”` : "No gaps flagged", d: gaps ? "Gaps you flagged are your to-do list for the 24-hour revision." : "If you missed anything, mark it with “?” so you remember to fill it in." });
@@ -1318,7 +1583,7 @@ function feedbackPanel(host) {
     if (!words(notes).length && photo) { out.append(h("p", { class: "hint", text: "The built-in check needs typed notes. Use the AI coach for photos." })); return; }
     const res = analyze(notes, task.withSummary ? Object.assign({}, task, { summaryText: task.withSummary() }) : task);
     out.append(h("p", { class: "ai-note", text: "Instant check. These are automatic pattern checks, so treat them as hints and use your judgment." }), renderChecks(res));
-    markDone(id, "fb");
+    markDone(task.mission || id, "fb");
     task.onFeedback && task.onFeedback(res.next);
   } }, "Check my notes");
 
@@ -1339,7 +1604,7 @@ function feedbackPanel(host) {
       out.innerHTML = "";
       if (!data || typeof data !== "object") throw { code: "invalid_json" };
       out.append(h("p", { class: "ai-note", text: "AI coach feedback. It's a second opinion: compare it with the rubric and your own judgment." }), renderAI(data, keys));
-      markDone(id, "fb");
+      markDone(task.mission || id, "fb");
       if (data.next_step) task.onFeedback && task.onFeedback(String(data.next_step));
     } catch (e) {
       out.innerHTML = "";
@@ -1348,7 +1613,7 @@ function feedbackPanel(host) {
   } }, "Ask the AI coach");
 
   const rubricHost = h("div", { hidden: true });
-  rubricHost.append(rubricWidget(id, keys, next => { markDone(id, "fb"); task.onFeedback && task.onFeedback(next); }));
+  rubricHost.append(rubricWidget(id, keys, next => { markDone(task.mission || id, "fb"); task.onFeedback && task.onFeedback(next); }));
   const rubBtn = h("button", { type: "button", class: "btn quiet", "aria-expanded": "false", onclick: () => { rubricHost.hidden = !rubricHost.hidden; rubBtn.setAttribute("aria-expanded", String(!rubricHost.hidden)); } }, "Self-check with the rubric");
 
   host.className = "fb";
@@ -1371,6 +1636,10 @@ const QUIZZES = {
       why: "Verbatim copying means less processing, and processing builds memory (Mueller & Oppenheimer, 2014; Bretzing & Kulhavy, 1979). Capturing all the key ideas matters, but in your own words." },
     { p: "Highlighting your textbook is an effective way to study.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
       why: "A major review rated highlighting “low utility” (Dunlosky et al., 2013). It can feel productive while you learn little." },
+    { p: "The best way to learn from a textbook is to take notes with the book open, going sentence by sentence.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
+      why: "In a direct test, reading a section, closing the book and reciting from memory, then rereading, beat taking notes with the book open (McDaniel, Howard & Einstein, 2009). Open-book notes make copying too easy. Missions 2 and 3 train the better routine." },
+    { p: "Textbook headings, bold terms and figure captions are mostly decoration you can skip.", o: ["Research-backed", "Myth", "It's complicated"], a: 1,
+      why: "They're the author's blueprint of what matters. Readers who use these signals remember more of the important content (Lorch, 1989)." },
     { p: "Testing yourself on your notes beats rereading them.", o: ["Research-backed", "Myth", "It's complicated"], a: 0,
       why: "Retrieval practice is one of the strongest findings in learning science (Roediger & Karpicke, 2006). Rereaders feel more confident but remember less." },
     { p: "Handwriting notes is always better than typing them.", o: ["Research-backed", "Myth", "It's complicated"], a: 2,
@@ -1418,7 +1687,31 @@ const QUIZZES = {
     { p: "Drawing a quick sketch of a concept tends to…", o: ["Help only students who are good at art", "Improve later recall, even for poor artists", "Waste time you should spend writing", "Help only with math"], a: 1,
       why: "The drawing effect held up regardless of drawing skill (Wammes et al., 2016)." }
   ]},
+  structures: { items: [
+    { p: "“Unlike mitosis, which produces two identical diploid cells, meiosis produces four genetically different haploid cells. Both processes, however, begin with DNA replication.”", o: ["Description", "Sequence", "Compare and contrast", "Cause and effect", "Problem and solution"], a: 2, inline: true,
+      why: "“Unlike”, “both”, “however”. Two things compared on the same features → a matrix or T-chart." },
+    { p: "“First, a bill is introduced in either house of Congress. Next, it goes to a committee for study. If it passes both houses in the same form, it is then sent to the president to sign or veto.”", o: ["Description", "Sequence", "Compare and contrast", "Cause and effect", "Problem and solution"], a: 1, inline: true,
+      why: "“First”, “next”, “then”. Steps in order → a numbered list or flowchart." },
+    { p: "“Because the Dust Bowl destroyed crops across the Great Plains, thousands of farm families lost their income. As a result, many migrated west to California.”", o: ["Description", "Sequence", "Compare and contrast", "Cause and effect", "Problem and solution"], a: 3, inline: true,
+      why: "“Because”, “as a result”. A chain of causes → arrows: drought + dust storms → crops fail → income lost → migration west." },
+    { p: "“By the early 1990s, overfishing had driven Atlantic cod off Newfoundland to collapse. To address this, Canada imposed a moratorium on northern cod fishing in 1992.”", o: ["Description", "Sequence", "Compare and contrast", "Cause and effect", "Problem and solution"], a: 4, inline: true,
+      why: "“To address this”. A problem and a response → two columns: problem | solution (and whether it worked)." },
+    { p: "“The Amazon rainforest covers roughly 5.5 million square kilometers. It is home to about one in ten known species, and its river carries more water than any other on Earth.”", o: ["Description", "Sequence", "Compare and contrast", "Cause and effect", "Problem and solution"], a: 0, inline: true,
+      why: "Features of one thing, with no sequence, cause or comparison → an outline: the topic, with indented facts." }
+  ]},
+  blueprint: { items: [
+    { p: "Where is the main idea of a textbook paragraph most often found?", o: ["In the first sentence (the topic sentence)", "Buried in the middle", "In the figure caption", "Only in the bold words"], a: 0,
+      why: "Textbook paragraphs usually lead with their topic sentence and support it after. Sometimes it comes last, so check the final sentence if the first one doesn't fit." },
+    { p: "A section keeps using “as a result”, “this leads to” and “consequently”. How should your notes look?", o: ["A matrix", "An arrow chain: A → B → C", "A timeline with dates", "A list of the bold terms"], a: 1,
+      why: "Those are cause-and-effect signals. Arrows make the chain visible, and you can test yourself by covering one link." },
+    { p: "Your textbook has a labeled diagram of the cell cycle. What's the best note?", o: ["“See fig. 10.2”", "Trace it carefully", "Study it, close the book, redraw it from memory with labels, then check and fix", "Copy the caption word for word"], a: 2,
+      why: "Redrawing from memory is retrieval practice plus a visual cue. Tracing and copying skip the thinking." },
+    { p: "Why answer the end-of-section review questions from your notes instead of from the book?", o: ["It's faster", "It tests whether your notes are complete. If they can't answer the questions, you know what to add.", "Teachers require it", "The book's answers are often wrong"], a: 1,
+      why: "The authors wrote those questions to cover what matters most, so they make a ready-made check for your notes." }
+  ]},
   review: { items: [
+    { p: "Your lecture notes have a “?” where you missed what “unit elastic” means. Best fix?", o: ["Leave it. It probably won't be tested.", "Look it up in the assigned reading, write it in your own words in a second color, and note the page", "Copy the whole textbook page into your notes", "Start a separate notebook for textbook notes"], a: 1,
+      why: "One set of notes per topic, with gaps repaired from the reading in your own words and a page number so you can check later." },
     { p: "Which cue question will help you most?", o: ["Factors?", "Elasticity", "Why does demand become more elastic over time?", "Insulin"], a: 2,
       why: "It makes you produce an explanation. The others can be ‘answered’ just by recognizing the word." },
     { p: "Your test is in 10 days. Best plan?", o: ["Reread notes for 3 hours the night before", "Revise tonight, then self-test with your cue column every 1 to 2 days, re-studying what you miss", "Highlight your notes in 3 colors", "Rewrite your notes neatly once"], a: 1,
@@ -1452,7 +1745,7 @@ function renderQuiz(host) {
 }
 
 /* ===================================================== progress */
-const MISSIONS = ["generate", "textbook", "lecture", "structure", "review", "capstone"];
+const MISSIONS = ["generate", "textbook", "blueprint", "lecture", "structure", "review", "capstone"];
 function isComplete(m) {
   const d = store.done[m] || {};
   if (m === "capstone") return !!d.fb;
@@ -1468,8 +1761,8 @@ function markDone(m, part) {
 function refreshProgress() {
   let n = 0;
   MISSIONS.forEach(m => { const c = isComplete(m); if (c) n++; const a = $(`[data-nav="${m}"] .chk`); if (a) a.textContent = c ? "✓" : ""; });
-  $("#progress-label").textContent = `${n} of 6 missions complete`;
-  $("#progress-bar").style.width = (n / 6 * 100) + "%";
+  $("#progress-label").textContent = `${n} of ${MISSIONS.length} missions complete`;
+  $("#progress-bar").style.width = (n / MISSIONS.length * 100) + "%";
 }
 
 /* ===================================================== routing */
@@ -1706,7 +1999,7 @@ const LECTURE_IDEAS = [
   });
   tr.prepend(h("p", { class: "hint", text: "Highlighted = the teacher's signals. Did your notes change shape at each one?" }));
   TASKS.lecture = {
-    aiTask: "Mission 3 (live lecture notes): the student handwrote notes while an economics lecture played sentence by sentence at real speaking speed, with no rewinding, then typed their raw, unrevised notes. Judge how well they caught the signaled structure (definition, two categories, three numbered factors, examples, the revenue connection, the teacher's question), used shorthand, and flagged gaps with '?'. Raw lecture notes are expected to be rough; don't penalize messiness, only lost meaning.",
+    aiTask: "Mission 4 (live lecture notes): the student handwrote notes while an economics lecture played sentence by sentence at real speaking speed, with no rewinding, then typed their raw, unrevised notes. Judge how well they caught the signaled structure (definition, two categories, three numbered factors, examples, the revenue connection, the teacher's question), used shorthand, and flagged gaps with '?'. Raw lecture notes are expected to be rough; don't penalize messiness, only lost meaning.",
     source: LECTURE_PLAIN.join(" "), ideas: LECTURE_IDEAS, photo: true,
     rubric: ["selection", "own_words", "structure", "usability"],
     expect: { structure: true, gaps: true },
@@ -1774,14 +2067,24 @@ function syncM5() {
   const wrap = $("#m5-notes-wrap"); wrap.innerHTML = "";
   const nv = $("#m5-notes");
   if (src && !nv.value.trim()) { nv.value = src; store.fields[nv.id] = src; save(); }
-  wrap.append(h("p", null, src ? "Your Mission 3 lecture notes are loaded on the right. Revise them first using the 24-hour checklist above (fill “?” gaps from the transcript, spell out unclear shorthand), then write cue questions on the left and a summary below."
-    : "You haven't done the Mission 3 lecture yet. Do that first for the full experience, or paste any set of notes on the right and write cue questions for them."));
+  wrap.append(h("p", null, src ? "Your Mission 4 lecture notes are loaded on the right. Revise them using the 24-hour checklist above: merge in your textbook additions from part A, fill the remaining “?” gaps, and spell out unclear shorthand. Then write cue questions on the left and a summary below."
+    : "You haven't done the Mission 4 lecture yet. Do that first for the full experience, or paste any set of notes on the right and write cue questions for them."));
+  const ln = $("#m6-lecnotes"); ln.innerHTML = "";
+  ln.append(src ? h("details", null, h("summary", { class: "btn ghost sm", style: "display:inline-block" }, "Show my Mission 4 lecture notes"),
+      h("div", { class: "source", style: "margin-top:8px;white-space:pre-wrap;font-family:var(--f-hand);font-size:1.05rem", text: src }))
+    : h("p", { class: "hint", text: "Tip: do the Mission 4 lecture first so you have notes with real gaps to fill." }));
   buildDrill();
 }
+const DRILL_SOURCES = {
+  lecture: { cues: () => $("#m5-cues").value, notes: () => $("#m5-notes").value, empty: "Write cue questions in part B first. They'll appear here one at a time." },
+  textbook: { cues: () => $("#m2-cues").value + "\n" + $("#m2-preq").value, notes: () => ($("#m2-notes-view").value || $("#m2-notes").value) + ($("#m2-fix").value.trim() ? "\n\nCorrections:\n" + $("#m2-fix").value : ""), empty: "Finish the Mission 2 Cornell page first. Its cue questions and preview questions become the quiz." },
+  blueprint: { cues: () => $$("#bp-heads input").map(i => i.value).join("\n"), notes: () => $("#bp-notes").value, empty: "Do Mission 3, part B first. Your heading questions become the quiz." }
+};
 function buildDrill() {
   const d = $("#drill"); d.innerHTML = "";
-  const cues = $("#m5-cues").value.split("\n").map(s => s.trim()).filter(s => s.length > 2);
-  if (!cues.length) { d.append(h("p", { class: "hint", text: "Write cue questions in part A first. They'll appear here one at a time." }), h("button", { type: "button", class: "btn quiet sm", onclick: buildDrill }, "Load my cue questions")); return; }
+  const src = DRILL_SOURCES[$("#drill-src").value] || DRILL_SOURCES.lecture;
+  const cues = src.cues().split("\n").map(s => s.trim()).filter(s => s.length > 2);
+  if (!cues.length) { d.append(h("p", { class: "hint", text: src.empty }), h("button", { type: "button", class: "btn quiet sm", onclick: buildDrill }, "Load my cue questions")); return; }
   let i = 0; const tally = { got: 0, part: 0, miss: 0 }; const missed = [];
   const cueEl = h("p", { class: "cue" });
   const counter = h("p", { class: "hint" });
@@ -1805,12 +2108,13 @@ function buildDrill() {
     }
     cueEl.textContent = cues[i]; counter.textContent = `Question ${i + 1} of ${cues.length}`;
     ans.value = ""; ans.hidden = false; reveal.hidden = true; rate.hidden = true; revealBtn.hidden = false;
-    reveal.innerHTML = ""; reveal.append(h("span", { class: "chap", text: "Your notes" }), h("div", { style: "white-space:pre-wrap;font-family:var(--f-hand);font-size:1.05rem", text: $("#m5-notes").value || "(no notes entered)" }));
+    reveal.innerHTML = ""; reveal.append(h("span", { class: "chap", text: "Your notes" }), h("div", { style: "white-space:pre-wrap;font-family:var(--f-hand);font-size:1.05rem", text: src.notes() || "(no notes entered)" }));
   }
   d.append(counter, cueEl, ans, revealBtn, reveal, rate, tallyEl, done);
   step();
 }
 (() => {
+  $("#drill-src").addEventListener("change", buildDrill);
   $("#m5-cues").addEventListener("change", () => { if (!$("#drill .cue") || $("#drill .cue").textContent === "Round complete.") buildDrill(); });
   const today = new Date(); const iso = d => d.toISOString().slice(0, 10);
   const local = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000);
@@ -1845,7 +2149,7 @@ function buildDrill() {
     markDone("review", "plan");
   });
   TASKS.review = {
-    aiTask: "Mission 5 (revise and add retrieval hooks): the student took raw notes during an economics lecture on price elasticity, then revised them within 24 hours, wrote Cornell cue questions in the left column, and wrote a summary. Focus mostly on the quality of the cue questions (do they force explanation and application? do they cover all the key ideas?) and the summary, and briefly on whether revision fixed gaps.",
+    aiTask: "Mission 6 (revise and add retrieval hooks): the student took raw notes during an economics lecture on price elasticity, then revised them within 24 hours (including additions from the assigned textbook section, marked with +), wrote Cornell cue questions in the left column, and wrote a summary. Focus mostly on the quality of the cue questions (do they force explanation and application? do they cover all the key ideas?) and the summary, and briefly on whether revision fixed gaps.",
     source: LECTURE_PLAIN.join(" "), ideas: LECTURE_IDEAS, photo: true,
     rubric: ["selection", "structure", "retrieval", "usability"],
     expect: { structure: true, questions: 4, summary: true },
@@ -1859,18 +2163,212 @@ function buildDrill() {
   const setNext = txt => { $("#playbook-next").textContent = txt; store.fields["playbook-next"] = txt; save(); };
   if (store.fields["playbook-next"]) $("#playbook-next").textContent = store.fields["playbook-next"];
   TASKS.capstone = {
-    get aiTask() { return `Mission 6 (capstone): the student brought handwritten notes from a real class. Class and topic: ${$("#cap-class").value || "not given"}. Source type: ${$("#cap-kind").value}. ${$("#cap-source").value.trim() ? "What the source covered, in the student's words: " + $("#cap-source").value.trim() : "The student did not describe the source, so judge the notes on their own merits and do not guess what was missed."} Judge the notes against every part of the method: generative own-words notes, structure that fits the content, signal-driven selection, shorthand, gaps flagged, cue questions and summary.`; },
+    get aiTask() { return `Mission 7 (capstone): the student brought handwritten notes from a real class. Class and topic: ${$("#cap-class").value || "not given"}. Source type: ${$("#cap-kind").value}. ${$("#cap-source").value.trim() ? "What the source covered, in the student's words: " + $("#cap-source").value.trim() : "The student did not describe the source, so judge the notes on their own merits and do not guess what was missed."} Judge the notes against every part of the method: generative own-words notes, structure that fits the content, signal-driven selection, shorthand, cue questions and summary. ${$("#cap-kind").value === "Textbook" ? "These are TEXTBOOK notes: also judge whether they look written from recall (compressed and in their own words, not copied), whether headings became questions, whether bold terms are defined, whether figures were redrawn or summarized rather than just referenced, and whether page or section numbers are included." : "For lecture notes, also judge whether the teacher's signaled structure was captured and whether gaps were flagged with '?'."}`; },
     get source() { return $("#cap-source").value.trim() || null; },
     ideas: null, photo: true,
-    expect: { structure: true, questions: 3, summary: false, gaps: true },
+    get expect() { return $("#cap-kind").value === "Textbook" ? { structure: true, questions: 3, pageRefs: 1 } : { structure: true, questions: 3, gaps: true }; },
     getNotes: () => $("#cap-notes").value,
     onFeedback: setNext
   };
+  const hint = () => { $("#cap-source-hint").textContent = $("#cap-kind").value === "Textbook" ? "(optional: paste the section's headings and bold terms. They help the feedback.)" : "(optional: the main points help the feedback)"; };
+  $("#cap-kind").addEventListener("change", hint); hint();
   $("#playbook-copy").addEventListener("click", async () => {
     const text = $$("#playbook p").map(p => p.textContent).join("\n");
     try { await navigator.clipboard.writeText(text); toast("Playbook copied"); }
     catch (e) { const r = document.createRange(); r.selectNodeContents($("#playbook")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl/⌘ + C to copy."); }
   });
+})();
+
+/* ===================================================== shared: read one heading at a time */
+function rich(str) { return str.split(/(\*\*.+?\*\*)/).map(part => part.startsWith("**") ? h("b", { text: part.slice(2, -2) }) : part); }
+function chunkReader(host, book, key) {
+  let k = Number(store.fields[key]) || 0, closed = false;
+  function render() {
+    host.innerHTML = "";
+    const n = book.sections.length;
+    if (k >= n) {
+      const src = h("div", { class: "source" }, h("span", { class: "chap", text: book.chap }), h("h5", { text: book.title }));
+      book.sections.forEach(sec => src.append(h("h5", { text: sec.h, style: "font-size:.95rem" }), h("p", null, rich(sec.p))));
+      host.append(h("p", { class: "hint", text: "Book open. Check your notes against the whole section, fix mistakes, and add what you missed on lines starting with “+”." }), src,
+        h("div", { class: "row" }, h("button", { type: "button", class: "btn ghost sm", onclick: () => { k = 0; closed = false; store.fields[key] = 0; save(); render(); } }, "Read it again from the start")));
+      return;
+    }
+    const sec = book.sections[k];
+    const tag = h("span", { class: "chap", text: `${book.chap} · section ${k + 1} of ${n}` });
+    if (!closed) {
+      host.append(h("div", { class: "source reader-sec" }, tag, k === 0 ? h("h5", { text: book.title }) : null, h("h5", { text: sec.h, style: "font-size:.95rem" }), h("p", null, rich(sec.p))),
+        h("div", { class: "row" }, h("button", { type: "button", class: "btn", onclick: () => { closed = true; render(); } }, "Close the book and write")));
+    } else {
+      host.append(h("div", { class: "closed-book" }, h("b", { text: "Book closed" }),
+        h("span", { text: `On paper, write what you remember from “${sec.h}” in your own words. Mark anything you can't recall with “?”.` }),
+        h("button", { type: "button", class: "btn", onclick: () => { k++; closed = false; store.fields[key] = k; save(); render(); } }, k < n - 1 ? "Done, open the next section" : "Done, open the book to check")));
+    }
+  }
+  render();
+}
+
+/* ===================================================== MISSION 3: textbook blueprint */
+const FED = {
+  chap: "Economics · 14.3 · p. 412", title: "How the Federal Reserve Fights Inflation",
+  sections: [
+    { h: "The Fed's main tool", p: "The Federal Reserve (the Fed), the central bank of the United States, influences the economy mainly by adjusting a short-term interest rate called the **federal funds rate**: the rate banks charge one another for overnight loans. Changes in this rate ripple out to the interest rates on car loans, mortgages and business loans." },
+    { h: "The chain of effects", p: "When inflation runs too high, the Fed raises the federal funds rate. Because borrowing becomes more expensive, households buy fewer homes and cars on credit, and businesses postpone investing in new equipment. As a result, total spending in the economy, called **aggregate demand**, slows. With less demand, businesses face less pressure to raise prices, so inflation gradually falls. These effects take time: it can take a year or more for a rate change to have its full effect on inflation." },
+    { h: "The trade-off", p: "Slowing the economy has a cost. When spending falls, businesses may hire fewer workers, so unemployment can rise. This creates a trade-off: raising rates too little lets inflation persist, while raising them too much can push the economy into a recession. When inflation is low and the economy is weak, the Fed does the reverse, cutting rates to encourage borrowing and spending." }
+  ]
+};
+const FED_TEXT = FED.sections.map(x => x.h + ". " + x.p.replace(/\*\*/g, "")).join("\n");
+const FED_IDEAS = [
+  { label: "The Fed is the U.S. central bank; its main tool is the federal funds rate", any: ["federal funds", "fed funds", "ffr", "funds rate"] },
+  { label: "That rate (banks' overnight loans) spreads to car, mortgage and business loan rates", any: ["overnight", "mortgage", "car", "loans"] },
+  { label: "Raise rates → borrowing costs more", any: ["borrow"] },
+  { label: "→ households and businesses spend and invest less", any: ["spend", "invest", "buy"] },
+  { label: "→ aggregate demand slows", any: ["aggregate", /\bad\b/, "demand"] },
+  { label: "→ less pressure to raise prices → inflation falls", any: [["inflation", "↓"], ["inflation", "fall"], ["inflation", "down"], ["inflation", "lower"], ["inflation", "decrease"], ["prices", "pressure"]] },
+  { label: "Time lag: a year or more for the full effect", any: ["lag", "year", "yr", "takes time", "slow"] },
+  { label: "Trade-off: unemployment can rise; too much → recession", any: ["unemploy", "recession", "jobs", "hire", "trade-off", "tradeoff"] },
+  { label: "Reverse when the economy is weak: cut rates", any: ["cut", "reverse", "lower rate", "rates ↓", "rate ↓"] }
+];
+(() => {
+  const heads = $("#bp-heads");
+  FED.sections.forEach((sec, i) => heads.append(h("div", { class: "field" }, h("label", { class: "lbl", for: "bp-q" + (i + 1), text: `Heading ${i + 1}: “${sec.h}”` }),
+    h("input", { class: "ruled", id: "bp-q" + (i + 1), type: "text", placeholder: i === 0 ? "What is the Fed's main tool, and how does it work?" : "Your question…" }))));
+  chunkReader($("#bp-reader"), FED, "bp-k");
+  const sel = $("#bp-struct"), out = $("#bp-struct-out");
+  sel.addEventListener("change", () => {
+    out.innerHTML = "";
+    const v = sel.value; if (!v) return;
+    const msg = v === "Cause and effect" ? ["good", "Yes. “Because”, “as a result” and “so” mark a chain of effects. Use arrows: rate ↑ → borrowing ↓ → spending ↓ → inflation ↓."]
+      : v === "Problem and solution" ? ["warn", "Partly. The Fed is solving a problem (inflation), but most of the section explains a chain of causes and effects. Reread “The chain of effects” for its signal words."]
+      : ["bad", "Look again at the signal words in “The chain of effects”: because, as a result, so. What kind of structure do they signal?"];
+    out.append(h("span", { class: "tag " + msg[0], text: msg[0] === "good" ? "Right" : msg[0] === "warn" ? "Close" : "Not quite" }), " ", msg[1]);
+    store.fields["bp-struct"] = v; save();
+  });
+  if (store.fields["bp-struct"]) { sel.value = store.fields["bp-struct"]; sel.dispatchEvent(new Event("change")); }
+  TASKS.blueprint = {
+    aiTask: "Mission 3, part B (textbook structure): the student previewed an economics textbook section by turning each heading into a question, read it one heading at a time and wrote notes from memory with the book closed between sections, identified the section's main text structure, then typed the notes and added corrections on lines starting with '+'. The section is mainly cause-and-effect, so strong notes show an arrow chain (rate ↑ → borrowing ↓ → spending ↓ → aggregate demand ↓ → inflation ↓) plus the time lag and the unemployment trade-off. Also judge whether the notes answer their own heading questions, whether bold terms are defined, and whether there is a section or page reference.",
+    source: FED_TEXT, verbatimSource: FED.sections.map(x => x.p.replace(/\*\*/g, "")).join(" "), ideas: FED_IDEAS, photo: true,
+    expect: { structure: true, arrows: 3, pageRefs: 1, example: false },
+    getNotes: () => `HEADING QUESTIONS:\n${$$("#bp-heads input").map(i => i.value).join("\n")}\n\nSTRUCTURE THEY IDENTIFIED: ${sel.value || "(none)"}\n\nNOTES:\n${$("#bp-notes").value}`
+  };
+})();
+
+/* ----- figure to notes */
+const FIG_CAPTION = "Figure 10.2 The cell cycle. Interphase (G1, S and G2) takes up most of the cycle. DNA is copied during the S phase. The mitotic (M) phase includes mitosis and cytokinesis. Checkpoints at the end of G1, at the end of G2 and during mitosis make sure the cell is ready to go on. Cells that stop dividing leave the cycle for G0.";
+const FIG_ITEMS = [
+  { label: "G1 phase", any: ["g1"] },
+  { label: "S phase, where DNA is copied", any: ["s phase", "s-phase", "dna", "replic", "synth", /(^|[^a-z])s([^a-z]|$)/] },
+  { label: "G2 phase", any: ["g2"] },
+  { label: "Interphase = G1 + S + G2", any: ["interphase", "inter"] },
+  { label: "M phase: mitosis", any: ["mitosis", "m phase", "m-phase"] },
+  { label: "Cytokinesis (part of M phase)", any: ["cytokin"] },
+  { label: "Arrows showing it's a cycle, in order", any: ["→", "->", "arrow", "clockwise", "circle", "cycle"] },
+  { label: "Checkpoints: end of G1, end of G2, in mitosis", any: ["checkpoint", "check point", "chkpt", "check pt"] },
+  { label: "G0: cells that stop dividing leave the cycle", any: ["g0", "g 0", "g-0", "stop dividing", "not dividing", "exit"] }
+];
+function cellCycleSVG() {
+  const cx = 200, cy = 168, r = 105;
+  const pt = (deg, rad) => [cx + rad * Math.sin(deg * Math.PI / 180), cy - rad * Math.cos(deg * Math.PI / 180)];
+  const f = n => n.toFixed(1);
+  const arc = (a0, a1, rad) => { const [x0, y0] = pt(a0, rad), [x1, y1] = pt(a1, rad); return `M${f(x0)} ${f(y0)} A${rad} ${rad} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${f(x1)} ${f(y1)}`; };
+  const segs = [["G1", 0, 150, "cc-inter"], ["S", 150, 255, "cc-inter"], ["G2", 255, 315, "cc-inter"], ["M", 315, 360, "cc-m"]];
+  let o = `<svg viewBox="0 0 420 340" role="img" aria-label="Cell cycle diagram: a ring of G1, S, G2 and M phases with checkpoints, and G0 outside the ring.">`;
+  o += `<defs><marker id="cc-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cc-head"/></marker></defs>`;
+  segs.forEach(([, a0, a1, cls]) => { o += `<path d="${arc(a0, a1 - .01, r)}" class="cc-seg ${cls}"/>`; });
+  segs.forEach(([, a0]) => { const [x0, y0] = pt(a0, r - 19), [x1, y1] = pt(a0, r + 19); o += `<line x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}" class="cc-sep"/>`; });
+  segs.forEach(([lab, a0, a1, cls]) => { const [x, y] = pt((a0 + a1) / 2, r); o += `<text x="${f(x)}" y="${f(y)}" class="cc-label${cls === "cc-m" ? " m" : ""}">${lab}</text>`; });
+  [150, 315, 345].forEach(a => { const [x0, y0] = pt(a, r - 23), [x1, y1] = pt(a, r + 23); o += `<line x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}" class="cc-check"/>`; });
+  o += `<path d="${arc(18, 58, 138)}" class="cc-arrow" marker-end="url(#cc-ah)"/>`;
+  const note = (txt, a, rad) => { const [x, y] = pt(a, rad); o += `<text x="${f(x)}" y="${f(y)}" class="cc-note">${txt}</text>`; };
+  note("growth", 90, 150); note("DNA copied", 202, 152); note("more growth", 285, 152); note("mitosis + cytokinesis", 336, 152);
+  const [gx, gy] = pt(125, 182);
+  const [ax, ay] = pt(120, 126);
+  const dx = gx - ax, dy = gy - ay, len = Math.hypot(dx, dy);
+  o += `<line x1="${f(ax)}" y1="${f(ay)}" x2="${f(gx - dx / len * 24)}" y2="${f(gy - dy / len * 24)}" class="cc-arrow" marker-start="url(#cc-ah)" marker-end="url(#cc-ah)"/>`;
+  o += `<circle cx="${f(gx)}" cy="${f(gy)}" r="22" class="cc-g0"/><text x="${f(gx)}" y="${f(gy)}" class="cc-label">G0</text>`;
+  o += `<text x="${f(gx)}" y="${f(gy + 36)}" class="cc-note">not dividing</text>`;
+  o += `<text x="${cx}" y="${cy - 6}" class="cc-center">INTERPHASE</text><text x="${cx}" y="${cy + 12}" class="cc-note">G1 + S + G2</text>`;
+  o += `<line x1="16" y1="326" x2="34" y2="326" class="cc-check"/><text x="40" y="326" class="cc-note" style="text-anchor:start">checkpoint</text>`;
+  return o + `</svg>`;
+}
+(() => {
+  const box = $("#fig-box"), startBtn = $("#fig-start"), hideBtn = $("#fig-hide"), timerEl = $("#fig-timer"), recall = $("#fig-recall");
+  let t = null, left = 0;
+  $("#fig-svg").innerHTML = cellCycleSVG();
+  function hide() {
+    clearInterval(t); box.hidden = true; hideBtn.hidden = true; recall.hidden = false;
+    timerEl.textContent = "Figure hidden. Redraw it on paper now.";
+    store.fields["fig-stage"] = "recall"; save();
+  }
+  startBtn.addEventListener("click", () => {
+    box.hidden = false; startBtn.hidden = true; hideBtn.hidden = false; left = 60;
+    timerEl.textContent = left + " s left";
+    t = setInterval(() => { left--; timerEl.textContent = left + " s left"; if (left <= 0) hide(); }, 1000);
+  });
+  hideBtn.addEventListener("click", hide);
+  if (store.fields["fig-stage"] === "recall") { startBtn.hidden = true; recall.hidden = false; timerEl.textContent = "Figure hidden. Redraw it on paper, then compare."; }
+  $("#fig-check").addEventListener("click", () => {
+    box.hidden = false;
+    const txt = $("#fig-notes").value.toLowerCase();
+    const out = $("#fig-out"); out.innerHTML = "";
+    const count = h("b");
+    const list = h("ul", { class: "figchecks" });
+    const update = () => { const n = $$("input", list).filter(c => c.checked).length; count.textContent = `Your redraw has ${n} of ${FIG_ITEMS.length} elements.`; };
+    FIG_ITEMS.forEach((it, i) => {
+      const cb = h("input", { type: "checkbox", id: "figc-" + i });
+      cb.checked = it.any.some(term => termHit(txt, term));
+      cb.addEventListener("change", update);
+      list.append(h("li", null, h("label", { for: cb.id }, cb, h("span", { text: it.label }))));
+    });
+    out.append(h("p", null, "Compare your paper drawing with the figure above. Boxes your typed list matched are pre-checked. Fix any that are wrong, since only you can see your drawing."), list,
+      h("div", { class: "nextstep" }, count, h("span", { text: "Unchecked items are what to study. Redraw the figure from memory once more tomorrow, and add it to your notes small, next to the text it explains." })));
+    update();
+    markDone("blueprint", "figure");
+  });
+  TASKS.figure = {
+    mission: "blueprint", photo: true, rubric: ["selection", "structure", "usability"],
+    aiTask: "Mission 3, part C (textbook figure): the student studied a textbook diagram of the cell cycle and its caption for 60 seconds. Then the figure was hidden and they redrew it from memory by hand with labels and arrows, and wrote a one-sentence caption in their own words. If a photo is attached, it shows their hand-drawn redraw: judge it as a quick study sketch, not as art. The original is a ring G1 → S → G2 → M (clockwise). Interphase = G1 + S + G2, DNA is copied in S, M = mitosis + cytokinesis. There are three checkpoints (end of G1, end of G2, during mitosis), and G0 sits outside the ring next to G1 for cells that stop dividing. Say which elements are missing or misplaced.",
+    source: FIG_CAPTION, ideas: FIG_ITEMS, expect: { example: false },
+    getNotes: () => $("#fig-notes").value
+  };
+})();
+
+/* ===================================================== MISSION 6, part A: connect the textbook to the lecture */
+const READING_62 = {
+  chap: "Economics · 6.2 · p. 132", title: "Elasticity and Total Revenue",
+  sections: [
+    { h: "Price changes and total revenue", p: "**Total revenue** equals price times the quantity sold. Whether a price change raises or lowers total revenue depends on the price elasticity of demand. When demand is elastic (elasticity greater than 1), the percentage change in quantity is larger than the percentage change in price, so price and total revenue move in opposite directions: a price cut raises total revenue. When demand is inelastic (less than 1), price and total revenue move in the same direction. When demand is **unit elastic** (exactly 1), a small price change leaves total revenue unchanged." },
+    { h: "Charging different customers different prices", p: "A firm that can separate customers into groups with different elasticities can charge each group a different price, a practice called **price discrimination**. A movie theater offers discounted weekday matinee tickets because the people free on a weekday afternoon, such as students and retirees, tend to be more price-sensitive: their demand is more elastic. The concession stand faces a different situation. Once customers are inside, there are few substitutes for theater popcorn, so demand there is relatively inelastic and high prices raise revenue." },
+    { h: "Measuring elasticity: the midpoint method", p: "Because the percentage change between two prices depends on which price you start from, economists often use the **midpoint method**: divide the change in quantity by the average of the two quantities, and the change in price by the average of the two prices. For example, if the price of a concert ticket rises from $40 to $60 and the quantity sold falls from 1,200 to 800, quantity changes by 400 ÷ 1,000 = 40% and price changes by 20 ÷ 50 = 40%. Elasticity is 40% ÷ 40% = 1, so demand is unit elastic." }
+  ]
+};
+const READING_62_TEXT = READING_62.sections.map(x => x.h + ". " + x.p.replace(/\*\*/g, "")).join("\n");
+const INT_IDEAS = [
+  { label: "Unit elastic (= 1): a price change leaves total revenue unchanged", any: ["unit"] },
+  { label: "Elastic: price and revenue move in opposite directions (a price cut raises TR)", any: ["opposite", "cut", "p↓", "p ↓", "lower price", "price ↓"] },
+  { label: "Inelastic: price and revenue move in the same direction", any: ["same direction", "same dir", "same way"] },
+  { label: "Price discrimination: different prices for groups with different elasticities", any: ["discrimin", "different prices", "diff. prices", "diff prices", "diff price"] },
+  { label: "Matinee discount: daytime customers are more price-sensitive (elastic)", any: ["matinee", "tuesday", "daytime", "afternoon", "student", "retiree"] },
+  { label: "Popcorn: few substitutes once inside, so inelastic and high prices raise revenue", any: ["popcorn", "concession", "inside"] },
+  { label: "Midpoint method: divide each change by the average of the two values", any: ["midpoint", "average", "avg"] },
+  { label: "Worked example: $40 → $60, 1,200 → 800, so 40% ÷ 40% = 1", any: ["40%", "40 %", "1,200", "1200", "$40", "$60"] }
+];
+(() => {
+  chunkReader($("#m6-reading"), READING_62, "m6-k");
+  $("#m6-merge").addEventListener("click", () => {
+    const adds = $("#m6-adds").value.trim(), nv = $("#m5-notes");
+    if (!adds) { toast("Write your additions first."); return; }
+    if (nv.value.includes(adds)) { toast("Already added to part B."); return; }
+    if (!nv.value.trim() && $("#lec-notes").value.trim()) nv.value = $("#lec-notes").value.trim();
+    nv.value = (nv.value.trim() ? nv.value.trim() + "\n\n" : "") + "From the textbook:\n" + adds;
+    store.fields[nv.id] = nv.value; save(); toast("Added to your revised notes in part B");
+  });
+  TASKS.integrate = {
+    mission: "review", photo: true, rubric: ["selection", "own_words", "usability"],
+    get aiTask() { return "Mission 6, part A (connect the textbook to the lecture): after a lecture on price elasticity, the student read the assigned textbook section 6.2 one heading at a time, closing the book between sections, and wrote ADDITIONS to their lecture notes. These are new ideas and answers to gaps, including the teacher's open question about why theaters charge so much for popcorn but discount Tuesday afternoon tickets. Each addition should be in their own words, start with '+', and give a section or page reference. Judge whether the additions fill real gaps in the lecture notes, are rephrased rather than copied, include references, and connect back to lecture ideas (for example, linking price discrimination to elastic vs. inelastic demand). Their original lecture notes, for context:\n" + ($("#lec-notes").value.trim() || "(not provided)"); },
+    source: READING_62_TEXT, ideas: INT_IDEAS,
+    expect: { pageRefs: 3, example: false },
+    getNotes: () => $("#m6-adds").value
+  };
 })();
 
 /* ===================================================== reset */
@@ -1890,7 +2388,7 @@ function buildDrill() {
 /* ===================================================== boot */
 $$("[data-quiz]").forEach(renderQuiz);
 $$("[data-feedback]").forEach(feedbackPanel);
-$$("textarea, input.plain").forEach(persistField);
+$$("textarea, input.plain, input.ruled").forEach(persistField);
 refreshProgress();
 route();
 })();

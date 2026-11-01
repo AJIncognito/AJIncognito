@@ -6,15 +6,18 @@ Open `index.html` in any browser. It's a single file and needs no install.
 
 ## What's inside
 
-| Mission | Goal | Practice | Main research |
-|---|---|---|---|
-| Start | Surface what you already believe about studying | 6-item "myth or research?" warm-up | Pretesting effect |
-| 1. Think, don't transcribe | Compress dense sentences into your own words | 3 textbook sentences (biology, history, economics) | Generation effect; Mueller & Oppenheimer and its replications |
-| 2. Textbook notes | Preview → Read → Recall (book closed) → Check, in Cornell format | A vaccine and immunity section that hides itself while you recall | Read-recite-review; low utility of highlighting and rereading |
-| 3. Lecture notes, live | Keep up with a lecture you can't rewind | 4-minute economics lecture played sentence by sentence (optional voice, captions can be blurred) | Cognitive load of note-taking; lecture cues; revising notes |
-| 4. Show the structure | Match the format to the content | Format-picking quiz, plus a 3×3 rock-types matrix | Matrix notes vs. outlines; drawing effect |
-| 5. Revise, quiz, space | Turn notes into a self-test and schedule reviews | Cue questions for your own lecture notes, a cover-and-recall drill, a spaced-review planner | Retrieval practice; spacing; elaborative interrogation |
-| 6. Your real notes | Apply the method to a real class | Enter or photograph a page from this week, then get a personal next step | Feedback (Hattie & Timperley) |
+Lectures and textbooks fail students in opposite ways. A lecture moves too fast, so ideas get missed. A textbook sits still, so students copy it, highlight it, or reread it until it feels familiar. The tutor teaches a shared core and then a separate routine for each source.
+
+| Mission | Source | Goal | Practice | Main research |
+|---|---|---|---|---|
+| Start | Both | Compare lecture and textbook note-taking; surface what you already believe | 8-item "myth or research?" warm-up | Pretesting effect |
+| 1. Think, don't transcribe | Both | Compress dense sentences into your own words | 3 textbook sentences (biology, history, economics) | Generation effect; Mueller & Oppenheimer and its replications |
+| 2. Read, close, recall | Textbook | Before/during/after textbook routine: preview → read one section → close the book → recall → check, in Cornell format | A vaccine and immunity section that hides itself while you recall | Read-recite-review; self-explanation; low utility of highlighting and rereading |
+| 3. Read the blueprint | Textbook | Use headings, topic sentences, bold terms, signal words, figures and review questions; match note format to text structure | Annotated textbook page; "name that structure" quiz; a Federal Reserve section read one heading at a time; redraw a cell-cycle figure from memory after 60 s | Text signaling; structure strategy; generative drawing |
+| 4. Lecture notes, live | Lecture | Keep up with a lecture you can't rewind | 4-minute economics lecture played sentence by sentence (optional voice, captions can be blurred) | Cognitive load of note-taking; lecture cues; revising notes |
+| 5. Show the structure | Both | Match the format to the content | Format-picking quiz, plus a 3×3 rock-types matrix | Matrix notes vs. outlines; drawing effect |
+| 6. Revise, connect, quiz, space | Both | Repair lecture notes from the assigned reading, write cue questions, test yourself, plan reviews | The textbook section assigned at the end of the Mission 4 lecture; a cue-question Cornell page; a cover-and-recall drill on lecture or textbook notes; a spaced-review planner | Retrieval practice; spacing; revising notes; elaborative interrogation |
+| 7. Your real notes | Both | Apply the method to a real lecture or chapter | Enter or photograph a page; feedback adapts to lecture vs. textbook | Feedback (Hattie & Timperley) |
 
 Each mission follows the same pattern: **Goal** and success criteria, **Why** (the research, with citations), **See it** (weak and strong handwritten examples side by side), **Try it** (write on paper first, then enter it), **Feedback**, and **Lock it in** (a retrieval quiz on the technique itself).
 
